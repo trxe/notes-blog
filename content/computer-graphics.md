@@ -194,7 +194,7 @@ The success of **IRIS GL**, the graphics API for the world's first graphics hard
 
 All vectors are represented as a 4D vector by default internally.
 
-<img src="C:\Users\pc\Documents\ShareX\Screenshots\2021-08\SumatraPDF_d2FqIIRt55.png" alt="Format" style="zoom:50%;" />
+<img src="/notes-blog/assets/img/cg/glfuncformat.png" alt="Format" style="zoom:50%;" />
 
 ## Program structure
 
@@ -268,13 +268,13 @@ How do we make a 3D Sierpinski Gasket given the code for a 2D one?
 
 ### Cheap Trick
 
-![3D Gasket from subdividing 4 surfaces.](../assets/img/cg/3dgasket.png)
+![3D Gasket from subdividing 4 surfaces.](/notes-blog/assets/img/cg/3dgasket.png)
 
 4 different Sierpinski triangles (see reds, blues, blacks and greens).
 
 However the triangles are drawn in the order defined by the program, the black , red and blue triangles may not always be in front of the reds as desired.
 
-![Wrong depths of surfaces](../assets/img/cg/hidden_surface.png)
+![Wrong depths of surfaces](/notes-blog/assets/img/cg/hidden_surface.png)
 
 #### Hidden surface removal
 
@@ -471,7 +471,7 @@ They preserve lines but not necessarily angles (in the 2D image). Preserving her
   - Default `PROJECTION` matrix is $I$ and orthographic ().
   - View volume (default: $2^3$​​ cube centered @world origin) is defined wrt the camera frame.
 
-![](camera.png)
+![Camera](/notes-blog/assets/img/cg/camera.png)
 
 ## View Transformation
 
@@ -542,7 +542,7 @@ The projection matrix is computed such that it maps to the **canonical view volu
 
 **Mapping** from $(right,top,-far) \rightarrow (1, 1, 1)$, and $(left,bottom,-near) \rightarrow (-1, -1, -1)$.
 
-![](projection_mapping.png)
+![Projection mapping](/notes-blog/assets/img/cg/projection_mapping.png)
 
 #### Orthographic projection matrix (Clip to NDC):
 
@@ -573,7 +573,7 @@ Squashed into the $x,y$ plane. $z$ is retained (between 0 and 1) for hidden surf
 
 **Mapping** from $(right,top,-far) \rightarrow (1, 1, 1)$, and $(left,bottom,-near) \rightarrow (-1, -1, -1)$.
 
-![](frustum_mapping.png)
+![Frustum Mapping](/notes-blog/assets/img/cg/frustum_mapping.png)
 
 #### Perspective Division:
 
@@ -585,12 +585,11 @@ $$
 \end{aligned}
 $$
 
+![Perspective projection matrix](/notes-blog/assets/img/cg/mpersp.png)
 
-![Perspective projection matrix](mpersp.png)
+`gluPerspective(fovy, aspect, near, far)` specifies a symmetric view volume.
 
-![`gluPerspective(fovy, aspect, near, far)` specifies a symmetric view volume.](gluPerspective.png)
-
-
+![gluPerspective](/notes-blog/assets/img/cg/gluPerspective.png)
 
 # Chapter 6 -- Clipping, Rasterization & Hidden-Surface Removal
 
@@ -611,7 +610,7 @@ Eliminate all **easy** cases without computing intersections.
 
 **Outcodes** are defined for each area:
 
-![Outcodes](outcodes.png)
+![Outcodes](/notes-blog/assets/img/cg/outcodes.png)
 
 Let $F(A,B)$ represent the clipping requirement of the line segment $AB$. $F(A,B)$ equals 2 if it is not clipped out, 1 if it is partially clipped out, and 0 if it is fully clipped out.
 $$
@@ -686,7 +685,7 @@ p_k =& \Delta x(d_{lower} - d_{upper}) \\
 $$
 If $p_k < 0$ plot lower pixel, if $p_k > 0$ plot upper pixel.
 
-![Candidates for binary choice](bressenham.png)
+![Candidates for binary choice](/notes-blog/assets/img/cg/bressenham.png)
 
 
 
@@ -701,7 +700,7 @@ $p_0 = 2\Delta y - \Delta x$. Since $p_{k+1} - p_k = 2(x_{k+1} - x_k)\Delta y + 
 
 Horizontal scanlines: Get both endpoints by interpolating the line segment they are each on.
 
-![The scanline is then formed by interpolating c4, c5](scanline.png)
+![The scanline is then formed by interpolating c4, c5](/notes-blog/assets/img/cg/scanline.png)
 
 ### Flood-fill
 
@@ -771,7 +770,7 @@ I_{\text{Phong}} = \left[ \begin{matrix} r \\ g \\ a \end{matrix} \right]
 $$
 
 
-![Illustration of unit vectors and angles for the Phong model.](phong.png)
+![Illustration of unit vectors and angles for the Phong model.](/notes-blog/assets/img/cg/phong.png)
 
 - **Ambient:** Flat constant color $\begin{matrix} [I_{ar} k_{ar} & I_{ag} k_{ag} & I_{ab} k_{ab}] \end{matrix}^T$​
 - **Diffuse: **Factors in orientation of the surface wrt light source via $N \cdot L$​.
@@ -809,7 +808,7 @@ The "constant" variables below are the material properties
 
 Given **polygon, rasterization**: compute **color** of **fragment**
 
-![Note that Phong Shading is not the same as PIE.](shading.png)
+![Note that Phong Shading is not the same as PIE.](/notes-blog/assets/img/cg/shading.png)
 
 ### Shading types
 
@@ -860,7 +859,7 @@ I_\text{local} &= I_ak_a + I_\text{source}[k_d(N \cdot L) + k_r(R \cdot V)^n + k
 \end{aligned}
 $$
 
-![Example of ray-tracing](C:\Users\pc\AppData\Roaming\Typora\typora-user-images\image-20211025172249916.png)
+![Example of ray-tracing](/notes-blog/assets/img/cg/raytracepaths.png)
 
 At each intersection we need to do a lighting computation and produce the reflected rays.
 
@@ -874,7 +873,7 @@ At each intersection we need to do a lighting computation and produce the reflec
 
 Note that this equation is recursive due to the $I_\text{reflection}$ and $I_\text{transmitted}$ values to be computed.​
 
-![Left: reflected specular; Right: ](C:\Users\pc\AppData\Roaming\Typora\typora-user-images\image-20211025211722180.png)
+![Left: reflected specular; Right: transmission](/notes-blog/assets/img/cg/reflectrefractangles.png)
 
 ### Computing Reflection
 
@@ -900,7 +899,7 @@ I &= I_{\text{local}, 0} + I_{\text{reflected}, 0} + I_{\text{transmitted}, 0} \
 \end{aligned}
 $$
 
-![image-20211025213645966](C:\Users\pc\AppData\Roaming\Typora\typora-user-images\image-20211025213645966.png)
+![Ray Tree](/notes-blog/assets/img/cg/raytree.png)
 
 ### Shadow Rays
 
@@ -1005,7 +1004,7 @@ Due to floating point errors, the intersection may be "slightly below the surfac
 
 $\epsilon$ is based on the floating point accuracy.
 
-![Self-occlusion](C:\Users\pc\AppData\Roaming\Typora\typora-user-images\image-20211025234032251.png)
+![Self-occlusion](/notes-blog/assets/img/cg/shadowacne.png)
 
 ### Limitations of Whitted Raytracing
 
@@ -1181,16 +1180,6 @@ $$
 | **Curve segment**<br /><img src="/notes-blog/assets/img/cg/cubicbezier.png" width="300px"> | $p(0) = p_0$​​​​​<br />$p(1) = p_3$​​​​​<br />$p'(0) = 3(p_1 - p_0)$​​​<br />$p'(1) = 3(p_3 - p_2)$<br /> |
 | **Surface patch**<br /><img src="/notes-blog/assets/img/cg/cubicbezierpatch.png" width="300px"> | Interpolate the points along <br />each red curve respectively. |
 
-
-
-Blending functions of the cubic Bezier graph are also called Berstein polynomials (of degree 3). For $0 \leq u \leq 1$, they satisfy:
-
-- $0 \leq b_i(u) \leq 1$
-- $\sum_{i=1}^3 b_i(u) = 1$
-
-![Cubic Bezier graph](/notes-blog/assets/img/cg/bernstein.png)
-
-
 $$
 \begin{aligned}
 M_B &= \left[
@@ -1208,4 +1197,20 @@ M_B &= \left[
 \left[ \begin{matrix} p_0 \\ p_1 \\ p_2 \\ p_3 \end{matrix} \right] \quad \textbf{(Bernstein polynomials)}\\
 \end{aligned}
 $$
-​	
+
+
+
+Blending functions of the cubic Bezier graph are also called Bernstein polynomials (of degree 3). For $0 \leq u \leq 1$, they satisfy:
+
+- $0 \leq b_i(u) \leq 1$
+- $\sum_{i=1}^3 b_i(u) = 1$​
+
+The below shows the Bernstein polynomials. Note that the sum $p(u) = \sum_i b_i(u)p_i$​​ is a convex sum, and the curve is contained in a convex hull.
+
+<img src="/notes-blog/assets/img/cg/bernstein.png" width="500px">
+
+## Rendering curves
+
+### Rendering polynomial curves
+
+### Rendering Bezier curves
