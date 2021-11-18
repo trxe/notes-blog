@@ -1132,8 +1132,8 @@ In practice we specify curve segments **geometrically** with control points.
 
 | Type                                                         | Polynomial constraints                                       |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| **Curve segment**<br /><img src="/notes-blog/assets/img/cg/cubicinter.png" width="300px"> | $p(0) = p_0$​​<br />$p(1/3) = p_1$​​<br />$p(2/3) = p_2$​​<br />$p(1) = p_3$​​. |
-| **Surface patch**<br /><img src="/notes-blog/assets/img/cg/cubicinterpatch.png" width="300px"> | Interpolate the points along <br />each red curve respectively. |
+| **Curve segment**<br /><img src="/notes-blog/assets/img/cg/cubicinter.png" width="50%"> | $p(0) = p_0$​​<br />$p(1/3) = p_1$​​<br />$p(2/3) = p_2$​​<br />$p(1) = p_3$​​. |
+| **Surface patch**<br /><img src="/notes-blog/assets/img/cg/cubicinterpatch.png" width="50%"> | Interpolate the points along <br />each red curve respectively. |
 
 **Blending functions** interpolate in a way that satisfies exactly its variations along the edges of a square domain, graphical representation below.
 
@@ -1171,8 +1171,8 @@ $$
 
 | Type                                                         | Polynomial constraints                                       |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| **Curve segment**<br /><img src="/notes-blog/assets/img/cg/cubicbezier.png" width="300px"> | $p(0) = p_0$​​​​​<br />$p(1) = p_3$​​​​​<br />$p'(0) = 3(p_1 - p_0)$​​​<br />$p'(1) = 3(p_3 - p_2)$<br /> |
-| **Surface patch**<br /><img src="/notes-blog/assets/img/cg/cubicbezierpatch.png" width="300px"> | Interpolate the points along <br />each red curve respectively. |
+| **Curve segment**<br /><img src="/notes-blog/assets/img/cg/cubicbezier.png" width="50%"> | $p(0) = p_0$​​​​​<br />$p(1) = p_3$​​​​​<br />$p'(0) = 3(p_1 - p_0)$​​​<br />$p'(1) = 3(p_3 - p_2)$<br /> |
+| **Surface patch**<br /><img src="/notes-blog/assets/img/cg/cubicbezierpatch.png" width="50%"> | Interpolate the points along <br />each red curve respectively. |
 
 $$
 \begin{aligned}
@@ -1201,7 +1201,7 @@ Blending functions of the cubic Bezier graph are also called Bernstein polynomia
 
 The below shows the Bernstein polynomials. Note that the sum $p(u) = \sum_i b_i(u)p_i$​​ is a convex sum, and the curve is contained in a convex hull.
 
-<img src="/notes-blog/assets/img/cg/bernstein.png" width="500px">
+![Bernstein](/notes-blog/assets/img/cg/bernstein.png)
 
 ## Rendering curves
 
