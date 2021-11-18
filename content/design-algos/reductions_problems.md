@@ -38,7 +38,7 @@ Note: A maximal clique is a subgraph $S$ such that
 
 **Lemma**: INDEPENDENT-SET $\leq_P$ MAX-CLIQUE. 
 
-*Proof:* For input graph for INDEPENDENT-SET, $G(V,E)$ and integer $k$, we construct $G'(V, E')$ where $E' = K(|V|) \setminus E$. That is, removing of the edges in $E$ from the complete graph of $|V|$ vertices. This will be our input for MAX-CLIQUE.
+*Proof:* For input graph for INDEPENDENT-SET, $G(V,E)$ and integer $k$, we construct $G'(V, E')$ where $E' = K(\|V\|) \setminus E$. That is, removing of the edges in $E$ from the complete graph of $\|V\|$ vertices. This will be our input for MAX-CLIQUE.
 
 $(\Rightarrow)$ If we have a YES-instance of INDEPENDENT-SET of size $k$, then there exists some $S \subset G$ where $S$ is completely disconnected from each other. Thus in $G'$, the induced subgraph of the $k$ vertices in $S$ must be completely connected, i.e. a maximal clique of size $k$. Hence we have a YES-instance of MAX-CLIQUE.
 

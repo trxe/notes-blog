@@ -377,7 +377,7 @@ Note that since the signatures of all GLUT callbacks are fixed, to pass around v
 
 **Matrix modes.** Matrices are part of the state, and matrix modes provide a set of functions for manipulation. `GL_MODELVIEW` and `GL_PROJECTION` are two such matrices.
 
-![A vertex position is transformed by the following matrices and operations in each of the subsequent frames.\label{GLtransformations}](openGLmatrix.png)
+![A vertex position is transformed by the following matrices and operations in each of the subsequent frames.\label{GLtransformations}](/notes-blog/assets/img/cg/openGLmatrix.png)
 
 Each mode has a 4x4 homogenous coordinate matrix. The **current transformation matrix (CTM)** is part of this state and applied to all vertices down this pipeline. $p' = Cp$ where $C$ is the CTM.
 
@@ -389,7 +389,7 @@ Each mode has a 4x4 homogenous coordinate matrix. The **current transformation m
 | function (each has `double` ver. too) | effect                                                      |
 | ------------------------------------- | ----------------------------------------------------------- |
 | `glLoadIdentity()`                    | loads $I$                                                   |
-| `glRotatef(theta, vx, vy, vz)`        | post-multiply $R(\theta)$​​​, $[vx, vy, vz]$​​​ are rotation axes |
+| `glRotatef(theta, vx, vy, vz)`        | post-multiply $R(\theta)$. $[vx, vy, vz]$​​​ are rotation axes |
 | `glTranslatef(dx, dy, dz)`            | post-multiply $T(dx, dy, dz)$                               |
 | `glScalef(sx, sy, sz)`                | post-multiply $S(sx, sy, sz)$​​​​                               |
 | `glLoadMatrixf(m)`                    | loads 4x4 matrix $M$​ as a `float[16]`                       |
@@ -554,6 +554,7 @@ $$
 #### Viewport transformation (NDC to Window Space):
 
 The viewport here is defined by $(x_{vp}, y_{vp})$ (the lower left corner), $w,h$.
+
 $$
 \begin{aligned}
 \frac{x_{NDC} - (-1)}{2} &= \frac{x_{win} - x_{vp}}{w} \Rightarrow x_{win} = x_{vp} + \frac{w(x_{NDC} + 1)}{2} \\
@@ -561,6 +562,7 @@ $$
 &z_{win} = \frac{z_{NDC} + 1}{2}
 \end{aligned}
 $$
+
 Squashed into the $x,y$ plane. $z$ is retained (between 0 and 1) for hidden surface removal.
 
 ### Perspective Projection
@@ -607,6 +609,7 @@ Eliminate all **easy** cases without computing intersections.
 ![Outcodes](/notes-blog/assets/img/cg/outcodes.png)
 
 Let $F(A,B)$ represent the clipping requirement of the line segment $AB$. $F(A,B)$ equals 2 if it is not clipped out, 1 if it is partially clipped out, and 0 if it is fully clipped out.
+
 $$
 F(A, B) = \begin{cases}
 2 & A = 0 \text{ and } B = 0 \\
@@ -767,7 +770,7 @@ $$
 ![Illustration of unit vectors and angles for the Phong model.](/notes-blog/assets/img/cg/phong.png)
 
 - **Ambient:** Flat constant color $\begin{matrix} [I_{ar} k_{ar} & I_{ag} k_{ag} & I_{ab} k_{ab}] \end{matrix}^T$​
-- **Diffuse: **Factors in orientation of the surface wrt light source via $N \cdot L$​.
+- **Diffuse:** Factors in orientation of the surface wrt light source via $N \cdot L$​.
   - Lambert's cosine law: diffuse reflection is proportional to $\cos\beta$​​ above.
   - Attenuation: loss of flux intensity when passing through a medium. (inverse square law)
 - **Specular:** Highlights (more intense when $R \cdot V$​ approaches 1 i.e. light source parallel to reflection)

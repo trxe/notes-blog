@@ -17,10 +17,10 @@ body {
     line-height: 1.7em;
 }
 
-@media screen and (max-width: var(--content-width)) {
+@media screen and (max-width: 600px) {
     body {
         font-size: 0.7em;
-        width: 480px;
+        width: 90%;
     }
 }
 
@@ -31,13 +31,19 @@ body {
         display: block;
     }
     img, table, th, td {
-        width: 300px;
+        width: 90%;
     }
-    code {
-        font-size: 0.7em;
+    pre {
+        font-size: 0.8em;
     }
     ul, ol {
-        padding-left: 0.5em;
+        padding-left: 0em;
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+    .MathJax_Display, .MJXc-display, .MathJax_SVG_Display {
+        overflow-x: auto;
+        overflow-y: hidden;
     }
 }
 
@@ -50,7 +56,6 @@ img {
 }
 
 table, th, td {
-  align-self: center;
   border: 1px solid black;
   border-collapse: collapse;
   font-size: 0.9em;
@@ -58,7 +63,6 @@ table, th, td {
   line-height: 1.2em;
   margin-left: auto;
   margin-right: auto;
-  max-width: var(--content-width);
 }
 
 nav {
