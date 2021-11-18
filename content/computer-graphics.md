@@ -1,0 +1,1201 @@
+---
+layout: default
+title: Computer Graphics
+usemathjax: true
+permalink: /cg
+geometry:
+- top=2cm
+- left=2cm
+- right=2cm
+- bottom=2cm
+---
+
+
+# Computer Graphics -- One long post
+
+* Table of Contents
+{:toc}
+
+- Modelling (in API)
+  - [x] Provides set of vertices
+  - Scene processing to reduce geometric data down pipeline
+    - [ ] view-frustum culling
+    - [ ] occlusion culling
+- Vertex Processing
+  - [x] Model-View transformation
+  - [ ] Lighting computing
+  - [ ] Texture coordinates
+  - [x] Projection Matrix
+- **Primitive assembly etc.**
+  - [ ] Primitive assembly
+    - vertex data --> complete primitives for clipping & culling
+  - [ ] Clipping
+  - [x] Perspective division
+    - To NDC space
+  - [x] Viewport transformation
+    - To window space
+    - Depth range scaling
+  - [ ] Back face culling
+    - throw away faces that are back-facing the viewport
+- **Rasterization** in window space
+  - [ ] Produces **fragments** of unclipped-out primitives (potential pixels [*location + color + depth*])
+  - [ ] Attributes are interpolated over the primitive
+    - e.g. Bilinear interpolation
+- Fragment processing
+  - [ ] Fragment pixel --> Frame buffer pixel
+  - [ ] Fragment color modifies by texture mapping
+    - Texture access, application
+  - [ ] **Z-buffer** Hidden surface removal: fragment discarded if occlused by pixel already in frame buffer
+  - [ ] **Blended**: blending with pixels already in frame buffer
+
+
+
+# Chapter 1 -- Intro
+
+## Image Formation
+
+**Scene**: **VOLM** (Viewer, object, light source, material)
+
+![Synthetic Camera Model](../assets/img/cg/vantagepointedit.png)
+
+Let $d$ be the distance between the virtual plane and the pinhole. By similar triangles, $x_p = \frac{dx}{z}, y_p  = \frac{dy}{z}, z_p = d$.
+
+If $O \neq C$​, then for each point $P (x,y,z)$​ on the 3D object in the world space, $\overrightarrow{CP}= \overrightarrow{OP} - \overrightarrow{OC}$​​​. 
+
+**Color**: RGB corresponding to visual tristimulus.
+
+## Graphics System Design
+
+**API**: specifies **scene (VOLM)**, configures/controls the system.
+
+**Renderer**: produces **images** using scene info + system config.
+
+### Rendering approaches
+
+**Ray-tracing**: Following rays of light from $C$ to some point $P$ on objects, or go off into infinity.
+
+- global effects (recursive reflections, translucents via refraction)
+- slow (must have whole database available)
+
+**Radiosity**: Slow, non-general energy based approach
+
+**Polygon Rasterization**: For each new polygon (primitive) generated, its pixels are assigned.
+
+- **Transform**: mapping of polygon **3D** $\rightarrow$​ **2D**
+- **Rasterize**: assigning **colors** to pixels
+- Local lighting
+- Polygon-based rendering
+- Efficient
+
+### Representation of Objects
+
+Objects are meshes of polygonal primitives.
+
+Each primitive is rendered through this pipeline.
+
+![image-20210820135716407](C:\Users\pc\AppData\Roaming\Typora\typora-user-images\image-20210820135716407.png)
+
+1. Vertex Processor
+
+   - Vertices are processed via **vertex shaders**.
+2. Clipper, primitive assembler
+
+   - Perspective division
+
+   - By the end of this, vertices of polygons are mapped to 2D Canvas.
+3. Rasterization
+
+   - Input: polygon vertices
+
+   - Output: list of pixels that are **turned on** in the polygon (**fragment**)
+4. Fragment processing
+   - Determining the color of fragments
+   - Texture mapping/interpolation of vertex colors
+   - Blocking/Occlusion
+5. Per-fragment & Frame Buffer operations
+
+   - Hidden surface removal
+   - Occlusion handling
+
+### Frame Buffer
+
+The region of memory that holds color and depth data via the attached color and depth buffers.
+
+## API
+
+Required: Functions to specify **VOLM**, I/O, system capacities (e.g. how many light sources can be supported?)
+
+**Primitives** are defined with vertices.
+
+- Points (0D)
+- Line segments (1D)
+- Polygons (2D)
+- Some curves, surfaces (Quadrics, parametric polynomials)
+
+```
+glBegin(GL_POLYGON) 
+	glVertex3f(0.0, 0.0, 0.0);
+	glVertex3f(0.0, 1.0, 0.0);
+	glVertex3f(0.0, 0.0, 1.0);
+glEnd();
+```
+
+**Camera** is specified with
+
+- Position $(x,y,z)$
+- Rotation $(\theta_x,\theta_y,\theta_z)$​ of film plane
+- Lens
+- Film size
+
+**Light source** is specified with
+
+- Point vs distributed
+- Spot lights
+- Distance
+- Color
+
+**Material** attributes are
+
+- Absorption: color properties
+- Scattering (diffuse, specular)
+
+
+
+# Chapter 2 -- Elementary OpenGL
+
+## History of OpenGL
+
+The success of **IRIS GL**, the graphics API for the world's first graphics hardware pipeline, led to **OpenGL (1992)**. It's a platform-independent API.
+
+- Focus on rendering
+- Omits I/O and windowing to avoid dependencies
+- OpenGL core library is `OpenGL32` on Windows, `libGL.a` on *nix.
+- OpenGL Utility Toolkit (GLUT) 
+  - **System independent** windowing, I/O, menus
+  - Event-driven mode of execution
+  - Lacks a lot of functionality due to lack of specificity
+
+### Functions
+
+- Primitives
+- Attributes
+- Transformations (viewing, modelling)
+- Control (GLUT)
+- I/O (GLUT)
+- Query
+
+### State Machine
+
+**Primitive Generation**: if primitive is visible, then try output. *Appearance depends on the primitive's **state***.
+
+**State Changing**: e.g. Color changing is a state changing function. Changes the "pen color" state to $\textcolor{red}{\textsf{RED}}$ for instance, then it assigns those primitives affected to state $\textcolor{red}{\textsf{RED}}$.
+
+### Function format
+
+All vectors are represented as a 4D vector by default internally.
+
+<img src="C:\Users\pc\Documents\ShareX\Screenshots\2021-08\SumatraPDF_d2FqIIRt55.png" alt="Format" style="zoom:50%;" />
+
+## Program structure
+
+Commands are sent to a **command queue/buffer**.
+
+```c++
+int main(int argc, char** argv) {
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+    glutInitWindowSize(h, w);
+    glutInitWindowPosition(0, 0);
+    glutCreateWindow("simple");
+    glutDisplayFunc(mydisplay); // mydisplay is the display callback
+    
+    init();
+    
+    glutMainLoop(); // if anything happens, calls mydisplay to refresh
+}
+```
+
+- `main` defines **callback**, opens **windows**, enters event **loop**.
+- `init` sets state variables (viewing, attributes).
+- **callbacks**: display callback, input and window functions.
+
+```c++
+void init() {
+	glClearColor(0.0, 0.0, 0.0, 1.0); // black clear color + opaque window
+    
+    glColor3f(1.0, 1.0, 1.0); // set fill to white
+    
+    glMatrixMode(GL_PROJECTION); 
+    glLoadIdentity();
+    glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0); // FOV setting.
+    // the square is *enclosed* in the FOV.
+}
+```
+
+## Coordinate Systems
+
+At the beginning, **object coordinates** = **world coordinates**. The camera is positioned in **world**. 
+
+Then a **viewing volume** must be set. It is specified in **eye coordinates**.
+
+Internally OpenGL converts vertices to **eye coordinates**, and then to **window coordinates**.
+
+**Viewing volume**: The finite volume in world space in which objects can be seen. The coordinates are set relative to the camera's coordinates (**eye coordinates**).
+
+**Orthographic projection/viewing**: Th
+
+near plane (negative z direction), far plane (positive z direction)
+
+### Polygon problems
+
+OpenGL only renders **Simple, Convex, Flat** polygons.
+
+### RGB Color Coordinates
+
+`glShadeModel(GL_SMOOTH)` allows smooth interpolation of colors across the interior of the polygon.
+
+`glShadeModel(GL_FLAT)` picks **one vertex** to follow its color
+
+### Viewport
+
+`glViewport(x,y,w,h)`
+
+## 3D drawing
+
+Here the **order** in which polygons are drawn matters, otherwise hidden surface removal would be necessary to prevent surfaces "clipping" through one another.
+
+How do we make a 3D Sierpinski Gasket given the code for a 2D one?
+
+### Cheap Trick
+
+![3D Gasket from subdividing 4 surfaces.](../assets/img/cg/3dgasket.png)
+
+4 different Sierpinski triangles (see reds, blues, blacks and greens).
+
+However the triangles are drawn in the order defined by the program, the black , red and blue triangles may not always be in front of the reds as desired.
+
+![Wrong depths of surfaces](../assets/img/cg/hidden_surface.png)
+
+#### Hidden surface removal
+
+OpenGL now must use HSR via the **z-buffer algorithm** that saves depth info (via depth buffer, aka z-buffer) as only objects with lowest z-value at that pixel are rendered.
+
+
+
+# Chapter 3 -- Input and Interaction
+
+**The display loop:** 
+
+Input **Physical** properties -- Mouse, Keyboard etc. **Contains trigger** which sends a signal to the OS.
+
+Input **Logical** properties -- What is returned to the program via an API (the **measure**).
+
+### Event mode
+
+**Trigger** generates **event**. Event measure is entered into **event queue**.
+
+### Callbacks
+
+The main programming interface for event-driven input. For each type of event the system recognizes, we define a callback.
+
+e.g. `glutMouseFunc(mymouse)` means `mymouse` is set as the mouse callback to handle any mouse clicking.
+
+#### GLUT Callback loop
+
+On each pass of the event loop, for each event in the queue, GLUT calls the callback function if it is defined.
+
+e.g. The display callback is executed whenever window needs to be refreshed. 
+
+- However many things need to update the screen! Multiple executions of the display on a single pass
+- `glutPostRedisplay()` when called, sets a **flag**.
+- if **flag** is on, display CB is called just once in the event loop
+
+### Display animation
+
+To redraw the display, we usually call `glClear()` first. But the frame buffer is decoupled from the display of the contents when cleared. Partially drawn display will then **flicker**.
+
+**Double buffering:** 
+
+- front buffer -- connected to display, but not written to
+- back buffer -- written to, but not displayed
+- **SWAPPING** between the two.
+- `glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE)` in `main()`
+
+```
+void mydisplay() {
+	glClear(GL_COLOR_BUFFER_BIT|...) // on the back buffer
+	/* draw my graphics*/
+	glutSwapBuffers(); // push the back to the front and front to the back
+}
+```
+
+**Idle callback:** `glutIdleFunc(myidle)`
+
+```
+void myidle() {
+	t += dt
+	glutPostRedisplay(); // mark to update image.
+}
+void mydisplay() { /* draws something that depends on t */}
+```
+
+Note that since the signatures of all GLUT callbacks are fixed, to pass around variables we need to use globals.
+
+### Examples of callbacks
+
+1. Mouse callback
+2. Positioning (note openGL window coordinates start from *bottom-left*, mouse coordinates  start from *top-left*)
+3. Motion callback `glutMotionFunc(...)` and `glutPassiveMotionFunc(...)`
+4. Keyboard callbacks `glutKeyboardFunc(...)`
+5. Window resizing `glutReshapeFunc(...)`: good place to put viewing functions, since it is invoked from window first opening.
+
+
+
+# Chapter 4 -- Vector Geometry
+
+- Vector: Quantity with *direction* and *magnitude*
+  - Has inverse (direction inverted, magnitude the same)
+  - Zero vector (undefined direction, 0 magnitude)
+  - Head to Tail axiom for summing vectors
+
+## Representation of Vector Space
+
+**Affine space.** Vector space without a fixed origin. Between 2 points we have a displacement/translation vector.
+
+**Frame.** Adding a single point to the affine space as an origin.
+
+## Transformations
+
+*Note: we only need to transform endpoints of line segments, points on the line segment itself is drawn by the implementation.* 
+
+- Translation matrix
+  - Inverse: 
+- Rotation matrix
+  - Inverse:
+- Scaling
+  - Inverse:
+- Reflection
+- Shear
+
+**Instancing.** Starting with a simple object @origin, @original size, we can apply an **instance transformation** to scale/orientate/locate.
+
+### OpenGL Transformations
+
+**Matrix modes.** Matrices are part of the state, and matrix modes provide a set of functions for manipulation. `GL_MODELVIEW` and `GL_PROJECTION` are two such matrices.
+
+![A vertex position is transformed by the following matrices and operations in each of the subsequent frames.\label{GLtransformations}](openGLmatrix.png)
+
+Each mode has a 4x4 homogenous coordinate matrix. The **current transformation matrix (CTM)** is part of this state and applied to all vertices down this pipeline. $p' = Cp$ where $C$ is the CTM.
+
+- Load
+- Post-multiply (to layer transformations)
+
+`GL_MODELVIEW` used to transform objects into world space (also position camera, but `gluLookAt` does that better). `GL_PROJECTION` is used to define the view volume.
+
+| function (each has `double` ver. too) | effect                                                      |
+| ------------------------------------- | ----------------------------------------------------------- |
+| `glLoadIdentity()`                    | loads $I$                                                   |
+| `glRotatef(theta, vx, vy, vz)`        | post-multiply $R(\theta)$​​​, $[vx, vy, vz]$​​​ are rotation axes |
+| `glTranslatef(dx, dy, dz)`            | post-multiply $T(dx, dy, dz)$                               |
+| `glScalef(sx, sy, sz)`                | post-multiply $S(sx, sy, sz)$​​​​                               |
+| `glLoadMatrixf(m)`                    | loads 4x4 matrix $M$​ as a `float[16]`                       |
+| `glMultMatrixf(m)`                    | post-multiply $M$.                                          |
+
+#### Matrix Stacks
+
+- OpenGL maintains a stack of transformation matrices for each matrix mode for future reuse
+- `glPushMatrix` and `glPopMatrix`
+
+```C++
+...
+glPushMatrix();
+	glRotated(i*45.0, 0.0, 0.0, 1.0); // pushed each of these onto a stack
+	glTranslated(10.0, 0.0, 0.0);
+	glScaled(0.5, 0.5, 0.5);
+	DrawSquare(); // Apply stacked matrix to the element (square)
+glPopMatrix(); // Emptied out stack
+...
+```
+
+
+
+# Chapter 5 -- Camera posing
+
+## Camera pose
+
+**Pose.** Position + Orientation. Done by *view transformation*.
+
+**Projection.** Orthographic vs Perspective.
+
+**Prerequisite:** object geometry to be set and placed the world coordinate.
+
+### Projections
+
+**Projectors**. lines that either
+
+- converge at a **center** of projection
+- parallel to a **direction** of projection
+
+They preserve lines but not necessarily angles (in the 2D image). Preserving here means that the angles between 2 vectors in the object are the same as that in the image.
+
+#### Perspective projection
+
+- Further = smaller [dimunition]
+- Equal distances along a line are not projected to equal distances. [non-uniform foreshortening]
+
+## Computer vision
+
+- Positioning of camera [setting the model-view matrix]
+- Selecting a lens [setting the projection matrix]
+  - Perspective/Orthographic
+  - Sets the FOV of the camera (field/clipping volume -- the region of the world in viewport)
+
+`MODELVIEW` actually is a combination of the modelling transformation first (to the world space), and the view transformation (to the eye/camera space). `PROJECTION` matrix brings this to the clip space, and so on. [Refer to Figure [\ref{GLtransformations}]].
+
+## Spaces
+
+- **Local/Modelling/Object space**
+  - Circle of radius $r$: defined as points equidistant from **circle origin (center)**
+  - Cube of length $l$: defined with one corner as **cube origin**
+- **World space**
+  - Common coordinate frame for all objects. Local space transformed to world space
+    - With respect to position of object origins in space.
+  - What's *transformed* to here?
+    - Vertices, vector normals
+  - What's *defined* here?
+    - Lights, camera pose
+- **Camera coordinate frame**
+  - Local frame to the camera, where camera is @origin
+  - **Projections** specified wrt the camera frame.
+  - Default `MODELVIEW` matrix is $I$ so initially world frame = camera frame
+  - Default `PROJECTION` matrix is $I$ and orthographic ().
+  - View volume (default: $2^3$​​ cube centered @world origin) is defined wrt the camera frame.
+
+![](camera.png)
+
+## View Transformation
+
+`gluLookAt(eyex, eyey, eyez, atx, aty, atz, upx, upy, upz)`
+
+- `eye`: origin of camera lens (*viewpoint*)
+  - Defined in world space
+- `at`: any point along the *viewing direction*
+  - Defined in world space
+- `up`: $y$ axis of the camera
+  - By right, defined in world space **that coincides with $y_c$**
+  - In practice, the vector `up` doesn't have to be perpendicular to `eye - at`, as long as $y_c$ can be found by a linear combination of these two
+
+Camera's **coordinate vectors** $u, v, n$​​ are then derived in the $x,y,z$​​ directions respectively.
+
+- $n$​ ($z$-axis): normalize($eye - at$)
+- $u$ ($x$-axis): normalize($n \times up$)
+- $v$ ($y$-axis): $n \times u$
+
+#### View transformation matrix
+
+So all points in **world frame** are expressed wrt the **camera frame**.
+
+- OpenGL generates $M_{view} =  RT$ based on the camera coordinates. This is the **view transformation**.
+  - The last transformation in the model-view matrix.
+  - $T$: Moves camera to origin.
+  - $R$: Rotates camera to axes of world frame.
+- Multiply $M_{view}$ to points in the world frame to get the camera frame.
+
+$$
+M_{view} = \left[ \begin{matrix}
+u_x & u_y & u_z & 0 \\
+v_x & v_y & v_z & 0 \\
+n_x & n_y & n_z & 0 \\
+0 & 0 & 0 & 1
+\end{matrix} \right] \left[ \begin{matrix}
+1 & 0 & 0 & -e_x \\ 
+0 & 1 & 0 & -e_y \\ 
+0 & 0 & 1 & -e_z \\ 
+0 & 0 & 0 & 1 \\ 
+\end{matrix} \right]
+$$
+
+*(We can use $u, v, n$ directly in $R$ because they are unit vectors in the desired directions)*
+
+#### Normal vectors' transformation matrix:
+
+$M_n = (M_t^{-1})^T$, where $M_t$ is the top left 3x3 submatrix of $M$.
+
+3x3 matrix is enough cos it does not have position (thus $M_n$ would be an affine transformation).
+
+**Since rotation matrices are orthogonal**, $R^{-1} = R^T$. Thus if $M$ is a rotational matrix, $M_n = M_t$.
+
+## Projection matrix
+
+Defined with a view (clipping) volume in the camera frame, and is specified in camera space.
+
+- Orthographic: `glOrtho(left, right, bottom, top, near, far)`
+- Perspective: `glFrustum(left, right bottom, top, near, far)` 
+- Note `near` is in +z direction, and `far` is in -z direction, but provide `near < far`
+
+The projection matrix is computed such that it maps to the **canonical view volume** ($2^3$ cube) in Normalized Device Coordinates (NDC) space. Criteria
+
+- retain depth (z-buffer information)
+- preserve lines
+
+### Orthographic projection
+
+**Mapping** from $(right,top,-far) \rightarrow (1, 1, 1)$, and $(left,bottom,-near) \rightarrow (-1, -1, -1)$.
+
+![](projection_mapping.png)
+
+#### Orthographic projection matrix (Clip to NDC):
+
+$$
+\begin{aligned}
+M_{ortho} =& S(\frac{2}{right - left}, \frac{2}{top-bottom}, \frac{2}{near-far}) \cdot \\
+& T(\frac{-(right+left)}{2}, \frac{-(top+bottom)}{2}, \frac{-(far+near)}{2})
+\end{aligned}
+$$
+
+1. Translate the midpoint (take the averages of the dimensions)
+2. Scale the cuboid to the $2^3$​ cube.
+3. Now each coordinate $x_{NDC},y_{NDC},z_{NDC} \in [-1, 1]$​.
+
+#### Viewport transformation (NDC to Window Space):
+
+The viewport here is defined by $(x_{vp}, y_{vp})$ (the lower left corner), $w,h$.
+$$
+\begin{aligned}
+\frac{x_{NDC} - (-1)}{2} &= \frac{x_{win} - x_{vp}}{w} \Rightarrow x_{win} = x_{vp} + \frac{w(x_{NDC} + 1)}{2} \\
+\frac{y_{NDC} - (-1)}{2} &= \frac{y_{win} - y_{vp}}{h} \Rightarrow y_{win} = y_{vp} + \frac{h(y_{NDC} + 1)}{2} \\
+&z_{win} = \frac{z_{NDC} + 1}{2}
+\end{aligned}
+$$
+Squashed into the $x,y$ plane. $z$ is retained (between 0 and 1) for hidden surface removal.
+
+### Perspective Projection
+
+**Mapping** from $(right,top,-far) \rightarrow (1, 1, 1)$, and $(left,bottom,-near) \rightarrow (-1, -1, -1)$.
+
+![](frustum_mapping.png)
+
+#### Perspective Division:
+
+Essentially using similar triangles (as described in first chapter) to get coordinates adjusted for perspective depth. note that $z_p = d$​​​, the projection plane.
+$$
+\begin{aligned}
+&\frac{x_p}{x} = \frac{d}{z}, \quad \frac{y_p}{y} = \frac{d}{z}, \quad z_p = d \\
+\Rightarrow& x_p = \frac{x}{z/d}, x_p = \frac{y}{z/d}, z_p = \frac{z}{z/d} \\
+\end{aligned}
+$$
+
+
+![Perspective projection matrix](mpersp.png)
+
+![`gluPerspective(fovy, aspect, near, far)` specifies a symmetric view volume.](gluPerspective.png)
+
+
+
+# Chapter 6 -- Clipping, Rasterization & Hidden-Surface Removal
+
+## Clipping algorithms for line segments
+
+#### Naive (Brute force):
+
+Find intersections of 2D line segments with the clipping window.
+
+#### Cohen-Sutherland:
+
+Eliminate all **easy** cases without computing intersections.
+
+1. Both endpoints in window: Accept as-is
+2. One inside window, one outside: Compute intersection
+3. Both endpoints outside in **same line**: Reject
+4. Both outside **different boundary** lines: May have part inside, compute intersection
+
+**Outcodes** are defined for each area:
+
+![Outcodes](outcodes.png)
+
+Let $F(A,B)$ represent the clipping requirement of the line segment $AB$. $F(A,B)$ equals 2 if it is not clipped out, 1 if it is partially clipped out, and 0 if it is fully clipped out.
+$$
+F(A, B) = \begin{cases}
+2 & A = 0 \text{ and } B = 0 \\
+1 & A = 0 \text{ and } B \neq 0 \\
+0 & A \text{ AND } B \text{ (bitwise)} \neq 0 \\
+1 & A \neq 0 \text{ and } B \neq 0 \text{ and } A \text{ AND } B \text{ (bitwise)} = 0
+\end{cases}
+$$
+
+##### Implementation:
+
+To compute the last case: **shorten** line segment by intersecting with one of the sides, recursively compute outcode until $A = B = 0$. For 3D, we have 6-bit outcodes ($9 \times 3 = 27$​ of them, each prefixed with 00, 01, or 10).
+
+#### Liang-Barsky (read later)
+
+## Clipping in clip space
+
+**Clip space**: After projection matrix, before perspective division.
+
+If vertex $[x_{clip}, y_{clip}, z_{clip}, w_{clip}]$ is in canonical view volume $[-1,1]^3$ after perspective division, we must have $-1 \leq x_{clip} / w_{clip} \leq 1 \Rightarrow -w_{clip} \leq x_{clip} \leq w_{clip}$​, and similarly for $y, z$. These define the clipping planes.
+
+## Polygon Clipping
+
+| To be clipped  | Yields   |
+| -------------- | -------- |
+| Line segment   | 1        |
+| Polygon        | $\geq 1$ |
+| Convex polygon | 1        |
+
+Hence change polygons to convex polygons (*tessellation*), commonly using **triangulation**.
+
+### Pipeline clipping
+
+All line segments pass through top clipping, then bottom clipping, and so on until final form. Similar for polygons (with front and back clippers.)
+
+However small increase in latency.
+
+### Simple Early Acceptance and Rejection
+
+Not implemented in pipeline.
+
+1. Draw a **bounding box**
+   - max and min of $x, y$​​ in window.
+2. Is the whole bounding box inside? Accept? Wholly outside? Reject
+3. Otherwise, enforce detailed clipping
+
+## Rasterization
+
+### Digital Differential Analyzer (DDA)
+
+Straight lines $y = mx + b$​ satisfies **differential equation** $\frac{dy}{dx} = \frac{y_e - y_0}{x_e - x_0}$​​.
+
+Case 1: $0 \leq \|m\| \leq 1$​​​. Loop through each pixel $(x_i, y_i) = (x_0 + i, y_{i-1} + m)$​​.
+
+Case 2: $\|m\| > 1$​​​​​. Then note that $0 \leq \frac{1}{\|m\|} \leq 1$​​​​​. Hence loop through each pixel  $(x_i, y_i) = (x_{i-1} + m, y_0 + i)$​​​​​​.
+
+### Bressenham's Algorithm
+
+Saves time because of no floating point computations.
+
+Here since $d_{upper} > d_{lower}$, we choose to shade $(x_k + 1, y_k)$​.But how does it save FP computation time?
+$$
+\begin{aligned}
+p_k =& \Delta x(d_{lower} - d_{upper}) \\
+=& \Delta x(y - y_k - (y_k+1) + y) \\
+=& \Delta x(2y - 2y_k - 1) \\
+=& \text{ to be filled in} \\
+=& 2x_k \Delta y - 2y_k \Delta x + c
+\end{aligned}
+$$
+If $p_k < 0$ plot lower pixel, if $p_k > 0$ plot upper pixel.
+
+![Candidates for binary choice](bressenham.png)
+
+
+
+#### Incremental form: 
+
+$p_0 = 2\Delta y - \Delta x$. Since $p_{k+1} - p_k = 2(x_{k+1} - x_k)\Delta y + 2(y_{k+1} - y_k)\Delta x$​, we have
+
+- $p_k < 0 \Rightarrow p_{k+1} =p_k +2\Delta y$​. (because $y_{k+1} = y_k$)
+- $p_k > 0 \Rightarrow p_{k+1} = p_k +2\Delta y - 2\Delta x$. (because $y_{k+1} = y_k + 1$)
+
+## Polygon Scan Conversion (Fill)
+
+Horizontal scanlines: Get both endpoints by interpolating the line segment they are each on.
+
+![The scanline is then formed by interpolating c4, c5](scanline.png)
+
+### Flood-fill
+
+from a seed point located inside, scan-convert the edges using edge color (recursively).
+
+```C
+flood_fill(int x, int y) {
+	if (A[x][y] == WHITE) {
+		A[x][y] = BLACK;
+		flood_fill(x-1, y);
+		flood_fill(x+1, y);
+		flood_fill(x, y+1);
+		flood_fill(x, y-1);
+	}
+}
+```
+
+## Back-face culling
+
+Eliminate **back=facing** + **invisible** polygons (e.g. cube only have 3 faces facing viewport at all times. The rest can be culled.)
+
+If the vertices on a plane are specified **counterclockwise**, that face is **front-facing**.
+
+# Chapter 7 -- Illumination and Shading
+
+## Illumination
+
+Given **point on surface, light source, viewpoint**: compute **color** of **point**
+
+### Local Illumination
+
+- **ONE** light source, **ONE** surface point, view point
+- No interactions
+
+#### OpenGL implementation
+
+- Takes place at **Vertex Processing** stage
+- `glEnable(GL_LIGHTING)` enables shading calculations, disables `glColor`
+- `glEnable(GL_LIGHTi)` for $i \in [0 \dots 7]$​
+  - `glLightModeli(parameter, GL_TRUE)`
+- Defining a point light source: `GLfloat[]` for each
+  - `ambienti`, `diffusei`, `speculari`
+  - `lighti_pos`: if `lighti_pos[3] == 1.0`: point light. else if `== 0.0`: directional light
+  - `glLightModelfv(GL_LIGHT_MODEL_AMBIENT, global_ambient)` sets the **global** ambient light $I_{ga}$
+- `glMaterialfv(GL_FRONT, GL_X, type X)`
+  - `AMBIENT, DIFFUSE, SPECULAR` = `GLfloat[]` i.e. $I_{a,i}, I_{d,i}, I_{s,i}$
+  - `SHININESS` = `GLfloat`
+  - `GL_FRONT | GL_BACK | GL_FRONT_AND_BACK`
+  - `EMISSION` = `GLfloat[]` **Emissive** term $k_e$ (glowing)
+
+
+$$
+I_\text{OpenGL} = k_e +I_{ga}k_a + \sum_i [I_{a,i}k_a + I_{d,i}k_d(N \cdot L_i) + L_{s,i}k_s(R_i \cdot V)^n]
+$$
+
+### Phong Illumination Equation
+
+Efficient, acceptable image quality. Ambient ($I_a k_a$​​​), diffuse ($f_{\text{att}} I_p k_d (N \cdot L)$​​​), and specular ($f_{\text{att}} I_p k_s (R \cdot L)^n$​​​​​) components. Single light source below:
+$$
+I_{\text{Phong}} = \left[ \begin{matrix} r \\ g \\ a \end{matrix} \right]
+= I_a k_a + f_{\text{att}} I_p k_d (N \cdot L) + f_{\text{att}} I_p k_s (R \cdot L)^n
+$$
+Multiple light sources $L_i$:
+$$
+I_{\text{Phong}} = \left[ \begin{matrix} r \\ g \\ a \end{matrix} \right]
+= I_a k_a + f_{\text{att}} I_p \sum_{i}[ k_d (N \cdot L_i) + k_s (R \cdot L_i)^n ]
+$$
+
+
+![Illustration of unit vectors and angles for the Phong model.](phong.png)
+
+- **Ambient:** Flat constant color $\begin{matrix} [I_{ar} k_{ar} & I_{ag} k_{ag} & I_{ab} k_{ab}] \end{matrix}^T$​
+- **Diffuse: **Factors in orientation of the surface wrt light source via $N \cdot L$​.
+  - Lambert's cosine law: diffuse reflection is proportional to $\cos\beta$​​ above.
+  - Attenuation: loss of flux intensity when passing through a medium. (inverse square law)
+- **Specular:** Highlights (more intense when $R \cdot V$​ approaches 1 i.e. light source parallel to reflection)
+  - Narrow range of specularity means sharper and smaller highlights: higher shininess
+  - $R = 2(N \cdot L)N - L$ (use **projection** of $L$ on $N$​)
+
+The "constant" variables below are the material properties
+
+| Variable  | Name                        | Task                                                         |
+| --------- | --------------------------- | ------------------------------------------------------------ |
+| $I_a$     | Ambient illumination        | RGB triplet lighting all visible surfaces                    |
+| $k_a$     | Ambient constant (0..1)     | RGB triplet for the particular material                      |
+| $f_{att}$ | Attenuation factor          | $\frac{1}{a + bd + cd^2}$​ for some constants $a,b,c$​. In many cases, $f_\text{att} = 1$​. |
+| $I_p$     | Point illumination          | RGB triplet for this light source                            |
+| $k_d$​​     | Diffuse constant (0..1)     | RGB triplet for the particular material                      |
+| $k_s$     | Specular constant           | RGB triplet for the particular material                      |
+| $n$       | Shininess constant (1..128) | Controls the range of angles that get strong specularity     |
+
+### Surface normals
+
+- Flat surface: cross product of two vectors in the plane.
+- Curved surface: cross product of two vectors in the **tangent** plane
+- `glNormal3f` or `glNormal3fv` to set normals before each vertex (make sure its unit vector!!)
+  - or else `glEnable(GL_NORMALIZE)` at performance penalty
+
+### Global illumination
+
+- **All** light sources and surfaces
+- e.g. Inter-reflections, shadows
+
+## Shading
+
+Given **polygon, rasterization**: compute **color** of **fragment**
+
+![Note that Phong Shading is not the same as PIE.](shading.png)
+
+### Shading types
+
+- Flat: Pick any vertex in the polygon and fill in the polygon with its PIE color.
+  - `glShadeModel(GL_FLAT)`
+- Gouraud: Each vertex is assigned the **average normal** of the **polygons sharing** the vertex. Its PIE **color** using that normal is then **interpolated** across the polygon.
+  - `glShadeModel(GL_SMOOTH)`
+- Phong: Instead of interpolating color, we interpolate the normal vector instead. **per-pixel** lighting computation (more expensive)
+
+# Chapter 8 -- Texture mapping
+
+
+
+
+
+# Chapter 9 -- Ray casting & tracing
+
+### Idea -- Ray casting
+
+1. Fixed viewpoint
+2. For each pixel, shoot a ray **from the viewpoint through the pixel**
+   1. For each object,
+   2. If it has an intersection with the ray, and is the closest,
+   3. Transfer the color of the object to the pixel.
+
+### Idea -- Ray tracing
+
+Upon each intersection, the object hit may continue to shoot out **secondary rays** that are:
+
+- reflected to intersect with other objects as well.
+- refracted if it is transparent/translucent
+- shadow rays (a ray shot towards a light source, and indicates shadow is it is **occluded/blocked** by another object between the light source and surface point).
+
+### Whitted (Recursive) Ray Tracing
+
+- Free Hidden surface removal (ray casting)
+- Global (**partial**) reflection
+- Local reflection
+- Easy Shadows
+- **One simple framework!**
+
+### Details
+
+$$
+\begin{aligned}
+I &= I_{\text{local}} + k_{rg}I_\text{reflection} + k_{tg}I_\text{transmitted} \\
+I_\text{local} &= I_ak_a + I_\text{source}[k_d(N \cdot L) + k_r(R \cdot V)^n + k_t(T \cdot V)^m]
+\end{aligned}
+$$
+
+![Example of ray-tracing](C:\Users\pc\AppData\Roaming\Typora\typora-user-images\image-20211025172249916.png)
+
+At each intersection we need to do a lighting computation and produce the reflected rays.
+
+| Variable               | Name                               | Task                                                         |
+| ---------------------- | ---------------------------------- | ------------------------------------------------------------ |
+| $k_r$                  | Reflected specular constant (0..1) | Replaces the specular constant $k_s$                         |
+| $k_t$​                  | Transmitted constant (0..1)        | For transparent/translucent materials                        |
+| $I_\text{transmitted}$ | Intensity of transmitted light     | Back-propagated from the next intersection of a **refracted** ray |
+
+**Reflected specular**: Essentially the same as the specular except that that its the reflected light, not just the highlight
+
+Note that this equation is recursive due to the $I_\text{reflection}$ and $I_\text{transmitted}$ values to be computed.​
+
+![Left: reflected specular; Right: ](C:\Users\pc\AppData\Roaming\Typora\typora-user-images\image-20211025211722180.png)
+
+### Computing Reflection
+
+$R = 2N\cos \theta - L = 2(N \cdot L)N - L$
+
+### Computing Refraction
+
+Snell's law: $\mu_1 \sin \theta = \mu_2 \sin \phi$. Let $\mu = \frac{\mu_1}{\mu_2}$
+$$
+\begin{aligned}
+T &= -\mu L + \left( \mu(\cos\theta) - \sqrt{1 - \mu^2(1-\cos^2\theta)} \right)N \\
+&= -\mu L + \left( \mu(N \cdot L) - \sqrt{1 - \mu^2(1-(N \cdot L)^2)} \right)N
+\end{aligned}
+$$
+
+### Ray Tree (Recursion)
+
+$$
+\begin{aligned}
+I &= I_{\text{local}, 0} + I_{\text{reflected}, 0} + I_{\text{transmitted}, 0} \\
+&= I_{\text{local}, 0} + I_{\text{local}, 1} + I_{\text{reflected}, 1} + I_{\text{local}, 1} + I_{\text{transmitted}, 1} \\
+&= \dots
+\end{aligned}
+$$
+
+![image-20211025213645966](C:\Users\pc\AppData\Roaming\Typora\typora-user-images\image-20211025213645966.png)
+
+### Shadow Rays
+
+$$
+\require{color}
+I_\text{local} = I_ak_a + \textcolor{red}{k_\text{shadow}}I_\text{source}[\dots],\quad  \textcolor{red}{k_\text{shadow} \in \{0,1\}}
+$$
+
+Hence shadow constant turns the diffuse, specular and transmitted values on or off. 	
+
+Only need to find one opaque occluder to determine occlusion.
+
+#### Translucent shadow rays (occlusion by translucent object)
+
+- Light attenuation by $k_\text{tg}$
+- Refraction is **ignored**
+
+### Scene Descriptions in Ray tracing
+
+- `gluLookAt` Camera position and orientation (World frame)
+- `gluPerspective` without near and far (FOV)
+- Image resolution: (pixels per dimension)
+
+- Point light source:
+  - Position
+  - $I_\text{source}$ (RGB)
+  - $I_a$​​ (ambient, RGB)
+  - Spotlight etc.
+- Object surface
+  - all $k$ constants, $n$, $m$, refractive index $\mu$
+  - implicit representations (plane/spher/quadrics)
+  - polygon
+  - parametric (e.g. bicubic bezier patches)
+  - volumetric (e.g. fog)
+
+#### Stop recursion when...
+
+- Surface is diffuse (no transmitted/specular reflected light)
+- Secondary ray hits nothing
+- Max recursion depth
+- the contribution from secondary ray is almost 0
+
+### Computing intersection
+
+Ray = $P(t) = O(x,y,z) + t(\text{direction}(x,y,z))$
+
+Plane = $Ax + By + Cz + D = 0 \Rightarrow N \cdot p + D = 0$ for point $p$ on plane​
+
+Spheres = $x^2 + y^2 + z^2 - r^2 = 0 \Rightarrow p\cdot p - r^2 = 0$ for point $p$​ from sphere origin.
+
+- If sphere isn't at origin, just translate the ray origin to sphere's local coordinate frame
+
+Axis-aligned box:
+
+
+
+- typically used for quickly determining if a ray will hit the object (hitbox) or not
+- specify the two **opposite** corners
+
+Triangle (polygon): Using the **barycentric coordinates** method
+
+$P = \alpha A + \beta B + \gamma C = \textcolor{limegreen}{A + \beta (B - A) + \gamma (C - A)}$​ where $\alpha + \beta + \gamma = 1$​ and $0 \leq \alpha, \beta, \gamma \leq 1$​​.
+
+
+$$
+\begin{aligned}
+O+ \textcolor{royalblue}{t}D &= A + \textcolor{royalblue}{\beta} (B - A) + \textcolor{royalblue}{\gamma} (C - A) \\ 
+A - O &= \textcolor{royalblue}{\beta} (A - B) + \textcolor{royalblue}{\gamma} (A - C) +  \textcolor{royalblue}{t}D  \\
+\left[  \begin{matrix} 
+A_x - O_x \\
+A_y - O_y \\
+A_z - O_z \\
+\end{matrix} \right] &= 
+\left[  \begin{matrix} 
+\beta (A_x - B_x) + \gamma (A_x - C_x) + tD_x \\
+\beta (A_y - B_y) + \gamma (A_y - C_y) + tD_y \\
+\beta (A_z - B_z) + \gamma (A_z - C_z) + tD_z \\
+\end{matrix} \right] \\ &= 
+\left[  \begin{matrix} 
+(A_x - B_x) & (A_x - C_x) & D_x \\
+(A_y - B_y) & (A_y - C_y) & D_y \\
+(A_z - B_z) & (A_z - C_z) & D_z \\
+\end{matrix} \right]
+\left[  \begin{matrix} 
+\beta \\
+\gamma \\
+t \\
+\end{matrix} \right] \\
+& \text{can be solved with Cramer's rule.}
+\end{aligned}
+$$
+
+
+1. Compute ray-plane intersection
+2. Determine if intersection is in polygon.
+
+### Epsilon problem
+
+Due to floating point errors, the intersection may be "slightly below the surface". This leads to self occlusion during shadow feeling. Methods to deal with it:
+
+1. Use an $\epsilon$ and accept an intersection only if $t > \epsilon$ threshold.
+2. When a new ray is spawned, advance the ray ($O + tD$) origin by $\epsilon D$​.
+
+$\epsilon$ is based on the floating point accuracy.
+
+![Self-occlusion](C:\Users\pc\AppData\Roaming\Typora\typora-user-images\image-20211025234032251.png)
+
+### Limitations of Whitted Raytracing
+
+1. Hard shadows only. $k_\text{shadow} \in \{0,1\}$
+
+2. Inconsistency between highlights and reflections:
+
+   a. Light: Phong Illumination Model
+
+   b. Shadow: Shadow ray reflection
+
+3. Aliasing (jaggies). each area either intersects or doesn't.
+
+4. Computes only some kinds of light transports. Doesn't include:
+
+   1. Caustics (focus light on bottom of pool)
+   2. Color bleeding
+
+### Acceleration techniques
+
+1. Adaptive recursive depth control
+2. First-hit speed up with z-buffer
+3. Bounding volumes (**hierarchies**)
+4. **Spatial subdivision**
+   1. Uniform grid,
+   2. Octree
+   3. Binary Space Partitioning (BSP)
+
+### Vs Rasterization
+
+Rasterization converts **primitives to pixels**
+
+- hard to do global illumination
+
+Raytracing converts **pixels to primitives**
+
+- needs whole scene data
+
+# Chapter 10 -- Curves and Surfaces
+
+### Advantages
+
+1. More compact representation than group of straight line segments
+2. Scalable geometry primitives
+3. Smoother, continuous primitives
+4. Faster animation, collision detection
+
+### Design
+
+- Local Control of Shape
+- Smoothness, continuity
+- Evaluate derivatives
+  - Derives the normal vectors for surface etc
+- Stability 
+  - With a small change in the variable, the curve shouldn't change drastically
+
+## Formulations
+
+### Explicit form
+
+- Dependent variable given in terms of independent variable 
+  - e.g. curves 2D: $y = x^2 + 2x + 1, y = mx + c$ etc.
+  - e.g. curves 3D: $y = f(x), z = g(x)$
+  - e.g. surfaces (always 3D): $z = f(x,y)$​
+- Some curves and surfaces like circles and spheres cannot be represented in explicit form.
+
+### Implicit form
+
+- Single equation containing all variables that equals to 0
+  - curves 2D: $f(x,y) = 0$
+  - curves 3D: $f(x,y,z) = 0$, $g(x,y,z) = 0$​
+  - surfaces 3D: $f(x,y,z) = 0$
+
+- Hard to get points from implicit form.
+
+### Parametric polynomial curves
+
+Curves $p$ in 2D/3D, and their tangents $p'$: 1 parameter $u$​.
+
+
+$$
+p(u) = \left[ \begin{matrix} x(u) \\ y(u) \\ z(u) \end{matrix} \right], \quad p'(u) = \left[ \begin{matrix} x'(u) \\ y'(u) \\ z'(u) \end{matrix} \right]
+$$
+
+
+Surfaces $p$ in 3D, and their normals: 2 parameters $u,v$​.
+
+
+$$
+p(u,v) = \left[ \begin{matrix} x(u,v) \\ y(u,v) \\ z(u,v) \end{matrix} \right], \quad \vec{n} = \frac{\partial p(u,v)}{\partial u} \times \frac{\partial p(u,v)}{\partial v}
+$$
+
+Parametric curves are not unique. But they are the most used because they fit the criteria [here](#design) (and are easy to render too). *Note on **stability**: not generally true, but holds for lower degree polynomials*.
+
+For **curve segments** in 2D/3D, bound by $u$​​ and represented as:
+
+
+
+$$
+p(u) = \left[ \begin{matrix} x(u) \\ y(u) \\ z(u) \end{matrix} \right]
+= \sum_{k=0}^n u^k\left[ \begin{matrix} c_{x,k} \\ c_{y,k} \\ c_{z,k} \end{matrix} \right] \quad \text{where $c_{\_, k}$ are constants, and } u\in[0, 1].
+$$
+
+
+
+For **surface patches** in 3D, bound by $u$​​ and represented as:
+
+
+
+$$
+p(u) = \left[ \begin{matrix} x(u) \\ y(u) \\ z(u) \end{matrix} \right]
+= \sum_{j=0}^n\sum_{k=0}^n u_j v_k\left[ \begin{matrix} c_{x,j,k} \\ c_{y,j,k} \\ c_{z,j,k} \end{matrix} \right] \quad \text{where $c_{\_, k}$ are constants, and } u\in[0, 1].
+$$
+
+
+
+You can obtain $p$ via matrix multiplication as such, where $c = [c_{x,k} \quad c_{t,k} \quad c_{x,k}]^T$.
+
+
+$$
+p(u) = \left[ \begin{matrix} 1 & u & u^2 & u^3 \end{matrix} \right] 
+\left[ \begin{matrix} c_0 \\ c_1 \\ c_2 \\ c_3 \end{matrix} \right] = u^{T}c
+$$
+
+
+### Cubic interpolating curves
+
+
+In practice we specify curve segments **geometrically** with control points.
+
+| Type                                                         | Polynomial constraints                                       |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| **Curve segment**<br /><img src="/notes-blog/assets/img/cg/cubicinter.png" width="300px"> | $p(0) = p_0$​​<br />$p(1/3) = p_1$​​<br />$p(2/3) = p_2$​​<br />$p(1) = p_3$​​. |
+| **Surface patch**<br /><img src="/notes-blog/assets/img/cg/cubicinterpatch.png" width="300px"> | Interpolate the points along <br />each red curve respectively. |
+
+**Blending functions** interpolate in a way that satisfies exactly its variations along the edges of a square domain.
+
+![Cubic interpolating graph](/notes-blog/assets/img/cg/cubicintergraph.png)
+
+$$
+\begin{aligned}
+p_{0,1,2,3} &= \left[ \begin{matrix} p_0 \\ p_1 \\ p_2 \\ p_3 \end{matrix} \right] = Ac = \left[ 
+\begin{matrix} 
+0 & 0 & 0 & 0 \\
+1 & 1/3 & (1/3)^2 & (1/3)^3 \\
+1 & 2/3 & (2/3)^2 & (2/3)^3 \\
+1 & 1 & 1 & 1  
+\end{matrix} 
+\right]
+\left[ \begin{matrix} c_0 \\ c_1 \\ c_2 \\ c_3 \end{matrix} \right] \\
+\Rightarrow c &= A^{-1}p_{0,1,2,3} \\
+\Rightarrow p(u) &= u^{T}c = \textcolor{red}{u^TA^{-1}}p_{0,1,2,3} \\
+&= \textcolor{red}{
+\left[ \begin{matrix} b_0(u) & b_1(u) & b_2(u) & b_3(u) \end{matrix} \right]}
+\left[ \begin{matrix} p_0 \\ p_1 \\ p_2 \\ p_3 \end{matrix} \right] \quad \textbf{(blending functions)} \\
+\end{aligned}
+$$
+
+### Geometric and parametric continuity
+
+| Type                                                | Illustration                                                 |
+| --------------------------------------------------- | ------------------------------------------------------------ |
+| $C^0$​ **parametric** continuity <br />(also $G^0$): | <img src="/notes-blog/assets/img/cg/c0cont.png" width="300px"> |
+| $C^1$ **parametric** continuity                     | <img src="/notes-blog/assets/img/cg/c1cont.png" width="300px"> |
+| $G^1$ **geometric** continuity                      | $p'(1) = \alpha q'(0)$​ for some $\alpha > 0$​<br />i.e. $p'(1)$​ is parallel to $q'(0)$​ |
+| $C^2$ **parametric** continuity                     | $p"(1) = q"(0)$​                                              |
+
+### Cubic Bezier curves
+
+| Type                                                         | Polynomial constraints                                       |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| **Curve segment**<br /><img src="/notes-blog/assets/img/cg/cubicbezier.png" width="300px"> | $p(0) = p_0$​​​​​<br />$p(1) = p_3$​​​​​<br />$p'(0) = 3(p_1 - p_0)$​​​<br />$p'(1) = 3(p_3 - p_2)$<br /> |
+| **Surface patch**<br /><img src="/notes-blog/assets/img/cg/cubicbezierpatch.png" width="300px"> | Interpolate the points along <br />each red curve respectively. |
+
+
+$$
+\begin{aligned}
+M_B &= \left[
+\begin{matrix} 
+1 & 0 & 0 & 0 \\
+-3 & 3 & 0 & 0 \\
+3 & 6 & 3 & 0 \\
+-1 & 3 & -3 & 1  
+\end{matrix} 
+\right] \quad \textbf{(from De Casteljau's)} \\
+\Rightarrow c &= M_B p_{0,1,2,3} \\
+\Rightarrow p(u) &= u^{T}c = \textcolor{red}{u^T M_B}p_{0,1,2,3} \\
+&= \textcolor{red}{
+\left[ \begin{matrix} b_0(u) & b_1(u) & b_2(u) & b_3(u) \end{matrix} \right]}
+\left[ \begin{matrix} p_0 \\ p_1 \\ p_2 \\ p_3 \end{matrix} \right] \quad \\
+\end{aligned}
+$$

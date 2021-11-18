@@ -11,14 +11,6 @@ usemathjax: true
 
 Mathjax test $\sum$
 
-{% raw %}
-$$
-\begin{equation}
-1+1 = 5
-\end{equation}
-$$
-{% endraw %}
-
 $$
 \begin{equation}
 1+1 = 5
