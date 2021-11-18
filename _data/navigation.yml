@@ -1,6 +1,6 @@
 - name: Home
-  link: /
+  link: /notes-blog/home.html
 - name: Operating Systems
-  link: /os.html
+  link: /notes-blog/os.html
 - name: Algorithms II
-  link: /algo2.html
+  link: /notes-blog/algo2.html
