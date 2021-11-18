@@ -1,0 +1,76 @@
+:root {
+    --content-width: 900px;
+    --navbox-color: #9b49ff;
+    --box-color: #f1e6ff;
+    --code-color: #2e0063;
+    --codebox-color: #f7f7f7;
+    --title-color: #3c0081;
+}
+
+body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 14pt;
+    color: black;
+    margin: auto;
+    padding: 50px;
+    max-width: var(--content-width);
+    line-height: 1.7em;
+}
+
+@media screen and (max-width: var(--content-width)) {
+    body {
+        font-size: 30px;
+    }
+}
+
+img {
+    width: 100%;
+    max-width: var(--content-width);
+}
+
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  width: var(--content-width);
+  padding: 0.5em;
+}
+
+nav {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: bold;
+    background-color: var(--navbox-color);
+    padding: 1em;
+    margin-bottom: 50px;
+}
+
+pre {
+    background-color: var(--codebox-color);
+    overflow: scroll;
+    padding: 1.5em;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.26) 2px 2px 2.6px 2.6px;
+}
+
+code {
+    font-family: 'IBM Plex Mono', monospace;
+    color: var(--code-color);
+    font-size: 14pt;
+    background-color: var(--codebox-color);
+    tab-size: 4;
+}
+
+.navitem {
+    text-align: center;
+    padding: 0.5em;
+    height: 2em;
+    color: white;
+}
+ 
+h1, h2, h3 {
+    color: var(--title-color);
+}
+
+.question {
+    background-color: var(--box-color);
+    padding: 0.5em;
+}

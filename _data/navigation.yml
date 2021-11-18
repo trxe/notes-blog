@@ -1,0 +1,6 @@
+- name: Home
+  link: /
+- name: Operating Systems
+  link: /os.html
+- name: Algorithms II
+  link: /algo2.html
