@@ -93,27 +93,21 @@ Objects are meshes of polygonal primitives.
 
 Each primitive is rendered through this pipeline.
 
-![GL Pipeline](/notes-blog/assets/img/cg/pipeline.png)
+![GL Pipeline](/notes-blog/assets/img/cg/glpipeline.png)
 
 1. Vertex Processor
-
    - Vertices are processed via **vertex shaders**.
 2. Clipper, primitive assembler
-
    - Perspective division
-
    - By the end of this, vertices of polygons are mapped to 2D Canvas.
 3. Rasterization
-
    - Input: polygon vertices
-
    - Output: list of pixels that are **turned on** in the polygon (**fragment**)
 4. Fragment processing
    - Determining the color of fragments
    - Texture mapping/interpolation of vertex colors
    - Blocking/Occlusion
 5. Per-fragment & Frame Buffer operations
-
    - Hidden surface removal
    - Occlusion handling
 

@@ -24,7 +24,7 @@ body {
     }
 }
 
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: 600px) {
     /* horizontal scrollbar for tables if mobile screen */
     .tablemobile {
         overflow-x: auto;
@@ -35,6 +35,9 @@ body {
     }
     code {
         font-size: 0.7em;
+    }
+    ul, ol {
+        padding-left: 0.5em;
     }
 }
 
