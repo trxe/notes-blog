@@ -48,7 +48,7 @@ geometry:
   - [ ] **Z-buffer** Hidden surface removal: fragment discarded if occlused by pixel already in frame buffer
   - [ ] **Blended**: blending with pixels already in frame buffer
 
-
+$\require{color}$
 
 # Chapter 1 -- Intro
 
@@ -188,7 +188,7 @@ The success of **IRIS GL**, the graphics API for the world's first graphics hard
 
 **Primitive Generation**: if primitive is visible, then try output. *Appearance depends on the primitive's **state***.
 
-**State Changing**: e.g. Color changing is a state changing function. Changes the "pen color" state to $\textcolor{red}{\textsf{RED}}$ for instance, then it assigns those primitives affected to state $\textcolor{red}{\textsf{RED}}$.
+**State Changing**: e.g. Color changing is a state changing function. Changes the "pen color" state to $\textcolor{red}{\textsf{RED}}$ for instance, then it assigns those primitives affected to state $\textcolor{red}{\textsf{RED}}$​.
 
 ### Function format
 
@@ -905,7 +905,6 @@ $$
 ### Shadow Rays
 
 $$
-\require{color}
 I_\text{local} = I_ak_a + \textcolor{red}{k_\text{shadow}}I_\text{source}[\dots],\quad  \textcolor{red}{k_\text{shadow} \in \{0,1\}}
 $$
 
@@ -1131,6 +1130,7 @@ p(u) = \left[ \begin{matrix} 1 & u & u^2 & u^3 \end{matrix} \right]
 \left[ \begin{matrix} c_0 \\ c_1 \\ c_2 \\ c_3 \end{matrix} \right] = u^{T}c
 $$
 
+## Curve implementations
 
 ### Cubic interpolating curves
 
@@ -1142,7 +1142,7 @@ In practice we specify curve segments **geometrically** with control points.
 | **Curve segment**<br /><img src="/notes-blog/assets/img/cg/cubicinter.png" width="300px"> | $p(0) = p_0$​​<br />$p(1/3) = p_1$​​<br />$p(2/3) = p_2$​​<br />$p(1) = p_3$​​. |
 | **Surface patch**<br /><img src="/notes-blog/assets/img/cg/cubicinterpatch.png" width="300px"> | Interpolate the points along <br />each red curve respectively. |
 
-**Blending functions** interpolate in a way that satisfies exactly its variations along the edges of a square domain.
+**Blending functions** interpolate in a way that satisfies exactly its variations along the edges of a square domain, graphical representation below.
 
 ![Cubic interpolating graph](/notes-blog/assets/img/cg/cubicintergraph.png)
 
@@ -1182,6 +1182,15 @@ $$
 | **Surface patch**<br /><img src="/notes-blog/assets/img/cg/cubicbezierpatch.png" width="300px"> | Interpolate the points along <br />each red curve respectively. |
 
 
+
+Blending functions of the cubic Bezier graph are also called Berstein polynomials (of degree 3). For $0 \leq u \leq 1$, they satisfy:
+
+- $0 \leq b_i(u) \leq 1$
+- $\sum_{i=1}^3 b_i(u) = 1$
+
+![Cubic Bezier graph](/notes-blog/assets/img/cg/bernstein.png)
+
+
 $$
 \begin{aligned}
 M_B &= \left[
@@ -1191,11 +1200,12 @@ M_B &= \left[
 3 & 6 & 3 & 0 \\
 -1 & 3 & -3 & 1  
 \end{matrix} 
-\right] \quad \textbf{(from De Casteljau's)} \\
+\right] \\
 \Rightarrow c &= M_B p_{0,1,2,3} \\
 \Rightarrow p(u) &= u^{T}c = \textcolor{red}{u^T M_B}p_{0,1,2,3} \\
 &= \textcolor{red}{
-\left[ \begin{matrix} b_0(u) & b_1(u) & b_2(u) & b_3(u) \end{matrix} \right]}
-\left[ \begin{matrix} p_0 \\ p_1 \\ p_2 \\ p_3 \end{matrix} \right] \quad \\
+\left[ \begin{matrix} (1-u)^3 \\ 3u(1-u)^2 \\ 3u^2(1-u) \\ 1 \end{matrix} \right] } \cdot
+\left[ \begin{matrix} p_0 \\ p_1 \\ p_2 \\ p_3 \end{matrix} \right] \quad \textbf{(Bernstein polynomials)}\\
 \end{aligned}
 $$
+​	
