@@ -20,6 +20,7 @@ body {
 @media screen and (max-width: var(--content-width)) {
     body {
         font-size: 0.7em;
+        width: 480px;
     }
 }
 
@@ -28,6 +29,12 @@ body {
     .tablemobile {
         overflow-x: auto;
         display: block;
+    }
+    img, table, th, td {
+        width: 300px;
+    }
+    code {
+        font-size: 0.7em;
     }
 }
 

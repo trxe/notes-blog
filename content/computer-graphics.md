@@ -56,7 +56,7 @@ $\require{color}$
 
 **Scene**: **VOLM** (Viewer, object, light source, material)
 
-![Synthetic Camera Model](../assets/img/cg/vantagepointedit.png)
+![Synthetic Camera Model](/notes-blog/assets/img/cg/vantagepointedit.png)
 
 Let $d$ be the distance between the virtual plane and the pinhole. By similar triangles, $x_p = \frac{dx}{z}, y_p  = \frac{dy}{z}, z_p = d$.
 
@@ -93,7 +93,7 @@ Objects are meshes of polygonal primitives.
 
 Each primitive is rendered through this pipeline.
 
-![image-20210820135716407](C:\Users\pc\AppData\Roaming\Typora\typora-user-images\image-20210820135716407.png)
+![GL Pipeline](/notes-blog/assets/img/cg/pipeline.png)
 
 1. Vertex Processor
 
