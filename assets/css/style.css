@@ -31,9 +31,7 @@ body {
         display: block;
     }
     img, table, th, td {
-        width: 90%;
-    }
-    table, th, td {
+        width: 100%;
     }
     pre {
         font-size: 0.8em;
