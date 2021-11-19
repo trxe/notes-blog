@@ -2,17 +2,20 @@
 layout: default
 usemathjax: true
 permalink: /os/ch8
-header-includes:
-  - \usepackage{hyperref}
-  - \hypersetup{colorlinks=true,
-            linkcolor=blue,
-            linkbordercolor=red,
-            pdfborderstyle={/S/U/W 1}}
+
 ---
 
 # 8 - Disjoint Memory Management
 
 [Important reference for Page Tables](https://www.cs.cornell.edu/courses/cs4410/2015su/lectures/lec14-pagetables.html)
+
+## Summary
+
+| Type                     | Page Logical Address                                  | Request                           |
+| ------------------------ | ----------------------------------------------------- | --------------------------------- |
+| Paging                   | page size $\times$ page number $+$ offset             | <page id, offset>                 |
+| Segmentation             | <segment id, offset>                                  | <segment id, offset>              |
+| Segmentation with paging | <segment id, page size $\times$ page number + offset> | <segment id, page number, offset> |
 
 ## Paging
 
@@ -57,7 +60,7 @@ Crucial **assumption**: page size = frame size [Design]
     - $\text{hit + miss} = 0.40(1 + 50) + 0.60(1 + 50 + 50)$
   - When context switch occurs, the TLB is **flushed** so that incorrect translation is prevented
 
-![Cache the physical memory addresses translated to pages.](tlb.gif)
+![Cache the physical memory addresses translated to pages.](/notes-blog/assets/img/os/tlb.gif)
 
 ### Protection
 
@@ -84,9 +87,9 @@ Text, Data, Heap, Stack become individual segments.
 
 ### Logical Address Translation
 
-access with **<segment id, offset>**.
+Access with **<segment id, offset>**.
 
-Accessing something outside the segment triggers the `SIGSEGV` signal, aka **segmentation fault**.
+- If offset > limit: triggers the `SIGSEGV` signal **(segmentation fault)**.
 
 | Segment   | Base (Starting address) | Limit (Max offset) |
 | --------- | ----------------------- | ------------------ |
@@ -95,29 +98,38 @@ Accessing something outside the segment triggers the `SIGSEGV` signal, aka **seg
 | 2 (Heap)  | ...                     | ...                |
 | 3 (Stack) | ...                     | ...                |
 
-![Logical Address Translatio](images/LAT.png)
+![Logical Address Translation](/notes-blog/assets/img/os/LAT.png)
 
 ### Hardware Support
 
-![](images/hwsupportforseg.png)
+![Hardware operations](/notes-blog/assets/img/os/hwsupportforseg.png)
+
+Note: The segment table above is in physical memory, not cached. The addressing error is the issued interrupt signal, i.e. **invalid physical address of any sort is never returned**.
 
 **Pros:**
 
 - Each segment can grow/shrink independently
-- Protected/shared independently
+- Each segment can be protected/shared independently
 
 **Cons**:
 
 - Variable-size contiguous memory regions
-- **External fragmentation**
+  - **External fragmentation**
 
 ## Segmentation with Paging
 
-Each segment () has its own page table.
+Each segment has its own page table as an entry in the segment table.
 
 Now each request is **<segment id, page number, page offset>**.
 
 Segment table consists of **<segment id, page table address>**.
 
-Each page table then contains the **<page number, frame number>**
+Each page table then contains the **<page number, frame number>**.
 
+![Segment memory regions](/notes-blog/assets/img/os/segpaging.png)
+
+## Memory Management Unit
+
+![Memory Management Unit](/notes-blog/assets/img/os/mmu.png)
+
+The memory management unit (to be better understood in [Chapter 9](/notes-blog/os/ch9)) is providing the hardware support for checking the address requests.

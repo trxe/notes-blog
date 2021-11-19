@@ -31,13 +31,13 @@ Physical memory storage (RAM) is a contiguous **byte-addressed** array, each add
    1. obtain info about process for kernel
    2. make a new entry in PCB
    3. initialize other components
-2. `execve` fills 3 regions into the SWAP while loading:
+2. `execve` fills 3 regions into the [SWAP](/notes-blog/os/ch9#secondary-storage-capacity) while loading:
    1. **Text**: your code (in assembly) that is within the binary
    2. **Data**: global variables
    3. **Stack**: initial stack frame
    4. Note that **heap** is empty and not initialized!
 
-![Memory execution](images/memory_execution.png)
+![Memory execution](/notes-blog/assets/img/os/memory_execution.png)
 
 ### Data types
 
@@ -92,7 +92,12 @@ Note what options 2, 3, 4 do is provide a **mapping** from **logical** addresses
 1. Each process memory space is contiguous
 2. Physical memory is large enough for the processes' complete memory space.
 
-When memory is full, remove terminated processes OR swap blocked processes to secondary storage.
+**Problems:**
+
+1. **Internal fragmentation:** Allotted memory space > Required memory space
+2. **External fragmentation:** Many small non-contiguous blocks not-allocable to any process
+
+When memory is full, remove terminated processes OR [swap](/notes-blog/os/ch9#secondary-storage-capacity) blocked processes to secondary storage.
 
 ### Memory Partitioning
 
@@ -100,14 +105,14 @@ When memory is full, remove terminated processes OR swap blocked processes to se
 
 | Pros                                     | Cons                                                         |
 | ---------------------------------------- | ------------------------------------------------------------ |
-| Easy to manage                           | Partition size needs to be $\max(\{p_1 \dots p_n\})$ i.e. small programs waste memory space (**internal fragmentation**) |
+| Easy to manage                           | Partition size needs to be $\max(\{p_1 \dots p_n\})$​ <br />i.e. small programs waste memory space (**internal fragmentation**) |
 | No need further computations to allocate |                                                              |
 
 **Variable-size partitions:** size allocated based on actual size of process. OS tracks occupied/free regions, splits and merges as necessary.
 
 | Pros                      | Cons                                                         |
 | ------------------------- | ------------------------------------------------------------ |
-| Better memory utilization | Large number of holes from termination/swapping/creation (**external fragmentation**) |
+| Better memory utilization | Many holes from termination/swapping/creation (**external fragmentation**) |
 |                           | Needs to maintain more information in OS                     |
 |                           | Allocation algorithm needed                                  |
 
@@ -124,13 +129,32 @@ Upon freeing of partitions (deallocation):
 - **Merge** with adjacent holes
 - **Compaction** to move occupied partitions together to consolidate holes (expensive!)
 
-Note allocation is $O(n)$ but deallocation is $O(1)$ **assuming** that the address of the memory block the process occupies is saved somewhere
+| Merging                                           | Compaction                                              |
+| ------------------------------------------------- | ------------------------------------------------------- |
+| ![Merging](/notes-blog/assets/img/os/merging.png) | ![Compaction](/notes-blog/assets/img/os/compaction.png) |
+
+Note allocation is $O(n)$​ but deallocation is $O(1)$​ **assuming** that the address of the memory block the process occupies is saved somewhere.
+
+### Linked list representation
+
+OS represents the partitions as a linked list. In dynamic partitioning above, to allocate a new process:
+
+1. Find the first available partition that can accommodate the process
+2. Split the partition into the size of the process and the remaining partition space left
+3. Make the available space the next node in the linked list.
+4. Allocate the space found.
+
+To de-allocate a process, check the partitions before and after if they can be merged.
 
 ### Buddy system
 
-Free blocks recursively **split in half** to meet request. Each pair of neighbouring blocks become **buddy blocks**. Once both are freed, can be merged to become larger block.
+Free blocks recursively **split in half** to meet request. Each pair of neighbouring blocks become **buddy blocks**. 
 
-![Allocation is now $O(1)$ and deallocation $O(n)$.](buddysystem.png)
+![Buddy blocks](/notes-blog/assets/img/os/buddyblocks.png)
+
+Once both are freed, can be merged to become larger block.
+
+![Allocation is now O(1) and deallocation O(n).](/notes-blog/assets/img/os/buddysystem.png)
 
 **Allocation** of process of memory block size $n$
 
