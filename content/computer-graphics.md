@@ -362,12 +362,12 @@ Note that since the signatures of all GLUT callbacks are fixed, to pass around v
 
 *Note: we only need to transform endpoints of line segments, points on the line segment itself is drawn by the implementation.* 
 
-
-
-| Translation $T(d_x, d_y, d_z)$                               | Rotation $R_z(\theta)$                                       | Scaling $S(s_x, s_y, s_z)$​                                   | Shear $H(\theta)$                                            |
-| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| $\left[ \matrix{1 & 0 & 0 & d_x \\\\ 0 & 1 & 0 & d_y \\\\0 & 0 & 1 & d_z \\\\ 0 & 0 & 0 & 1} \right]$​​​ | $\left[ \matrix{\cos\theta & \sin\theta & 0 & d_x \\\\ -\sin\theta & \cos\theta & 0 & d_y \\\\ 0 & 0 & 1 & d_z \\\\ 0 & 0 & 0 & 1} \right]$​ | $\left[ \matrix{s_x & 0 & 0 & 0 \\\\ 0 & s_t & 0 & 0 \\\\ 0 & 0 & s_z & 0 \\\\ 0 & 0 & 0 & 1} \right]$​ | $\left[ \matrix{1 & \cot\theta & 0 & 0 \\\\ 0 & 1 & 0 & 0 \\\\ 0 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & 1} \right]$ |
-| $T^{-1}(v) = T(-v)$                                          | $R^{-1}(\theta) = R(-\theta) = R(\theta)^T$​                  | $S^{-1}(v) = S(1/v)$                                         |                                                              |
+| Type                           | Matrix                                                       | Inverse                                                      |
+| ------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Translation $T(d_x, d_y, d_z)$ | $\left[ \matrix{1 & 0 & 0 & d_x \\\\ 0 & 1 & 0 & d_y \\\\0 & 0 & 1 & d_z \\\\ 0 & 0 & 0 & 1} \right]$ | $T^{-1}(v) = T(-v)$                                          |
+| Rotation $R_z(\theta)$         | $\left[ \matrix{\cos\theta & \sin\theta & 0 & d_x \\\\ -\sin\theta & \cos\theta & 0 & d_y \\\\ 0 & 0 & 1 & d_z \\\\ 0 & 0 & 0 & 1} \right]$ | $R^{-1}(\theta) = R(-\theta) = R(\theta)^T$                  |
+| Scaling $S(s_x, s_y, s_z)$     | $\left[ \matrix{s_x & 0 & 0 & 0 \\\\ 0 & s_t & 0 & 0 \\\\ 0 & 0 & s_z & 0 \\\\ 0 & 0 & 0 & 1} \right]$ | $S^{-1}(v) = S(1/v)$                                         |
+| Shear $H(\theta)$              | $\left[ \matrix{1 & \cot\theta & 0 & 0 \\\\ 0 & 1 & 0 & 0 \\\\ 0 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & 1} \right]$ | (Not the inverse, but note that this<br /> shear matrix does $x' = x+ y\cot\theta$.) |
 
 **Instancing.** Starting with a simple object @origin, @original size, we can apply an **instance transformation** to scale/orientate/locate.
 
