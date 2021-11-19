@@ -19,7 +19,7 @@ split logical address space into chunks (extension of paging)
 - some in physical memory
 - others in secondary storage
 
-![So people call the logical memory space here the **virtual memory space**.](images/logical_memspace.png)
+![So people call the logical memory space here the **virtual memory space**.](/notes-blog/assets/img/os/logical_memspace.png)
 
 #### Extended paging scheme:
 
@@ -52,7 +52,7 @@ Note that the page is [**never removed from secondary storage**]{.two}
 
 #### Thrashing:
 
-- If memory access keeps hitting [Page Fault]{.one} and triggering expensive access operations
+- If memory access keeps hitting *Page Fault* and triggering expensive access operations
 - Locality principles:
   - temporal: most recently used memory addresses likely to be used again
   - spatial: nearby addresses
@@ -110,7 +110,7 @@ Next, due to the TLB, best time is always: 1ns (TLB) + 30ns (physical addr) = 31
 
 The TLB must have access to the page directory **base register** to access the page tables.
 
-![Address breakdown](images/address_breakdown.png)
+![Address breakdown](/notes-blog/assets/img/os/address_breakdown.png)
 
 #### Time and Memory space
 
@@ -199,7 +199,7 @@ The above table will be the info needed to track algorithm's strategy.
 - O(n) page search in table for **every** operation (including eviction)
 - Logical time is forever increasing (overflow)
 
-![Store the logical time when reference occurs](images/lru_counter.png)
+![Store the logical time when reference occurs](/notes-blog/assets/img/os/lru_counter.png)
 
 **Implementation B**: stack.
 
@@ -207,16 +207,16 @@ The above table will be the info needed to track algorithm's strategy.
 - Replace page at stack bottom as needed
 - Hard to do HW support
 
-![Stack implementation of LRU](images/lru_stack.png)
+![Stack implementation of LRU](/notes-blog/assets/img/os/lru_stack.png)
 
 ### Second-Change Page Replacement (CLOCK)
 
 - Pages are sorted by FIFO
 - R bits (reference bits) cleared regularly
 
-![Concept with a FIFO](images/fifoclock.png)
+![Concept with a FIFO](/notes-blog/assets/img/os/fifoclock.png)
 
-![Same idea but with a "Clock" instead](images/clock.png)
+![Same idea but with a "Clock" instead](/notes-blog/assets/img/os/clock.png)
 
 Qn: how does the CLOCK handle frames found in the middle of the queue?
 
@@ -268,8 +268,6 @@ Cons:
 - Working set window $\Delta$: one interval of logical time
 - `W(t,` $\Delta$ `)` gives us the active pages within $\Delta$ at time `t`. Allocate just enough frames for pages in `W(t, \Delta)` for each time `t`
 
-![Working set changes over time](images/workingset.png)
+![Working set changes over time](/notes-blog/assets/img/os/workingset.png)
 
-![$\Delta = 5$ in this example](images/deltaworkingset.png)
-
-\newpage
+![$\Delta = 5$ in this example](/notes-blog/assets/img/os/deltaworkingset.png)
