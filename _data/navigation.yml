@@ -1,8 +1,8 @@
 - name: Home
   link: /notes-blog/
 - name: Operating Systems
-  link: /notes-blog/os.html
+  link: /notes-blog/os
 - name: Algorithms II
-  link: /notes-blog/algo2.html
+  link: /notes-blog/algo2
 - name: Computer Graphics
-  link: /notes-blog/cg.html
+  link: /notes-blog/cg

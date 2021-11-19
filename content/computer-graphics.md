@@ -10,43 +10,46 @@ geometry:
 - bottom=2cm
 ---
 
+# Computer Graphics
 
-# Computer Graphics -- One long post
+The contents follow the NUS module CS3241 (taken in AY2021/22 S1).
 
 * Table of Contents
 {:toc}
+## Pipeline summary
+
 
 - Modelling (in API)
   - [x] Provides set of vertices
   - Scene processing to reduce geometric data down pipeline
-    - [ ] view-frustum culling
-    - [ ] occlusion culling
+    - [x] view-frustum culling
+    - [x] occlusion culling
 - Vertex Processing
   - [x] Model-View transformation
-  - [ ] Lighting computing
-  - [ ] Texture coordinates
+  - [x] Lighting computing
+  - [x] Texture coordinates
   - [x] Projection Matrix
 - **Primitive assembly etc.**
-  - [ ] Primitive assembly
+  - [x] Primitive assembly
     - vertex data --> complete primitives for clipping & culling
-  - [ ] Clipping
+  - [x] Clipping
   - [x] Perspective division
     - To NDC space
   - [x] Viewport transformation
     - To window space
     - Depth range scaling
-  - [ ] Back face culling
+  - [x] Back face culling
     - throw away faces that are back-facing the viewport
 - **Rasterization** in window space
-  - [ ] Produces **fragments** of unclipped-out primitives (potential pixels [*location + color + depth*])
-  - [ ] Attributes are interpolated over the primitive
+  - [x] Produces **fragments** of unclipped-out primitives (potential pixels [*location + color + depth*])
+  - [x] Attributes are interpolated over the primitive
     - e.g. Bilinear interpolation
 - Fragment processing
-  - [ ] Fragment pixel --> Frame buffer pixel
-  - [ ] Fragment color modifies by texture mapping
+  - [x] Fragment pixel --> Frame buffer pixel
+  - [x] Fragment color modifies by texture mapping
     - Texture access, application
-  - [ ] **Z-buffer** Hidden surface removal: fragment discarded if occlused by pixel already in frame buffer
-  - [ ] **Blended**: blending with pixels already in frame buffer
+  - [x] **Z-buffer** Hidden surface removal: fragment discarded if occlused by pixel already in frame buffer
+  - [x] **Blended**: blending with pixels already in frame buffer
 
 $\require{color}$
 
@@ -444,7 +447,7 @@ They preserve lines but not necessarily angles (in the 2D image). Preserving her
   - Perspective/Orthographic
   - Sets the FOV of the camera (field/clipping volume -- the region of the world in viewport)
 
-`MODELVIEW` actually is a combination of the modelling transformation first (to the world space), and the view transformation (to the eye/camera space). `PROJECTION` matrix brings this to the clip space, and so on. [Refer to Figure [\ref{GLtransformations}]].
+`MODELVIEW` actually is a combination of the modelling transformation first (to the world space), and the view transformation (to the eye/camera space). `PROJECTION` matrix brings this to the clip space, and so on.
 
 ## Spaces
 
@@ -694,7 +697,9 @@ p_k =& \Delta x(d_{lower} - d_{upper}) \\
 =& 2x_k \Delta y - 2y_k \Delta x + c
 \end{aligned}
 $$
-If $p_k < 0$ plot lower pixel, if $p_k > 0$ plot upper pixel.
+
+
+If $p_k < 0$​ plot lower pixel, if $p_k > 0$​ plot upper pixel.
 
 ![Candidates for binary choice](/notes-blog/assets/img/cg/bressenham.png)
 
