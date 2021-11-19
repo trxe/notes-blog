@@ -362,16 +362,16 @@ Note that since the signatures of all GLUT callbacks are fixed, to pass around v
 
 *Note: we only need to transform endpoints of line segments, points on the line segment itself is drawn by the implementation.* 
 
-- Translation matrix
-  - Inverse: 
-- Rotation matrix
-  - Inverse:
-- Scaling
-  - Inverse:
-- Reflection
-- Shear
+
+
+| Translation $T(d_x, d_y, d_z)$                               | Rotation $R_z(\theta)$                                       | Scaling $S(s_x, s_y, s_z)$​                                   | Shear $H(\theta)$                                            |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| $\left[ \matrix{1 & 0 & 0 & d_x \\\\ 0 & 1 & 0 & d_y \\\\0 & 0 & 1 & d_z \\\\ 0 & 0 & 0 & 1} \right]$​​​ | $\left[ \matrix{\cos\theta & \sin\theta & 0 & d_x \\\\ -\sin\theta & \cos\theta & 0 & d_y \\\\ 0 & 0 & 1 & d_z \\\\ 0 & 0 & 0 & 1} \right]$​ | $\left[ \matrix{s_x & 0 & 0 & 0 \\\\ 0 & s_t & 0 & 0 \\\\ 0 & 0 & s_z & 0 \\\\ 0 & 0 & 0 & 1} \right]$​ | $\left[ \matrix{1 & \cot\theta & 0 & 0 \\\\ 0 & 1 & 0 & 0 \\\\ 0 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & 1} \right]$ |
+| $T^{-1}(v) = T(-v)$                                          | $R^{-1}(\theta) = R(-\theta) = R(\theta)^T$​                  | $S^{-1}(v) = S(1/v)$                                         |                                                              |
 
 **Instancing.** Starting with a simple object @origin, @original size, we can apply an **instance transformation** to scale/orientate/locate.
+
+**Rotate** object about point $p_f$: $M = T(p_f)R(\theta)T(-p_f)$.
 
 ### OpenGL Transformations
 
@@ -921,12 +921,85 @@ Or in the case of **trilinear texture map interpolation**, we interpolate betwee
 
 Shortcut to rendering shiny objects: 
 
-1. Mapping the image of the surrounding into a texture map
+1. Mapping the image of the surrounding into a texture map (cubemap)
 2. Use the [reflected eye ray](#surface-parameterization) O-mapping method to map to the object
+
+Drawbacks compared to raytracing
+
+- Cannot self-reflect (not captured in environment map)
+- The closer the environment the bigger the error
+
+### Bump (displacement) mapping
+
+Provides a set of normals to offset the real surface's normals by for use during lighting computation.
+
+![Bump mapping](/notes-blog/assets/img/cg/bumpmap.png)
+
+### Image based rendering (billboarding)
+
+The texture plane is always rotated to face the view ray. (Imagine the billboards turning to face you however you turn.)
+
+## OpenGL Texture mapping
+
+**Fragment processing** stage: the fragment color can be modified by texture application, mapped via texture access (using interpolated coordinates).
+
+| Function                                                  | Task                                                         |
+| --------------------------------------------------------- | ------------------------------------------------------------ |
+| `glGenTextures(int n, uint* textures)`                    | Creates $n$ textures, puts ids in `textures`.                |
+| `glBindTextures(enum target, uint texture)`               | Binds texture to target.                                     |
+| `glTexParameteri(enum target, enum pname, int param)`     | Sets parameter of target.                                    |
+| `glTexEnvf(enum target, enum pname, const float* params)` | Texture environment specification. i.e. How should target texture be applied onto fragment? |
+
+
+
+```C++
+void init(void) {
+    // Specifies memory alignment of each pixel, 1 -> byte-alignment.
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glGenTextures(1, &texObj); 
+    glBindTexture(GL_TEXTURE_2D, texObj);
+    
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    // GL_LINEAR: 4 nearest texel interpolation. not mipmapped.
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    
+    // Maps texture image onto each primitive active for texturing.
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, texImage);
+}
+
+void display(void) {
+    // Activates texturing
+    glEnable(GL_TEXTURE_2D);
+    // how texture values are applied to the fragment 
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+    glBindTexture(GL_TEXTURE_2D, texObj);
+    // map Texture Coordinates <-> Objects coordinates
+    glBegin(GL_QUADS);
+	    glTexCoord2f(0.0, 0.0); glVertex3f(-2.0, -1.0, 0.0);
+    	// ...
+    glEnd();
+}
+```
+
+To generate mipmaps:
+
+```C++
+void init(void) {
+    // ...
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, imageWidth, imageHeight, GL_RGBA, GL_UNSIGNED_BYTE, texImage)
+}
+```
+
+
 
 # Chapter 9 -- Ray casting & tracing
 
-### Idea -- Ray casting
+## Idea
+
+### Ray casting
 
 1. Fixed viewpoint
 2. For each pixel, shoot a ray **from the viewpoint through the pixel**
@@ -934,7 +1007,7 @@ Shortcut to rendering shiny objects:
    2. If it has an intersection with the ray, and is the closest,
    3. Transfer the color of the object to the pixel.
 
-### Idea -- Ray tracing
+### Ray tracing
 
 Upon each intersection, the object hit may continue to shoot out **secondary rays** that are:
 
@@ -975,11 +1048,13 @@ Note that this equation is recursive due to the $I_\text{reflection}$ and $I_\te
 
 ![Left: reflected specular; Right: transmission](/notes-blog/assets/img/cg/reflectrefractangles.png)
 
-### Computing Reflection
+## Computation
+
+### Reflection
 
 $R = 2N\cos \theta - L = 2(N \cdot L)N - L$
 
-### Computing Refraction
+### Refraction
 
 Snell's law: $\mu_1 \sin \theta = \mu_2 \sin \phi$​. Let $\mu = \frac{\mu_1}{\mu_2}$​​, then
 
@@ -1054,8 +1129,6 @@ Spheres = $x^2 + y^2 + z^2 - r^2 = 0 \Rightarrow p\cdot p - r^2 = 0$ for point $
 - If sphere isn't at origin, just translate the ray origin to sphere's local coordinate frame
 
 Axis-aligned box:
-
-
 
 - typically used for quickly determining if a ray will hit the object (hitbox) or not
 - specify the two **opposite** corners
@@ -1267,6 +1340,14 @@ p_{0,1,2,3} &= \left[ \begin{matrix} p_0 \\ p_1 \\ p_2 \\ p_3 \end{matrix} \righ
 \end{aligned}
 $$
 
+### Cubic interpolating patch
+
+$$
+p(u,v) = \sum_{i=0}^3 \sum_{j=0}^3 \textcolor{red}{u^iv^j} c_{ij} = u^TCv
+$$
+
+where $v = [1 \quad v \quad v^2 \quad v^3]^T$. Note that the interpolating patch does not use the blending functions.
+
 ### Geometric and parametric continuity
 
 | Type                                                | Illustration                                                 |
@@ -1275,6 +1356,13 @@ $$
 | $C^1$ **parametric** continuity                     | <img src="/notes-blog/assets/img/cg/c1cont.png" width="300px"> |
 | $G^1$ **geometric** continuity                      | $p'(1) = \alpha q'(0)$​ for some $\alpha > 0$​<br />i.e. $p'(1)$​ is parallel to $q'(0)$​ |
 | $C^2$ **parametric** continuity                     | $p"(1) = q"(0)$​                                              |
+
+Generally we have
+
+- $C^n \Rightarrow G^n$
+- $G^n \not\Rightarrow C^n$
+- $C^{n \pm 1} \not\Rightarrow C^n$
+- $C^2, G^2$ look smooth.
 
 ### Cubic Bezier curves
 
@@ -1312,8 +1400,43 @@ The below shows the Bernstein polynomials. Note that the sum $p(u) = \sum_i b_i(
 
 ![Bernstein](/notes-blog/assets/img/cg/bernstein.png)
 
-## Rendering curves
+### Bicubic Bezier surface patch
+
+$$
+p(u,v) = \sum_{i=0}^3 \sum_{j=0}^3 \textcolor{red}{b_i(u) b_j(u)} p_{ij} = (u^T M_B) P (M_B^Tv)
+$$
+
+where $v = [1 \quad v \quad v^2 \quad v^3]^T$​.​ Note that the Bezier patch uses the blending functions.
+
+## Rendering
+
+### Surface patches advantages over polygons mesh
+
+- **Level of subdivision** of a Bezier patch: adaptive to size of image area
+  - e.g. when small, less divisions, nearer (and thus bigger), more divisions
+  - More efficient than fixed polygons, scalable
+- A mesh model will have too many polygons if small (poor **efficiency**), too few polygons if big (poor rendering quality)
 
 ### Rendering polynomial curves
 
+Long polynomial curves involve $\leq 4$​ join points. To evaluate $p(u)$ at a sequence of join points $u_k$​, use **Horner's method**:
+$$
+p(u) = c_0 + u(c_1 + u(c_2 + u(\dots +c_n)))
+$$
+![polyline to curve](D:\Documents\px\current\NUS\CS3241\refs\polynomialcurve.png)
+
 ### Rendering Bezier curves
+
+**De Casteljau's algorithm**: Consecutive control points are recursively interpolated over $u \in [0, 1]$​, in the case of the curve.
+
+![De Casteljau](D:\Documents\px\current\NUS\CS3241\refs\decasteljau.png)
+
+## Curve translation summary
+
+| Bezier curves $p$                      | Interpolating curves $q$                              |
+| -------------------------------------- | ----------------------------------------------------- |
+| known $c \rightarrow$ find unknown $p$ | known $c \rightarrow$ find unknown $q$                |
+| known $p \rightarrow$​ find unknown $c$​ | known $q \rightarrow$​ find unknown $c$                |
+| Simple blending functions (Bernstein)  | Messier blending functions (see slides)               |
+| Includes $M_B$​ in bezier patch         | Doesn't include $M_I = A^{-1}$ in interpolation patch |
+
