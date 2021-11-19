@@ -33,6 +33,8 @@ body {
     img, table, th, td {
         width: 90%;
     }
+    table, th, td {
+    }
     pre {
         font-size: 0.8em;
     }
@@ -63,6 +65,7 @@ table, th, td {
   line-height: 1.2em;
   margin-left: auto;
   margin-right: auto;
+  table-layout: fixed;
 }
 
 nav {

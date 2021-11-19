@@ -493,7 +493,8 @@ So all points in **world frame** are expressed wrt the **camera frame**.
   - The last transformation in the model-view matrix.
   - $T$: Moves camera to origin.
   - $R$: Rotates camera to axes of world frame.
-- Multiply $M_{view}$ to points in the world frame to get the camera frame.
+- Multiply $M_{view}$​ to points in the world frame to get the camera frame.
+
 
 $$
 M_{view} = \left[ \begin{matrix}
@@ -509,7 +510,9 @@ n_x & n_y & n_z & 0 \\
 \end{matrix} \right]
 $$
 
-*(We can use $u, v, n$ directly in $R$ because they are unit vectors in the desired directions)*
+
+
+*(We can use $u, v, n$​ directly in $R$​ because they are unit vectors in the desired directions)*
 
 #### Normal vectors' transformation matrix:
 
@@ -540,6 +543,7 @@ The projection matrix is computed such that it maps to the **canonical view volu
 
 #### Orthographic projection matrix (Clip to NDC):
 
+
 $$
 \begin{aligned}
 M_{ortho} =& S(\frac{2}{right - left}, \frac{2}{top-bottom}, \frac{2}{near-far}) \cdot \\
@@ -547,13 +551,16 @@ M_{ortho} =& S(\frac{2}{right - left}, \frac{2}{top-bottom}, \frac{2}{near-far})
 \end{aligned}
 $$
 
+
+
 1. Translate the midpoint (take the averages of the dimensions)
 2. Scale the cuboid to the $2^3$​ cube.
 3. Now each coordinate $x_{NDC},y_{NDC},z_{NDC} \in [-1, 1]$​.
 
 #### Viewport transformation (NDC to Window Space):
 
-The viewport here is defined by $(x_{vp}, y_{vp})$ (the lower left corner), $w,h$.
+The viewport here is defined by $(x_{vp}, y_{vp})$​ (the lower left corner), $w,h$​.
+
 
 $$
 \begin{aligned}
@@ -573,7 +580,9 @@ Squashed into the $x,y$ plane. $z$ is retained (between 0 and 1) for hidden surf
 
 #### Perspective Division:
 
-Essentially using similar triangles (as described in first chapter) to get coordinates adjusted for perspective depth. note that $z_p = d$​​​, the projection plane.
+Essentially using similar triangles (as described in first chapter) to get coordinates adjusted for perspective depth. note that $z_p = d$​​​​, the projection plane.
+
+
 $$
 \begin{aligned}
 &\frac{x_p}{x} = \frac{d}{z}, \quad \frac{y_p}{y} = \frac{d}{z}, \quad z_p = d \\
@@ -608,7 +617,8 @@ Eliminate all **easy** cases without computing intersections.
 
 ![Outcodes](/notes-blog/assets/img/cg/outcodes.png)
 
-Let $F(A,B)$ represent the clipping requirement of the line segment $AB$. $F(A,B)$ equals 2 if it is not clipped out, 1 if it is partially clipped out, and 0 if it is fully clipped out.
+Let $F(A,B)$​ represent the clipping requirement of the line segment $AB$​. $F(A,B)$​ equals 2 if it is not clipped out, 1 if it is partially clipped out, and 0 if it is fully clipped out.
+
 
 $$
 F(A, B) = \begin{cases}
@@ -618,6 +628,8 @@ F(A, B) = \begin{cases}
 1 & A \neq 0 \text{ and } B \neq 0 \text{ and } A \text{ AND } B \text{ (bitwise)} = 0
 \end{cases}
 $$
+
+
 
 ##### Implementation:
 
@@ -670,7 +682,9 @@ Case 2: $\|m\| > 1$​​​​​. Then note that $0 \leq \frac{1}{\|m\|} \leq 
 
 Saves time because of no floating point computations.
 
-Here since $d_{upper} > d_{lower}$, we choose to shade $(x_k + 1, y_k)$​.But how does it save FP computation time?
+Here since $d_{upper} > d_{lower}$​, we choose to shade $(x_k + 1, y_k)$​​​.But how does it save FP computation time?
+
+
 $$
 \begin{aligned}
 p_k =& \Delta x(d_{lower} - d_{upper}) \\
@@ -683,8 +697,6 @@ $$
 If $p_k < 0$ plot lower pixel, if $p_k > 0$ plot upper pixel.
 
 ![Candidates for binary choice](/notes-blog/assets/img/cg/bressenham.png)
-
-
 
 #### Incremental form: 
 
@@ -746,7 +758,9 @@ Given **point on surface, light source, viewpoint**: compute **color** of **poin
   - `AMBIENT, DIFFUSE, SPECULAR` = `GLfloat[]` i.e. $I_{a,i}, I_{d,i}, I_{s,i}$
   - `SHININESS` = `GLfloat`
   - `GL_FRONT | GL_BACK | GL_FRONT_AND_BACK`
-  - `EMISSION` = `GLfloat[]` **Emissive** term $k_e$ (glowing)
+  - `EMISSION` = `GLfloat[]` **Emissive** term $k_e$​ (glowing)
+  
+  
 
 
 $$
@@ -755,16 +769,23 @@ $$
 
 ### Phong Illumination Equation
 
-Efficient, acceptable image quality. Ambient ($I_a k_a$​​​), diffuse ($f_{\text{att}} I_p k_d (N \cdot L)$​​​), and specular ($f_{\text{att}} I_p k_s (R \cdot L)^n$​​​​​) components. Single light source below:
+Efficient, acceptable image quality. Ambient ($I_a k_a$​​​​), diffuse ($f_{\text{att}} I_p k_d (N \cdot L)$​​​​), and specular ($f_{\text{att}} I_p k_s (R \cdot L)^n$​​​​​​) components. Single light source below:
+
+
 $$
 I_{\text{Phong}} = \left[ \begin{matrix} r \\ g \\ a \end{matrix} \right]
 = I_a k_a + f_{\text{att}} I_p k_d (N \cdot L) + f_{\text{att}} I_p k_s (R \cdot L)^n
 $$
+
+
 Multiple light sources $L_i$:
+
+
 $$
 I_{\text{Phong}} = \left[ \begin{matrix} r \\ g \\ a \end{matrix} \right]
 = I_a k_a + f_{\text{att}} I_p \sum_{i}[ k_d (N \cdot L_i) + k_s (R \cdot L_i)^n ]
 $$
+
 
 
 ![Illustration of unit vectors and angles for the Phong model.](/notes-blog/assets/img/cg/phong.png)
@@ -817,9 +838,91 @@ Given **polygon, rasterization**: compute **color** of **fragment**
 
 # Chapter 8 -- Texture mapping
 
+The **forward mapping** (texture to screen) involves:
 
+1. **Surface parameterization**: Texture space $(s,t)$​ to Object space $(x,y,z)$​​.
+2. **Projection**: Object space to Window space (with other polygons).
 
+There also is a different implementation using **inverse mapping**: given pixel $(x_s, y_s)$​​, *lookup* the pixel's pre-image in texture space. This is more suitable for polygon-based raster graphics, and is the implementation in OpenGL.
 
+![Forward and inverse mapping](/notes-blog/assets/img/cg/texmap.png)
+
+## Surface parameterization
+
+Defines **surface point** to **texel** mapping: $(x,y,z) \leftrightarrow (s,t)$​. (Range of texture coordinates $(s,t) \in [0, 1]^2$​​.)
+
+Per polygon, only the vertices coordinates' mappings are specified (the rest are interpolated by the [rasterizer](#rasterization)), either manually (for complex objects), or via two-part texture mapping (for simple objects).
+
+**Two-part texture mapping** involves:
+
+- **S-mapping** (texture to simple intermediate 3D surface)
+- **O-mapping** (intermediate surface to object surface)
+
+**S-mappings** include mappings to plane, cylinder, sphere etc.
+
+**O-mappings** include:
+
+| Mapping                                                      | Description                                                  |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| <img src="/notes-blog/assets/img/cg/reflectedray.png" width="50%"> | Dependent on view vector. <br />Useful for environment mapping. |
+| <img src="/notes-blog/assets/img/cg/objnormal.png" width="50%"> | Ray from surface point<br /> along object surface normal     |
+| <img src="/notes-blog/assets/img/cg/objcentroid.png" width="50%"> | Ray from center through surface point                        |
+| <img src="/notes-blog/assets/img/cg/intnormal.png" width="50%"> | Ray from intermediate surface point <br />through object surface point |
+
+### Inverse mapping by bilinear interpolation
+
+**Pre-image** is the texture area that the fragment maps to in texture space.
+
+For each **texture coordinate** $(s, t)$ we can get:
+
+- $(s', t', w) = (s/z_e, t/z_e, 1/z_e)$ where $z_e$ is depth in eye space
+- $(s'/w, t'/w)$​​ as the final window space coordinates
+
+| Interpolation in a triangle polygon                          | Interpolation of 4 texels                                    |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| <img src="/notes-blog/assets/img/cg/interpolationtriangle.png"> | <img src="/notes-blog/assets/img/cg/interpolationtexel.png"> |
+
+**Texture filtering**: determine the texture color of a fragment using the colors of the nearest 4 texels. May be implemented via bilinear interpolation.
+
+### Wrapping modes
+
+**Clamp**: $wrap(u, v)  = (\|u\|, \|v\|)$
+
+**Repeated** (useful for tiling): $wrap(u, v)  = (u\ \% \ 1.0, v\ \% \ 1.0)$​
+
+## Aliasing
+
+Can happen due to:
+
+- **Point-sampling**: Choosing a single texel color after being inverse mapped
+- during **texture minification**: Many texels crammed into area of fragment (random picking of texel)
+  - **NOT** during texture magnification: blocky appearance is not aliasing.
+
+### Anti-aliasing via mipmapping
+
+By **area-sampling** each fragment, and then **averaging** the color that it is mapped to in the texture space.
+
+**Mipmapping**: By **pre-filtering** texture maps, makes AA real-time performance-friendly. **Successively averages** each 2x2 texels until size = 1x1. Mipmap Level 0 is the original image, and Mipmap Level $\log(n)$​ is the 1x1 map. ("Level": level of texture minification.)
+
+![Mipmapping](/notes-blog/assets/img/cg/mipmap.png)
+
+**Selecting** mipmap levels: If pre-image corresponds to $n^2$​​ texels we choose Mipmap Level $\lfloor \log n \rfloor$​. 
+
+Or in the case of **trilinear texture map interpolation**, we interpolate between $\lfloor \log n \rfloor$ and $\lceil \log n \rceil$.
+
+## Applications
+
+1. Modulation textures (modulates diffuse color, specularity, transparency)
+2. Environment mapping
+3. Bump mapping, light mapping, shadow mapping, displacement mapping...
+4. Image-based rendering, non-photorealistic rendering...
+
+### Environment mapping
+
+Shortcut to rendering shiny objects: 
+
+1. Mapping the image of the surrounding into a texture map
+2. Use the [reflected eye ray](#surface-parameterization) O-mapping method to map to the object
 
 # Chapter 9 -- Ray casting & tracing
 
@@ -878,7 +981,9 @@ $R = 2N\cos \theta - L = 2(N \cdot L)N - L$
 
 ### Computing Refraction
 
-Snell's law: $\mu_1 \sin \theta = \mu_2 \sin \phi$. Let $\mu = \frac{\mu_1}{\mu_2}$
+Snell's law: $\mu_1 \sin \theta = \mu_2 \sin \phi$​. Let $\mu = \frac{\mu_1}{\mu_2}$​​, then
+
+
 $$
 \begin{aligned}
 T &= -\mu L + \left( \mu(\cos\theta) - \sqrt{1 - \mu^2(1-\cos^2\theta)} \right)N \\
@@ -957,7 +1062,8 @@ Axis-aligned box:
 
 Triangle (polygon): Using the **barycentric coordinates** method
 
-$P = \alpha A + \beta B + \gamma C = \textcolor{limegreen}{A + \beta (B - A) + \gamma (C - A)}$​ where $\alpha + \beta + \gamma = 1$​ and $0 \leq \alpha, \beta, \gamma \leq 1$​​.
+$P = \alpha A + \beta B + \gamma C = \textcolor{limegreen}{A + \beta (B - A) + \gamma (C - A)}$​​ where $\alpha + \beta + \gamma = 1$​​ and $0 \leq \alpha, \beta, \gamma \leq 1$​​​.
+
 
 
 $$
