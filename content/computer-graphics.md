@@ -1428,20 +1428,20 @@ Long polynomial curves involve $\leq 4$​ join points. To evaluate $p(u)$ at a 
 $$
 p(u) = c_0 + u(c_1 + u(c_2 + u(\dots +c_n)))
 $$
-![polyline to curve](D:\Documents\px\current\NUS\CS3241\refs\polynomialcurve.png)
+![polyline to curve](/notes-blog/assets/img/cg/polynomialcurve.png)
 
 ### Rendering Bezier curves
 
 **De Casteljau's algorithm**: Consecutive control points are recursively interpolated over $u \in [0, 1]$​, in the case of the curve.
 
-![De Casteljau](D:\Documents\px\current\NUS\CS3241\refs\decasteljau.png)
+![De Casteljau](/notes-blog/assets/img/cg/decasteljau.png)
 
 ## Curve translation summary
 
-| Bezier curves $p$                      | Interpolating curves $q$                              |
-| -------------------------------------- | ----------------------------------------------------- |
-| known $c \rightarrow$ find unknown $p$ | known $c \rightarrow$ find unknown $q$                |
-| known $p \rightarrow$​ find unknown $c$​ | known $q \rightarrow$​ find unknown $c$                |
-| Simple blending functions (Bernstein)  | Messier blending functions (see slides)               |
-| Includes $M_B$​ in bezier patch         | Doesn't include $M_I = A^{-1}$ in interpolation patch |
+| Bezier curves $p$                                     | Interpolating curves $q$                              |
+| ----------------------------------------------------- | ----------------------------------------------------- |
+| known $c \rightarrow$ find unknown control points $p$ | known $c \rightarrow$ find unknown control points $q$ |
+| known $p \rightarrow$​ find unknown $c$​                | known $q \rightarrow$​ find unknown $c$                |
+| Simple blending functions ($M_B$)                     | Rather messy blending functions ($M_I = u^TA^{-1}$)   |
+| Includes $M_B$​ in bezier patch                        | Doesn't include $M_I$​ in interpolation patch          |
 

@@ -12,6 +12,8 @@ header-includes:
 
 # 6 -- Synchronization
 
+$\require{color}$
+
 ## Concurrent Execution
 
 - Interleaving execution
@@ -84,7 +86,7 @@ void ExitCS (int *lock) {
 
 1. Simulate "Test and Set", but **non-atomic**. We can try preventing interleaving by **disabling interrupts**, but
 
-![High level Test-and-Set](../assets/img/os/testandset.png)
+![High level Test-and-Set](/notes-blog/assets/img/os/testandset.png)
 
 - If multiprocessor, unintended concurrent access can happen anyway
 - Otherwise, no other process (including the OS) can interfere you e.g. if you have an infinite loop
@@ -92,14 +94,14 @@ void ExitCS (int *lock) {
 
 2. `Turn` array. While `Turn != P.turn`, busy wait.
 
-![Take **turns** to enter critical section.](../assets/img/os/turn.png)
+![Take **turns** to enter critical section.](/notes-blog/assets/img/os/turn.png)
 
 - Starvation: If P0 is never executed, neither will P1.
 - No independence/progress
 
 3. `Want` array. Busy wait while someone else wants the turn.
 
-![Wait until no-one else **wants** the turn](../assets/img/os/want.png)
+![Wait until no-one else **wants** the turn](/notes-blog/assets/img/os/want.png)
 
 - Stuck in infinite loop: Deadlock!
 
@@ -108,7 +110,7 @@ void ExitCS (int *lock) {
 - Note that `Turn` cannot be 1 and 0 at once, so only one of the `while` loops ends at first
 - Note that `Turn` now indicates which process's turn is it.
 
-![Peterson's Algorithm](../assets/img/os/peterson.png)
+![Peterson's Algorithm](/notes-blog/assets/img/os/peterson.png)
 
 We assume that line 2 (writing to `Turn` in each process) is atomic.
 
@@ -129,6 +131,8 @@ Contains one `int` representing capacity,
   - always successful
 
 Invariant for semaphore $s$:
+
+
 $$
 s_\text{curr} = s_\text{init} + \# \text{signals executed}(s) - \# \text{waits completed}(s)
 $$
@@ -137,10 +141,13 @@ $$
 
 Binary semaphores with capacity of 1. 
 
-Number of processes in critical section: $N_{CS} = \# \text{waits completed}(s) - \# \text{signals executed}(s)$
+Number of processes in critical section: $N_{CS} = \text{waits completed}(s) - \text{signals executed}(s)$​​
+
+
 $$
 s_\text{curr} = \textcolor{blue}{1 - N_{CS}} \geq 0 \Rightarrow \textcolor{red}{N_{CS} \leq 1}
 $$
+
 
 
 No **deadlock** where $N_{CS} = s_\text{curr} = 0$​​​, granted correct usage.
@@ -167,7 +174,7 @@ From [The Little Book of Semaphores](https://greenteapress.com/wp/semaphores/).
 
 ### Rendezvous
 
-![How to ensure `a1` before `b2`, `b1` before `a2`](C:\Users\pc\AppData\Roaming\Typora\typora-user-images\image-20211116111401857.png)
+![How to ensure `a1` before `b2`, `b1` before `a2`](/notes-blog/assets/img/os/rendezvous.png)
 
 ```
 # Thread A
@@ -240,7 +247,7 @@ signal(t2)
 
 Two-phase barrier. Note we cannot solve this problem with a single turnstile, e.g. 
 
-![Wrong reusable barrier](C:\Users\pc\AppData\Roaming\Typora\typora-user-images\image-20211116115220294.png)
+![Wrong reusable barrier](/notes-blog/assets/img/os/wrongreusablebarrier.png)
 
 If the $n$​th thread passes through the CP, decrements count without interruption and then returns to the rendezvous (in a loop), and increments count again, it restores the count to $n$ and thus gets ahead of the other threads.
 
@@ -312,7 +319,7 @@ signal
 
 - Value of `openToWriters` is the same immediately before and immediately after writer
 - Value of `openToWriters` is only increased by `readerCount == 0`. 
-- Grabbing the `openToWriters` lock closes it off to writers (since it a [\textcolor{blue}{mutex}](.#mutex:)).
+- Grabbing the `openToWriters` lock closes it off to writers (since it a [mutex](.#mutex:)).
 
 **Drawbacks**: starvation of writer possible.
 

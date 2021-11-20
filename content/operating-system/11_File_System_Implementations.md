@@ -6,11 +6,18 @@ permalink: /os/ch11
 
 # 11 - File System Implementations
 
-### General Disk Structure: 1D Logical Block array
+## Data structures Summary
 
-**Logical block**: Smallest accessible unit (~512B to 4KB), mapped into disk sectors (layout id disk sectors hardware dependent, dictated by drivers).
+| File block allocation                     | Free space management                        | Directory structure         |
+| ----------------------------------------- | -------------------------------------------- | --------------------------- |
+| [Contiguous](#contiguous-allocation)      | [Disk block bitmap](#block-bitmap)           | [Linear list](#linear-list) |
+| [Linked List](#linked-list-allocation)    | [Disk block linked list](#block-linked-list) | [Hash table](#hash-table)   |
+| [FAT](#file-allocation-table)             |                                              |                             |
+| [Indexed allocation](#indexed-allocation) |                                              |                             |
 
-### Disk organization
+
+
+## Disk organization
 
 - Sector 0: Master Boot Record (**MBR**)
   - Simple boot code
@@ -22,6 +29,10 @@ permalink: /os/ch11
 |               |                   |                     |           |           |
 | ------------- | ----------------- | ------------------- | --------- | --------- |
 
+### General Disk Structure: 1D Logical Block array
+
+**Logical block**: Smallest accessible unit (~512B to 4KB), mapped into disk sectors (layout id disk sectors hardware dependent, dictated by drivers).
+
 ## File info and data
 
 **File**: Collection of logical blocks. When file size $\neq$​ multiple of logical blocks: internal fragmentation.
@@ -32,13 +43,13 @@ permalink: /os/ch11
 
 ### Data Allocation on disk
 
-1. **Contiguous allocation**
+#### Contiguous allocation
 
 - Knowledge of start block and size
 - Pro: Easy write and access
 - Con: External Fragmentation (same as memory)
 
-2. **Linked List allocation**
+#### Linked list allocation
 
 - Each block contains a link to the next available block, knowledge of start and end block
 - Pro: No external fragmentation
@@ -47,7 +58,7 @@ permalink: /os/ch11
   - lost links = dead sectors = less reliable
   - Random access becomes $O(n)$​ time for size $n$​ file.
 
-3. File Allocation Table (**FAT**)
+#### File Allocation Table
 
 - Move all block pointers into a single FAT, which is always in **memory**
 - Pro: No external fragmentation, faster than normal LL as it is in RAM
@@ -55,8 +66,9 @@ permalink: /os/ch11
   - Huge amount of space in RAM (e.g. 1TB of disk, 512B blocks and 4B file entries = $\approx$​ 3GB of RAM for FAT)
   - Must still be persistently stored in disk
 
-4. **Indexed Allocation** (Linked List **per file**)
+#### Indexed Allocation
 
+- i.e. Linked list per file
 - Each file has **one index block** of disk block addresses, and `indices[N] ==` Nth block address
 - Pros: 
   - Less memory overhead
@@ -69,14 +81,14 @@ permalink: /os/ch11
 
 2 operations: **Allocate** (file creation/expansion) and **free** (deletion/truncation)
 
-![Bitmap](C:\Users\pc\AppData\Roaming\Typora\typora-user-images\image-20211109081901389.png)
+![Bitmap](/notes-blog/assets/img/os/diskblockbitmap.png)
 
-1. Bitmap
+#### Block bitmap
 
 - Pro: Good set of manipulations
 - Con: Need to store lists in memory to be efficient, takes up a lot of memory
 
-2. Linked list
+#### Block linked list
 
 - **One** disk block contains: number of free disk blocks or a pointer to the next free space disk block.	
 - Pros: 
@@ -90,14 +102,13 @@ Track files + file information in a directory, then maps file name to file info.
 
 Given a full path name, recursive search of directories necessary to arrive at file info.
 
-1. Linear list
+#### Linear list
 
 - Each entry represents a file, one entry stores file name, metadata
 - Con: Linear search necessary, bad for deep trees
   - Use cache to remember last few searches (DFS).
 
-
-2. Hash Table
+#### Hash Table
 
 - File name is hashed into $K \in [0, N-1]$​
 - Chained collision resolution
@@ -127,22 +138,22 @@ Given a full path name, recursive search of directories necessary to arrive at f
 
 **Directory:** Special type of file. (*Root* directory is in a special location. Other directories are in data blocks.) Every file/subdirectory = **directory entry.**
 
-| Order | Directory entry item       | Bytes                |
-| ----- | -------------------------- | -------------------- |
-| 1     | File name                  | 8                    |
-| 2     | File ext.                  | 3                    |
-| 3     | Attributes                 | 1                    |
-| 4     | \textcolor{grey}{Reserved} | \textcolor{grey}{10} |
-| 5     | Creation date              | 2                    |
-| 6     | Creation time              | 2                    |
-| 7     | First disk block (FAT16)   | \textcolor{red}{2}   |
-| 8     | File size                  | 4                    |
+| Order | Directory entry item     | Bytes |
+| ----- | ------------------------ | ----- |
+| 1     | File name                | 8     |
+| 2     | File ext.                | 3     |
+| 3     | Attributes               | 1     |
+| 4     | *Reserved*               | *10*  |
+| 5     | Creation date            | 2     |
+| 6     | Creation time            | 2     |
+| 7     | First disk block (FAT16) | **2** |
+| 8     | File size                | 4     |
 
 FAT16 can only have $2^{16}$​​​ block indices, and thus blocks, with 16 bits.
 
 To access a file we start from the initial block and access the initial block's next block, and so on.
 
-![Path of access](C:\Users\pc\AppData\Roaming\Typora\typora-user-images\image-20211113201124675.png)
+![Path of access](/notes-blog/assets/img/os/fatacc.png)
 
 To search for an empty block, you have to do a linear pass through the whole file to find `FREE` blocks.
 
@@ -157,6 +168,7 @@ To search for an empty block, you have to do a linear pass through the whole fil
 - Each file/directory described by an **I-Node**
   - File metadata (access right, creation time)
   - Data block addresses
+- **Nothing** has to be in memory, but most recent I-nodes be cached for speed.
 
 | Order | Block Group Item  | Info                                                         |
 | ----- | ----------------- | ------------------------------------------------------------ |
@@ -167,26 +179,29 @@ To search for an empty block, you have to do a linear pass through the whole fil
 | 5     | I-node table      | Array of indexed I-nodes of this BG.                         |
 | 6     | Data blocks       |                                                              |
 
-These are duplicated in every block group.
+[1, 2] are duplicated in every block group.
 
-| Order | I-node details                        | Bytes         |
-| ----- | ------------------------------------- | ------------- |
-| 1     | Mode                                  | 2             |
-| 2     | Owner info                            | 4             |
-| 3     | File size                             | 4 or 8        |
-| 4     | Timestamps                            | $3 \times 4$  |
-| 5     | \textcolor{blue}{Data block pointers} | $15 \times 4$ |
-| 6     | Reference count [e.g. \# hard links]  | 2             |
-| ...   | etc...                                | ...           |
+| Order | I-node details                       | Bytes         |
+| ----- | ------------------------------------ | ------------- |
+| 1     | Mode                                 | 2             |
+| 2     | Owner info                           | 4             |
+| 3     | File size                            | 4 or 8        |
+| 4     | Timestamps                           | $3 \times 4$  |
+| 5     | **Data block pointers**              | $15 \times 4$ |
+| 6     | Reference count [e.g. \# hard links] | 2             |
+| ...   | etc...                               | ...           |
+| TOTAL |                                      | **128**       |
 
 Note that file name is not in the I-node, i.e. it is contained in the data blocks the I-node points to.
 
-These are the data blocks that constitute the file data.
+These are the data blocks that constitute the file data. **Indirect blocks do not contain file data itself.**
 
 - pointers 1 to 12: Direct blocks (level 0)
 - ptr 13: Indirect blocks (level 1)
 - ptr 14: Double indirect blocks (level 2)
 - ptr 15: Triple indirect blocks (level 3)
+
+![I-node tree](/notes-blog/assets/img/os/ext2inode.png)
 
 How much space? (4B block address, 1KiB disk block)
 
@@ -215,7 +230,7 @@ To **delete** a file:
 2. Update I-node bitmap: mark as 0
 3. Update block bitmap: mark as 0
 
-![Directory entry](C:\Users\pc\AppData\Roaming\Typora\typora-user-images\image-20211113210346318.png)
+![Directory entry](/notes-blog/assets/img/os/direntry.png)
 
 **Hard Links**:
 
@@ -228,5 +243,5 @@ To **delete** a file:
 **Soft/Symbolic link**:
 
 - Points to a filepath to the desired I-node.
-- ![Symbolic link](C:\Users\pc\AppData\Roaming\Typora\typora-user-images\image-20211113212549647.png)
+- ![Symbolic link](/notes-blog/assets/img/os/symlink.png)
 

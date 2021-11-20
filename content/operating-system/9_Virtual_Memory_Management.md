@@ -171,6 +171,7 @@ $T_\text{access} = (1 - p)T_\text{mem} + pT_\text{page fault}$: a good algo **mi
 
 | Time | Mem Ref (page num.) | Frame A | Frame B | Frame C | **CRITERIA** | Fault |
 | ---- | ----------------- | ------- | ------- | ------- | ------------ | ----- |
+|  |  |  |  |  |  |  |
 
 The above table will be the info needed to track algorithm's strategy.
 

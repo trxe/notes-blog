@@ -132,4 +132,4 @@ Each page table then contains the **<page number, frame number>**.
 
 ![Memory Management Unit](/notes-blog/assets/img/os/mmu.png)
 
-The memory management unit (to be better understood in [Chapter 9](/notes-blog/os/ch9)) is providing the hardware support for checking the address requests.
+The memory management unit (to be better understood in [Chapter 10](/notes-blog/os/ch10)) is providing the hardware support for checking the address requests.

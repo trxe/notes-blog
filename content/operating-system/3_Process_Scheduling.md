@@ -48,9 +48,9 @@ For **all** processing environments:
 - Save a few register values from current process A to PCB
 - Restore a same values from process B from PCB
 
-![Context switch (oversimplified)](images/context_switch.jpg)
+![Context switch (oversimplified)](/notes-blog/assets/img/os/context_switch.jpg)
 
-![Process scheduling (point 2 - 3 is described by Figure 1.)](images/context_switch2.png)
+![Process scheduling (point 2 - 3 is described by Figure 1.)](/notes-blog/assets/img/os/context_switch2.png)
 
 ## Batch Processing
 
@@ -73,7 +73,7 @@ For **all** processing environments:
   - shorter IO-bound jobs are **waiting**, so **IO devices are idling**
   - after compute-bound job is done, IO-bound jobs are running, so **CPU is mostly idling**.
 
-![convoy](convoy.png)
+![convoy](/notes-blog/assets/img/os/convoy.png)
 
 ### Shortest Job First (SJF)
 
@@ -98,7 +98,7 @@ For **all** processing environments:
 
 ### Periodic scheduling
 
-![Timer interrupt, that cannot be intercepted by any other program, invokes the scheduler.](timer_interrupt.jpg)
+![Timer interrupt, that cannot be intercepted by any other program, invokes the scheduler.](/notes-blog/assets/img/os/timer_interrupt.jpg)
 
 - Interval of Timer Interrupt (ITI): 1ms ~ 10ms **basically the time unit**.
   - Timer Interrupt: Response by the *processor*
