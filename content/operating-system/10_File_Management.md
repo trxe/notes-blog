@@ -154,7 +154,7 @@ The operation of `open` has an important role to keep references to the all the 
 
 | Different FD table                                           | Same FD table                                                |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| ![diff fd](/notes-blog/assets/img/os/difffd_same_file_access.png) | ![same fd](/notes-blog/assets/img/os/samefd_same_file_access.png) |
+| <img src="/notes-blog/assets/img/os/difffd_same_file_access.png" width="80%"> | <img src="/notes-blog/assets/img/os/samefd_same_file_access.png" width="80%"> |
 
 ## Directories
 

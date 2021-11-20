@@ -170,6 +170,8 @@ To search for an empty block, you have to do a linear pass through the whole fil
   - Data block addresses
 - **Nothing** has to be in memory, but most recent I-nodes be cached for speed.
 
+![ext2 block group](/notes-blog/assets/img/os/ext2.png)
+
 | Order | Block Group Item  | Info                                                         |
 | ----- | ----------------- | ------------------------------------------------------------ |
 | 1     | Superblock        | Total I-node \#, I-nodes per group, total disk blocks, disk blocks per group |
@@ -215,6 +217,14 @@ $$
 
 **Directory**: Contains a linked list of **directory entries** = files/sub-directories' info within this directory. (Root directory is at I-node 2.)
 
+| Directory entry item (in data block)                         |
+| ------------------------------------------------------------ |
+| I-node number                                                |
+| Size of entry <br />(to locate next entry via moving pointer by offset) |
+| Length of file/subdirectory name                             |
+| Type (is file/subdirectory?)                                 |
+| File/subdirectory name                                       |
+
 To **access** a file: `/sub/file`
 
 1. [I-node Table] `/` at I-node 2
@@ -234,14 +244,19 @@ To **delete** a file:
 
 **Hard Links**:
 
-- Points to the same I-node.
+- Creates a **directory entry** which uses the **same I-node number**
 - When original pointer A is deleted, the I-node remains attached to the hard link B.
 - With many references, when should I delete an I-node?
   - When I-node reference count = 0
   - Which is decremented (for both A and B) on each deletion
+- Deletion of original file will not cause hard link stop working (until the last hard link is deleted).
+
+![Hard link](/notes-blog/assets/img/os/hardlink.png)
 
 **Soft/Symbolic link**:
 
-- Points to a filepath to the desired I-node.
-- ![Symbolic link](/notes-blog/assets/img/os/symlink.png)
+- Creates a file that contains the target's filepath, and points to this file.
+- Deletion of the original file will cause symlink to stop working (as the path is now invalid).
+
+![Symbolic link](/notes-blog/assets/img/os/symlink.png)
 

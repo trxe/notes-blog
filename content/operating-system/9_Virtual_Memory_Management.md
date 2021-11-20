@@ -213,13 +213,13 @@ The above table will be the info needed to track algorithm's strategy.
 ### Second-Change Page Replacement (CLOCK)
 
 - Pages are sorted by FIFO
-- R bits (reference bits) cleared regularly
+- If reference bit = 0: page is replaced
+- If reference bit = 1: page ref bit set to 0
+- Degenerates into FIFO once all pages are 1 or 0.
 
-![Concept with a FIFO](/notes-blog/assets/img/os/fifoclock.png)
-
-![Same idea but with a "Clock" instead](/notes-blog/assets/img/os/clock.png)
-
-Qn: how does the CLOCK handle frames found in the middle of the queue?
+| Reference bit marking                                        | Circular nature                                             |
+| ------------------------------------------------------------ | ----------------------------------------------------------- |
+| <img src="/notes-blog/assets/img/os/fifoclock.png" width="80%"> | <img src="/notes-blog/assets/img/os/clock.png" width="50%"> |
 
 ## Frame Allocation Policies
 
@@ -235,23 +235,15 @@ $M$ policies and $N$ frames.
 
 ### Local Replacement
 
-Pros:
+Pros: Performance is stable: Frame allocated per process remains constant from beginning
 
-- Performance is stable: Frame allocated per process remains constant from beginning
-
-Cons:
-
-- If not enough frames allocated, hinder progress
+Cons: If not enough frames allocated, hinder progress
 
 ### Global Replacement
 
-Pros:
+Pros: Dynamic adjustment of memory usage
 
-- Dynamic adjustment of memory usage
-
-Cons:
-
-- bad behaviour of one process affects others (not self-contained)
+Cons: bad behaviour of one process affects others (not self-contained)
 
 ### Thrashing again
 
@@ -263,6 +255,8 @@ Cons:
   - But that one single process hogs the I/O and degrades other processes' performance
 
 ### Working Set
+
+
 
 - Observation: Set of pages currently used typically remains constant in a short period (locality).
   - Set changes gradually over time
