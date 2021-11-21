@@ -98,7 +98,7 @@ Hence the total number of recolorings for at most $2m$ elements is at most $2m\l
 | Delete            | 1                   | 7​​              |
 | Delete and shrink | $F_{k-2} + F_{k-4}$​ | 0              |
 
-Note that $F_k / F_{k-1} \leq 2$​​​ for any integer $k \geq 2$​​​​.
+Note that $F_k / F_{k-1} \leq 2$ for any integer $k \geq 2$. (For $k\geq 3$, the bound can be tightened to $F_k / F_{k-1} \leq 1.667$.)
 
 Suppose that there are now $F_{k-1}$​​​​​​​​​ elements in the table, and it has been expanded to size $F_{k+1}$​​​​​​​​​. The table will next be expanded when nett $F_{k+2-2} - F_{k-1} = F_{k-2}$​​​​​​​​​ elements have been newly added. When an element is inserted, it will pay 1 unit upfront and store 12 units as credit balance. Hence after the $F_{k-2}$​th element has been added, we now have at least $12F_{k-2}$​ units of credit balance. The real cost of the table allocation ($F_{k+2}$​) and moving of each element ($F_k$​​​​​​​​​) can be paid for by the total credit balance left as
 
