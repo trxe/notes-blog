@@ -91,27 +91,28 @@ Hence the total number of recolorings for at most $2m$ elements is at most $2m\l
 
 **Accounting**:
 
-| Operation         | Real cost           | Amortized cost                         |
-| ----------------- | ------------------- | -------------------------------------- |
-| Insert            | 1                   | $\phi^4 + \phi^2 \approx 9.472 = O(1)$​​ |
-| Insert and expand | $F_{k+1} + F_{k-1}$ | 0                                      |
-| Delete            | 1                   | $\phi^4 + \phi^2 \approx 5.854 = O(1)$ |
-| Delete and shrink | $F_{k-2} + F_{k-4}$​ | 0                                      |
+| Operation         | Real cost           | Amortized cost |
+| ----------------- | ------------------- | -------------- |
+| Insert            | 1                   | 13​​​​​             |
+| Insert and expand | $F_{k+1} + F_{k-1}$ | 0              |
+| Delete            | 1                   | 7​​              |
+| Delete and shrink | $F_{k-2} + F_{k-4}$​ | 0              |
 
-Suppose that there are now $F_{k-1}$​​​​ elements in the table, and it has been expanded to size $F_{k+1}$​​​​. The table will next be expanded when nett $F_{k+2-2} - F_{k-1} = F_{k-2}$​​​​ elements have been newly added. When an element is inserted, it will pay 1 unit upfront and store $\phi^5 + \phi^2$​​​​ units as credit balance. Hence after the $F_{k-2}$​​​​th element has been added, we now have at least $F_{k-2} (\phi^5 + \phi^2)$​​​​ units of credit balance. The real cost of the table allocation ($F_{k+2}$​​​​) and moving of each element ($F_k$​​​​) can be paid for by the total credit balance left as
+Note that $F_k / F_{k-1} \leq 2$​​​ for any integer $k \geq 2$​​​​.
 
-
-$$
-F_{k+2} + F_{k} = F_{k+1}\phi  + F_{k} = F_{k}(\phi^2+1) = F_{k-2}(\phi^4 + \phi^2)
-$$
-
-
-Now suppose there are $F_{k-3}$ elements in the table and it has been shrunk to size $F_{k-1}$. Then table will next be shrunk when nett $F_{k-3} - F_{k-4} = F_{k-5}$ elements have been deleted. When an element is deleted it will pay 1 unit upfront and store $\phi^3 + \phi$ units as credit balance. After the $F_{k-5}$th element has been deleted we now have $F_{k-5}(\phi^3 + \phi)$​​ units of credit balance. Similar to above, the real cost of allocating the table and moving each element can be paid for by the credit balance.
-
+Suppose that there are now $F_{k-1}$​​​​​​​​​ elements in the table, and it has been expanded to size $F_{k+1}$​​​​​​​​​. The table will next be expanded when nett $F_{k+2-2} - F_{k-1} = F_{k-2}$​​​​​​​​​ elements have been newly added. When an element is inserted, it will pay 1 unit upfront and store 12 units as credit balance. Hence after the $F_{k-2}$​th element has been added, we now have at least $12F_{k-2}$​ units of credit balance. The real cost of the table allocation ($F_{k+2}$​) and moving of each element ($F_k$​​​​​​​​​) can be paid for by the total credit balance left as
 
 $$
-F_{k-2} + F_{k-4} = F_{k-3}\phi  + F_{k-4} = F_{k-4}(\phi^2+1) = F_{k-5}(\phi^3 + \phi)
+F_{k+2} + F_{k} \leq 2F_{k+1}  + F_{k} \leq F_{k}(2+1) \leq 4F_{k-2}(3) = 12F_{k-2}
 $$
 
 
-Hence by the accounting method we can see each operation is $O(1)$.
+Now suppose there are $F_{k-3}$​​ elements in the table and it has been shrunk to size $F_{k-1}$​​. Then table will next be shrunk when nett $F_{k-3} - F_{k-4} = F_{k-5}$​​ elements have been deleted. When an element is deleted it will pay 1 unit upfront and store $6$​​ units as credit balance. After the $F_{k-5}$​​th element has been deleted we now have $6F_{k-5}$​​​​ units of credit balance. Similar to above, the real cost of allocating the table and moving each element can be paid for by the credit balance.
+
+
+$$
+F_{k-2} + F_{k-4} \leq 2F_{k-3}  + F_{k-4} = F_{k-4}(3) = 2F_{k-5}(3) = 6F_{k-5}
+$$
+
+
+Hence by the accounting method we can see each operation's amortized cost is a constant and thus $O(1)$​.
