@@ -6,38 +6,48 @@ permalink: /os/ch5
 
 # 5 -- Threads
 
+## Summary
+
+| Process                         | Thread                                  |
+| ------------------------------- | --------------------------------------- |
+| Context duplication             | No need                                 |
+| Difficult IPC                   | No need                                 |
+| Protection (isolation)          | If one thread crashes, all threads stop |
+| Simpler concurrency enforcement | Race conditions prone                   |
+| Slow (context switching)        | Fast                                    |
+
+**Thread types** also covered.
+
 ## Why Thread
 
 - Processes expensive
   - Process creation requires duplication of memory space and context
   - Context switching requires saving and restoring
 - Communications difficult
-  - Independent memory space $\Rightarrow$​ No easy way to pass information
-  - IPC difficult
+  - Independent memory space i.e. Non-trivial information passing (kernel space mode switch)
 
 Traditionally processes have a **single thread of control**. (One instruction at any one time.)
 
-Adding more threads of control to the same process allows multiple parts of the program to happen at the same time. Different threads spawned have different PCs.
+Adding more threads of control to the same process allows multiple independent parts of the program to happen at the same time. Different threads spawned have different PCs.
 
 ### Process vs Thread
 
-- Multithreaded process
-  - Since all threads are shared within 1 process, they share:
-    - MEM context: Text, Data, Heap
-      - IS the Stack shared?? Conceptually no. Each thread has a different call stack.
-      - But all the threads have the same memory address space
-    - HW context: None (not SP, FP, PC, cos dedicated call frame! not GPR also cos wrong values.)
-    - OS context: process id, files, network sockets etc.
-
+- Since all threads are shared within 1 process, they share:
+  - MEM context: Text, Data, Heap
+    - Stack: Conceptually not shared. Each thread has a different call stack.
+    - But all threads share same memory address space (page table)
+  - HW context: None (not SP, FP, PC, cos dedicated call frame! not GPR also cos wrong values.)
+  - OS context: process id, files, network sockets etc.
 - Process context switch vs Thread switch
   - Process: OS, HW and MEM all needs to be switched
   - Thread: Only HW (reigsters) and "Stack" which is really just changing the FP and SP, still in the same memory address
-- (Pros) Thus thread has more
+- **Pros:** Thus thread has more
   - economy
   - better resource sharing
   - responsiveness
   - scalability (multiple CPU)
-- (Cons) But problems with
+- **Cons:** But problems with
+  - Safety
   - Concurrency
     - Parallel library calls possible (must make sure these calls are multithread safe!)
   - Process behaviour (Implementation dependent):
@@ -63,6 +73,8 @@ Thread is implemented in OS and handled via system calls. Scheduling on thread l
 
 ### Hybrid thread
 
+![Hybrid threading](/notes-blog/assets/img/os/hybridthread.png)
+
 OS will schedule on the **kernel threads** whereas **user threads** bind to some kernel thread(s).
 
 ### Modern threading 
@@ -82,19 +94,21 @@ Standard definition of API and behaviour of threads. However the implementation 
 int pthread_create(
 	pthread_t *tid_created,
 	const pthread_attr_t *thread_attrs,
-	void* (*startroutine) (void*) // function pointer to the fn thread should run.
+	void* (*callFunction) (void*)
 	void *arg_for_startroutine
 	);
 
 int pthread_exit(void *exitValue); // for syncing
-// if pthread_exit isn't used, NO WAY to return an exit value and thread terminates
+// if pthread_exit isn't used, 
+// NO WAY to return an exit value and thread terminates
 // once startroutine is done.
 ```
 
 - Synchronization via `pthread_join()` (block until this other thread is complete.)
 
 ```c
-int pthread_join(pthread_t tid, void **status) // returns 0 if succeed, !0 if error.
+int pthread_join(pthread_t tid, void **status) 
+    // returns 0 if succeed, !0 if error.
     // status == exit value, tid is the pthread to wait for
 ```
 

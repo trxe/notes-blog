@@ -14,24 +14,22 @@ permalink: /os/ch1
 
 | OS Type          | Usage                                                        | Advantages                                                   | Disadvantages                                                |
 | ---------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| No OS            | change physical config                                       | minimal overhead                                             | not portable, not efficient use                              |
-| Batch OS         | similar jobs are bundled with instructions <br />in a new magnetic tape that OS execs in order. | computer does more work,<br />back-to-back (increased performance) | no protection (one job can affect <br />pending jobs), infinite loops, hard <br />to debug. w/o multiprogramming,<br />CPU is idle during I/O (e.g. card reading). |
-| Time-sharing OS  | multiple users interact with machine via <br />**terminal**. job scheduling mimics concurrency. | memory management,<br />shares CPU time, memory,<br />storage. virtualization |                                                              |
+| No OS            | change physical config                                       | - minimal overhead                                           | **not portable**, not efficient use                          |
+| Batch OS         | (Mainframes) similar jobs are bundled with instructions that OS execs in order. | - computer does more work                                    | **no protection** (one job can affect pending jobs), infinite loops, hard to debug. CPU is idle during I/O (e.g. card reading) but improved by multiprogramming. |
+| Time-sharing OS  | multiple users interact with machine via **terminal**. job scheduling mimics concurrency. | - memory management<br />- shares CPU time, memory, storage.<br />-  **Virtualization** |                                                              |
 | PC OS -- Windows | Single user at once, but multiple user access                | (dedicated machine)                                          |                                                              |
-| PC OS -- Unix    | One user at workstation, but others can <br />remote access. | (general time sharing model)                                 |                                                              |
+| PC OS -- Unix    | One user at workstation, but others can remote access.       | (general time sharing model)                                 |                                                              |
 
 ## Motivations for OS
 
-- Hardware components have same core functionality but different attributes (speed, storage etc.)
-  - OS helps to abstract these details
-  - Presents common high level functionality to user.
-  - Efficiency, programmability, portability
-- Multiple resources' concurrent usage
-- Multiple processes concurrent exec
+**OS is an abstraction.** 
 
-**OS is an abstraction.**
+- Hardware components have same core functionality but different attributes (speed, storage etc.)
+- Virtualization: each program executes as if it has all the resources to itself (e.g. memory space, files as contiguous entities when they are actually disjoint, illusion of process always running)
 
 **OS is a resource allocator.** Manage resources and arbitrate conflicting requests.
+
+- Concurrent file usage/memory access
 
 **OS is a control program.** Prevents accidents and malicious attacks, provides security isolation and protection.
 
@@ -46,12 +44,13 @@ Kernel: Deals with hardware issues, provides **system call interface**, special 
 
 ## Implementation -- Components
 
-![In C/C++ system calls can be made via the library verion (D --> C --> A)](../assets/img/os/systemcomms.png)
+![In C/C++ system calls can be made via the library version (D --> C --> A)](/notes-blog/assets/img/os/systemcomms.png)
 
 - A: OS exec machine instructions
 - B: Normal exec machine instructions
 - C: System calls (interface)
   - D: Program calls library code
+  - In C/C++ system calls can be made via the **library** version (D -> C -> A)
 
 ## Implementation
 
@@ -80,5 +79,5 @@ Software emulation of hardware = **Virtualization** of underlying hardware (Illu
 **Hypervisor**/VMM
 
 - Type 1: Runs directly on hardware.
-  - Provides indiv virtual machines to multiple guest OSes
-- Type 2: Runs as a program on a Host OS (e.g. VirtualBox).
+  - Provides individual virtual machines to multiple guest OSes
+- Type 2: Runs as a program on a Host OS

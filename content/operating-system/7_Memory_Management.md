@@ -135,6 +135,12 @@ Upon freeing of partitions (deallocation):
 
 Note allocation is $O(n)$​ but deallocation is $O(1)$​ **assuming** that the address of the memory block the process occupies is saved somewhere.
 
+### Bitmap representation
+
+OS represents each equal memory partition with a bit.
+
+Incurs overhead for bit manipulation operations because the memory is not bit-addressable.
+
 ### Linked list representation
 
 OS represents the partitions as a linked list. In dynamic partitioning above, to allocate a new process:
@@ -163,9 +169,10 @@ Once both are freed, can be merged to become larger block.
 
 At most $\log M$ steps for fixed total physical memory size $M$: $O(1)$
 
-**Deallocation**
-
-1. Check if any free block in $A[\lceil \log n \rceil]$ is the buddy (worst case $O(n)$ time for $\lceil \log n \rceil = 1$)
+**Deallocation**: Check if any free block in $A[\lceil \log n \rceil]$ is the buddy (worst case $O(n)$ time for $\lceil \log n \rceil = 1$)
 
 - Note that the buddy blocks of size $k = \lceil \log n \rceil$​​ are: `xx...xx000..0` and `xx...xx100..0` with $k$ trailing zeroes
 
+**Internal fragmentation**: all memory requests are rounded up to the nearest power of two.
+
+**External fragmentation**: due to limited coalescing ability of this allocator (unable to coalesce blocks of different sizes, if they are not buddy blocks)

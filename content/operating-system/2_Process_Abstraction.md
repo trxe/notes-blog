@@ -6,43 +6,50 @@ permalink: /os/ch2
 
 # 2 -- Process Abstraction
 
-## Component descriptions
+## Summary
 
-**Functional units**
+1. How to represent a process in memory.
+2. Separation of user space and kernel space to provide safety and ease of use
+3. Communications between user space, kernel space and hardware
 
-**Registers:** GPR, Special registers (PC, Stack Pointer, Frame pointer)
+## Hardware components
 
-### Basic Instruction Execution
+CPU houses:
 
-1. Load instructions into "text"
-2. PC set to first instruction location
-3. Instruction exec loop (load memory, process via Functional Units, store memory)
+- Fetch unit: loads instruction (Location in Program Counter register)
+- Functional units: for instruction execution
+- Other registers: GPR, Special registers (PC, Stack Pointer, Frame pointer)
+
+## Basic Instruction Execution
+
+1. Load process instructions into memory (Text)
+2. Set PC to Text start address
+3. Instruction exec loop: load memory, process via Functional Units, store in memory
 
 ## Function Calls
 
-**Problems**: parameters, local variables, return value (we cannot just use the "data memory space" directly)
+Problem of where to allocate parameters, local variables, return values in memory:
 
-Challenges:
-
-- control flow: after a return statement, how do we know location of instruction to return to?
-  - basically, PC+4 values needs to be stored
-- data: where do we store local variables? if recursion we don't know how much space to pre-allocate.
+- control flow: after a callee function's return statement, how do we know location of instruction to return to of caller function?
+- data: no prior knowledge of how much space to pre-allocate for local variables.
 
 ### Stack Memory for function invocations
 
-Unlike other memory regions, stack memory can grow upwards.
+![Memory Stack](/notes-blog/assets/img/os/memstack.png)
 
-After each return, we **pop** the returned frame from the stack.
+Stack frame: memory region for a single function's invocation information. **Pushed** onto a stack at stack pointer (SP) address.
 
-{Return address, parameters, storage for local variables, SP, FP} $\subset$​ Stack Frame.
+After each return, we **pop** the returned frame from the stack. Unlike other memory regions, stack memory can grow upwards. 
 
-### Frame Pointer
+### Stack Pointer, Frame Pointer
+
+SP @ top of the stack. Changes during stack frame lifetime.
 
 FP @ fixed location in **each stack frame**. e.g. to access some value: `lw (FP - x)` Needs to be saved as well to return to after a frame is popped off the stack.
 
-![Memory Stack](../assets/img/os/memstack.png)
+The existence of the FP and SP is architecture/platform dependent. A function invocation can be done purely with SP.
 
-### Function call convention (no universal way!)
+### Function call convention
 
 - Prepare for a call
   - **Caller:** Pass parameters using registers and/or stack
@@ -62,58 +69,59 @@ FP @ fixed location in **each stack frame**. e.g. to access some value: `lw (FP 
 
 ### Saved Registers
 
-What if we have more variables than registers? **Register spilling** allows saving some variables to memory and fetching them when needed. e.g. Functions can spill registers it intends to use locally before the function starts. After returning function, restore those registers from memory.
+What if we have more variables than registers? **Register spilling** allows saving some variables to memory and fetching them when needed. Saved in stack frame.
+
+e.g. Functions can spill registers it intends to use locally before the function starts. After returning function, restore those registers from memory.
 
 ## Dynamic memory allocation
 
 i.e. Acquired memory space during execution time. Can we use "Data" or "Stack" memory?
 
-- *Size not known* during compilation (NO DATA)
-- No *de-alloc timing*, can be freed by garbage collecting (NO STACK)
+- *Size not known* during compilation (NOT DATA)
+- No *de-alloc timing*, can be freed by garbage collecting (NOT STACK)
 - Thus we need to manage the **HEAP**.
-  - Variable size, allocation/deallocation timing.
-  - Memory management will be covered later (how to deal with "holes" in heap memory after deallocating non-contiguous memory?)
+  - Variable size, flexible allocation/deallocation timing.
 
 ## Process Management
 
-Allowing multiple programs to share hardware usage. We need to allow switching between $A$ and $B$.
+Allowing multiple programs A, B to share hardware usage by switching between them.
 
 ### Abstraction of program (Process)
 
 Information required to describe a running program:
 
-- Memory context:
-  - Text, Data, Stack, Heap
-- Hardware context:
+- **Memory** context:
+  - Text, Data, Stack, Heap [page table](/notes-blog/os/ch9) **addresses, limits**
+- **Hardware** context:
   - Registers, PC, SP, FP
-- OS context:
-  - Process properties, Resources used
+- **OS** context:
+  - PID, parent, child, open file descriptor list
 
-## Process ID (PID) and State
-
-### PIDs are unique process IDs in a machine.
+### Process ID (PID) and State
 
 - PIDs are reusable as long as no other running process shares this ID.
 - max processes = max unique PID count
 - reserved PIDs (kernel)
 
-### A process can be running OR not-running. These are the two possible states.
+A process can also be ready to run in the **ready queue**, but not actually executing.
 
-A process can also be ready to run, but not actually executing.
+### Process state model
 
-### Process model
+| General Process Model                                        | Unix Process Model                                           |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| <img src="/notes-blog/assets/img/os/procmodel.png" width="100%"> | <img src="/notes-blog/assets/img/os/unixprocmodel.png" width="100%"> |
 
-![Process Model](../assets/img/os/procmodel.png)
+## OS Communication
 
-## System calls - The OS' API
+### System Calls
 
-### Purpose
+OS's API: User space callable functions.
 
 - Well-defined, safe implementation of system operations
 - Prevent from directly manipulating hardware devices (safety)
 - Request for services via **interrupts**
 
-Changes from user to (privileged) kernel mode. Different OS has different API.
+Changes from user to (privileged) kernel mode.
 
 In C/C++ the system call can almost be invoked **directly** (library version of the call with same name & params, acts as ***function wrapper***). Other than that the **library functions** acts as a ***function adapter***.
 
@@ -149,11 +157,14 @@ The entire execution context of a process. Kernel maintains all processes' PCB.
 
 ### Exception
 
-Synchronous, happens at runtime due to program execution. An exception handler is then executed. `echo $?` prints the exit status of the last command.
+**Synchronous**, happens at runtime due to program execution. An exception handler is then executed. `echo $?` prints the exit status of the last command.
 
 - Segfault: e.g. trying to change a character of a constant string `char*`, or dereferencing a `NULL` location
-- Divide by 0
+- Arithmetic errors: Divide by 0
 
 ### Interrupt
 
-Asynchronous, external events can interrupt the execution of a program. An interrupt handler is then executed. Happens independent of program execution, due to I/O etc.
+Electronic alerting signals sent to the processor from hardware.
+
+**Asynchronous**, external events can interrupt the execution of a program. An interrupt handler is then executed. Happens independent of program execution, due to I/O etc.
+

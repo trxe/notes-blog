@@ -148,6 +148,7 @@ Given a full path name, recursive search of directories necessary to arrive at f
 | 6     | Creation time            | 2     |
 | 7     | First disk block (FAT16) | **2** |
 | 8     | File size                | 4     |
+| TOTAL |                          | 32    |
 
 FAT16 can only have $2^{16}$​​​ block indices, and thus blocks, with 16 bits.
 
@@ -155,7 +156,7 @@ To access a file we start from the initial block and access the initial block's 
 
 ![Path of access](/notes-blog/assets/img/os/fatacc.png)
 
-To search for an empty block, you have to do a linear pass through the whole file to find `FREE` blocks.
+To search for an empty block, you have to do a linear pass through the whole FAT to find `FREE` blocks.
 
 | Boot          | FAT                           | FAT dup. | Root dir.      | Data blocks                |
 | ------------- | ----------------------------- | -------- | -------------- | -------------------------- |

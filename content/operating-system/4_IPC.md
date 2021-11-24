@@ -15,7 +15,7 @@ permalink: /os/ch4
 - Detach $M$​ from memory space
 - Destroy $M$ (only one process has to do, $M$ **must be detached** from all processes)
 
-Note that shared memory is stored 
+Master program creates SHM.
 
 | Master program (creates SHM)               | function                                                    |
 | ------------------------------------------ | ----------------------------------------------------------- |
@@ -25,12 +25,14 @@ Note that shared memory is stored
 | `shmdt( (char*) shm )`                     | detaches memory                                             |
 | `shmctl( shmid, IPC_RMID, 0 )`             | `IPC_RMID` marks for destroying after last process detached |
 
-| Slave program (attaches to SHM) | function                            |
-| ------------------------------- | ----------------------------------- |
-| `scanf("%d", &shmid)`           | `shmid` passed from master to slave |
-| `shm = shmat(...)`              | attach                              |
-| `shm[0] = 1`                    | informs master of completion        |
-| `shmdt((char*) shm)`            | detach                              |
+Slave program attaches to SHM.
+
+| Slave program         | function                            |
+| --------------------- | ----------------------------------- |
+| `scanf("%d", &shmid)` | `shmid` passed from master to slave |
+| `shm = shmat(...)`    | attach                              |
+| `shm[0] = 1`          | informs master of completion        |
+| `shmdt((char*) shm)`  | detach                              |
 
 #### Pros
 
@@ -86,30 +88,28 @@ Sender doesn't block unless buffer is full. Unless the sender requires an acknow
 
 Connects `stdout` of Process A to the WRITE end of the of the pipe, which passes on to the READ end of the pipe to `stdin` of Process B. Note it is **FIFO**.
 
+Is a **circular bounded byte buffer**. Writers wait when buffer is full, readers wait when buffer is empty.
+
 Its syscall in C is `pipe(args[2])`, where `args[0]` is the READ end and `args[1]` is the WRITE end.
 
 ```C
 // parent
 close(pipeFd[READ_END]);
-write(pipeFd[WRITE_END], str, strlen(str) + 1); // your string pointer and the number of elements
+write(pipeFd[WRITE_END], str, strlen(str) + 1);
 close(pipeFd[WRITE_END]);
 //child
 close(pipeFd[WRITE_END]);
 read(pipeFd[READ_END], buf, sizeof(buf));
 close(pipeFd[READ_END]);
-// it's good practice to close file descriptors when you're done with them.
-// helps enforce better error handling.
 ```
 
 Possible to change/attach the `std__` communication channels to any one of the pipe ends.
 
-[Link to details on pipe and dup.](http://unixwiz.net/techtips/remap-pipe-fds.html)
-
 ## Unix Signal
 
 - Asynchronous notification regarding some event
-  - Recipient does signal **handling** via a default set of handlers OR supplied handler (via the signal)
+  - Recipient does signal **handling** via a default set of handlers OR supplied handler
 - Sent to some process/thread
-- e.g. kill, interrupt, stop, continue, memory error, arithmetic error, ...
 - `void sigint_handler(int signum)` must be defined in your program to replace the default signal handling. (requires `signal.h`)
 - `if (signal(SIGINT, sigkill_handler) == NULL)` the `sigkill` handler cannot be registered (cannot replace the default signal kill handling)
+

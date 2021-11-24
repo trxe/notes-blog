@@ -10,6 +10,10 @@ permalink: /os
 
 The contents follow the NUS module CS2106 (taken in AY2021/22 S1).
 
+## Cheat sheet(s)
+
+- [Functions](/notes-blog/os/functions)
+
 ## Table of Contents
 
 1. [Introduction to OS](/notes-blog/os/ch1)

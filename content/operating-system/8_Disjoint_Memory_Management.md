@@ -74,7 +74,7 @@ Crucial **assumption**: page size = frame size [Design]
 
 ### Copy-on-write
 
-- On **forking, before** overwriting memory, map the new process' pages to the **same frame locations**
+- On **forking**, map the new process' pages to the **same frame locations**
 - Mark the location as **read**-only with the access bits
 - Only when a write is required, will the OS copy the page to a new memory location with write access, and reassign write access to the previous page.
 

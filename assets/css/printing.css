@@ -1,5 +1,5 @@
 :root {
-    --content-width: 70%;
+    --content-width: 100%;
     --navbox-color: #9b49ff;
     --box-color: #f1e6ff;
     --code-color: #2e0063;
@@ -9,42 +9,11 @@
 
 body {
     font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 1em;
+    font-size: small;
     color: black;
     margin: auto;
     padding: 50px;
     max-width: var(--content-width);
-    line-height: 1.7em;
-}
-
-@media screen and (max-width: 600px) {
-    body {
-        font-size: 0.7em;
-        width: 90%;
-    }
-}
-
-@media only screen and (max-width: 600px) {
-    /* horizontal scrollbar for tables if mobile screen */
-    .tablemobile {
-        overflow-x: auto;
-        display: block;
-    }
-    img, table, th, td {
-        width: 100%;
-    }
-    pre {
-        font-size: 0.8em;
-    }
-    ul, ol {
-        padding-left: 0em;
-        margin-left: 5%;
-        margin-right: 5%;
-    }
-    .MathJax_Display, .MJXc-display, .MathJax_SVG_Display {
-        overflow-x: auto;
-        overflow-y: hidden;
-    }
 }
 
 img {
@@ -52,6 +21,7 @@ img {
     display: block;
     margin-left: auto;
     margin-right: auto;
+    width: 70%;
     max-width: 600px;
 }
 

@@ -6,6 +6,19 @@ permalink: /os/ch3
 
 # 3 -- Process Scheduling
 
+## Summary
+
+1. Types of processing environments
+2. Types of process behaviours
+3. Preemptive vs non-preemptive algorithms
+4. Criteria for scheduling algorithms in general
+   1. Fairness (no starvation)
+   2. Utilization (no idle processes, minimize OS)
+   3. Turnaround time, throughput (batch)
+   4. Low response (interactive)
+   5. Adaptivity (online scheduling)
+5. Note: you can simulate yielding a process by `usleep(microsecs)`
+
 ## Concurrent processes
 
 - Virtual parallelism: 1 CPU core, **illusion** of parallelism [time-slicing]
@@ -45,8 +58,8 @@ For **all** processing environments:
 
 **Context switch**:
 
-- Save a few register values from current process A to PCB
-- Restore a same values from process B from PCB
+- Save a few register values from current process A to PCB to HW context
+- Restore register values from process B from PCB
 
 ![Context switch (oversimplified)](/notes-blog/assets/img/os/context_switch.jpg)
 
@@ -124,11 +137,10 @@ For **all** processing environments:
 - Problems:
   - Starvation of lower priority processes. *Possible solutions: 1. decrease the priority of the currently running processes after each time quantum. 2. give a time quantum for the running process.*
   - Priority Inversion. 
-    - e.g. A, B and C have high to low priority, and appear last to first.
-    - C is executed first and at some point locks a file x.
-    - B then appears and executes.
-    - A then appears. It tries to execute but fails because it requires file x which is locked by C.
-    - if B is a long process, A is unduly starved.
+    - C (LOW) is executed first and at some point locks a file x.
+    - B (MID) then appears and executes.
+    - A (HIGH) then appears. It tries to execute but fails because it requires file x which is locked by C (LOW).
+    - if B (MID) is a long process, A (HIGH) is unduly starved.
 
 ### Multi-level Feedback Queue (MLFQ)
 
