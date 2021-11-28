@@ -185,7 +185,11 @@ The success of **IRIS GL**, the graphics API for the world's first graphics hard
 
 **Primitive Generation**: if primitive is visible, then try output. *Appearance depends on the primitive's **state***.
 
-**State Changing**: e.g. Color changing is a state changing function. Changes the "pen color" state to $\textcolor{red}{\textsf{RED}}$ for instance, then it assigns those primitives affected to state $\textcolor{red}{\textsf{RED}}$​.
+**State Changing**: e.g. Color changing is a state changing function. Changes the "pen color" state to $\textcolor{red}{\textsf{RED}}$ for instance, then it assigns those primitives affected to state $\textcolor{red}{\textsf{RED}}$​​.
+
+### OpenGL pipeline
+
+![OpenGL pipeline](/notes-blog/assets/img/cg/openGLpipeline.png)
 
 ### Function format
 
@@ -624,7 +628,8 @@ Eliminate all **easy** cases without computing intersections.
 
 ![Outcodes](/notes-blog/assets/img/cg/outcodes.png)
 
-Let $F(A,B)$​ represent the clipping requirement of the line segment $AB$​. $F(A,B)$​ equals 2 if it is not clipped out, 1 if it is partially clipped out, and 0 if it is fully clipped out.
+Let $F(A,B)$​ represent the clipping requirement of the line segment $AB$​. $F(A,B)$​​ equals 2 if it is not clipped out, 1 if it is partially clipped out, and 0 if it is fully clipped out.
+
 
 
 $$
@@ -641,8 +646,6 @@ $$
 ##### Implementation:
 
 To compute the last case: **shorten** line segment by intersecting with one of the sides, recursively compute outcode until $A = B = 0$. For 3D, we have 6-bit outcodes ($9 \times 3 = 27$​ of them, each prefixed with 00, 01, or 10).
-
-#### Liang-Barsky (read later)
 
 ## Clipping in clip space
 
@@ -755,14 +758,18 @@ Given **point on surface, light source, viewpoint**: compute **color** of **poin
 
 #### OpenGL implementation
 
-- Takes place at **Vertex Processing** stage
+- Since Gouraud shading is per-vertex, takes place at **Vertex Processing** stage, in **Camera space**
+
 - `glEnable(GL_LIGHTING)` enables shading calculations, disables `glColor`
+
 - `glEnable(GL_LIGHTi)` for $i \in [0 \dots 7]$​
   - `glLightModeli(parameter, GL_TRUE)`
+  
 - Defining a point light source: `GLfloat[]` for each
   - `ambienti`, `diffusei`, `speculari`
   - `lighti_pos`: if `lighti_pos[3] == 1.0`: point light. else if `== 0.0`: directional light
   - `glLightModelfv(GL_LIGHT_MODEL_AMBIENT, global_ambient)` sets the **global** ambient light $I_{ga}$
+  
 - `glMaterialfv(GL_FRONT, GL_X, type X)`
   - `AMBIENT, DIFFUSE, SPECULAR` = `GLfloat[]` i.e. $I_{a,i}, I_{d,i}, I_{s,i}$
   - `SHININESS` = `GLfloat`
@@ -795,6 +802,10 @@ I_{\text{Phong}} = \left[ \begin{matrix} r \\ g \\ a \end{matrix} \right]
 = I_a k_a + f_{\text{att}} I_p \sum_{i}[ k_d (N \cdot L_i) + k_s (R \cdot L_i)^n ]
 $$
 
+Simplified:
+$$
+I_{\text{Phong}} = I_a k_a + I_p [k_d (N \cdot L) + k_s (R \cdot L)^n]
+$$
 
 
 ![Illustration of unit vectors and angles for the Phong model.](/notes-blog/assets/img/cg/phong.png)
@@ -819,12 +830,35 @@ The "constant" variables below are the material properties
 | $k_s$     | Specular constant           | RGB triplet for the particular material                      |
 | $n$       | Shininess constant (1..128) | Controls the range of angles that get strong specularity     |
 
+### Blinn-Phong Illumination
+
+$$
+I_{\text{Blinn-Phong}} = I_a k_a + f_{\text{att}} I_p k_d (N \cdot L) + f_{\text{att}} I_p k_s (\textcolor{blue}{N \cdot H})^n
+$$
+
+$H$​​​ is the halfway vector between $L$​​​ and $V$​​​​​. Since $\| L \| = \| V \| = 1$​, we have $H = (L + V)/ \|L + V \|$​​. 
+
+Since generally $\theta_{H, N} \leq \theta_{R, V}$​​, the specular highlights in Blinn-Phong are larger.
+
+Advantage over Phong: omission of $R$ reduces computation necessary
+
+- If the view vector is far away, the view directions $V$​ tend to be very close to being parallel.
+- $V, H$​ does not have to be recalculated, but $R$​​ has to be 
+- Hence Blinn-Phong more efficient at rendering surfaces at a distance.
+
+<img src="/notes-blog/assets/img/cg/blinnphong.png" alt="Blinn-Phong model" style="zoom:50%;" />
+
 ### Surface normals
 
 - Flat surface: cross product of two vectors in the plane.
 - Curved surface: cross product of two vectors in the **tangent** plane
 - `glNormal3f` or `glNormal3fv` to set normals before each vertex (make sure its unit vector!!)
   - or else `glEnable(GL_NORMALIZE)` at performance penalty
+
+### Vertex normals
+
+- Average of polygon normals of the polygons sharing vertex $v$
+- From analytical surface normal vector (e.g. from some centroid)
 
 ### Global illumination
 
@@ -1380,6 +1414,15 @@ Generally we have
 - $G^n \not\Rightarrow C^n$
 - $C^{n \pm 1} \not\Rightarrow C^n$
 - $C^2, G^2$ look smooth.
+
+### Bezier curves
+
+A Bezier curve of degree $n$ is a linear interpolation of 2 corresponding points in Bezier curves of degree $n-1$​. A Bezier curve of degree $n$ has $n$ control points $P_0, P_1, \dots, P_n$:
+
+- $B_{P_0}(t) = P_0$​
+- $B(t) = B_{P_0 P_1 \dots P_n}(t) = (1-t)B_{P_0 \dots P_{n-1}}(t) + tB_{P_1 \dots P_n}(t)$​
+
+As such a Bezier curve of degree $n$ has $B'(0) = n(p_1-p_0), B'(1) = n(p_n-p_{n-1})$.​
 
 ### Cubic Bezier curves
 
