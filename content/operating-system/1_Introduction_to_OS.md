@@ -14,9 +14,9 @@ permalink: /os/ch1
 
 | OS Type          | Usage                                                        | Advantages                                                   | Disadvantages                                                |
 | ---------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| No OS            | change physical config                                       | - minimal overhead                                           | **not portable**, not efficient use                          |
-| Batch OS         | (Mainframes) similar jobs are bundled with instructions that OS execs in order. | - computer does more work                                    | **no protection** (one job can affect pending jobs), infinite loops, hard to debug. CPU is idle during I/O (e.g. card reading) but improved by multiprogramming. |
-| Time-sharing OS  | multiple users interact with machine via **terminal**. job scheduling mimics concurrency. | - memory management<br />- shares CPU time, memory, storage.<br />-  **Virtualization** |                                                              |
+| No OS            | Changing physical config                                     | - minimal overhead                                           | **not portable**, not efficient use                          |
+| Batch OS         | (Mainframes) similar jobs are bundled with instructions that OS execs in order. | - computer does more work                                    | - **no protection** <br />- infinite loops <br />- hard to debug <br />- **no concurrency** |
+| Time-sharing OS  | Multiple users interact with machine via **terminal**. job scheduling mimics concurrency. | - memory management<br />- shares CPU time, memory, storage.<br />-  **Virtualization** |                                                              |
 | PC OS -- Windows | Single user at once, but multiple user access                | (dedicated machine)                                          |                                                              |
 | PC OS -- Unix    | One user at workstation, but others can remote access.       | (general time sharing model)                                 |                                                              |
 
@@ -30,6 +30,7 @@ permalink: /os/ch1
 **OS is a resource allocator.** Manage resources and arbitrate conflicting requests.
 
 - Concurrent file usage/memory access
+- Process switching to optimize CPU and IO activities
 
 **OS is a control program.** Prevents accidents and malicious attacks, provides security isolation and protection.
 

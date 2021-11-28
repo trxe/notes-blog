@@ -16,8 +16,6 @@ permalink: /os/ch5
 | Simpler concurrency enforcement | Race conditions prone                   |
 | Slow (context switching)        | Fast                                    |
 
-**Thread types** also covered.
-
 ## Why Thread
 
 - Processes expensive
@@ -30,30 +28,39 @@ Traditionally processes have a **single thread of control**. (One instruction at
 
 Adding more threads of control to the same process allows multiple independent parts of the program to happen at the same time. Different threads spawned have different PCs.
 
-### Process vs Thread
+Since all **threads** are shared within 1 process, they **share**:
 
-- Since all threads are shared within 1 process, they share:
-  - MEM context: Text, Data, Heap
-    - Stack: Conceptually not shared. Each thread has a different call stack.
-    - But all threads share same memory address space (page table)
-  - HW context: None (not SP, FP, PC, cos dedicated call frame! not GPR also cos wrong values.)
-  - OS context: process id, files, network sockets etc.
-- Process context switch vs Thread switch
-  - Process: OS, HW and MEM all needs to be switched
-  - Thread: Only HW (reigsters) and "Stack" which is really just changing the FP and SP, still in the same memory address
-- **Pros:** Thus thread has more
-  - economy
-  - better resource sharing
-  - responsiveness
-  - scalability (multiple CPU)
-- **Cons:** But problems with
-  - Safety
-  - Concurrency
-    - Parallel library calls possible (must make sure these calls are multithread safe!)
-  - Process behaviour (Implementation dependent):
-    - Does `fork`ing a 2-thread process give you a 2-threaded child? (Unix: no, 1 thread in child.)
-    - `exit`: does it end all threads? (Unix: yes.)
-    - `exec`: does it end all other threads other than the one called? (Unix: yes.)
+- MEM context: Text, Data, Heap
+  - Stack: Conceptually not shared. Each thread has a different call stack.
+  - But all threads share same memory address space (page table)
+- HW context: None (not SP, FP, PC, cos dedicated call frame! not GPR also cos wrong values.)
+- OS context: process id, files, network sockets etc.
+
+### Process and Thread
+
+On **context switching**:
+- Process: OS, HW and MEM all needs to be switched
+- Thread: Only HW (reigsters) and "Stack" which is really just changing the FP and SP, still in the same memory address
+
+
+**Pros (process vs thread):** Thus thread has more
+
+- economy
+- better resource sharing
+- responsiveness
+- scalability (multiple CPU)
+
+**Cons (process vs thread):** But problems with
+
+- Safety
+- Concurrency
+- Parallel library calls possible (must make sure these calls are multithread safe!)
+
+**Process behaviour with threads** (Implementation dependent):
+
+- Does `fork`ing a 2-thread process give you a 2-threaded child? (Unix: no, 1 thread in child.)
+- `exit`: does it end all threads? (Unix: yes.)
+- `exec`: does it end all other threads other than the one called? (Unix: yes.)
 
 ## Types of thread
 
@@ -68,7 +75,7 @@ Handled by runtime system and implemented as a user library, not informed to ker
 
 Thread is implemented in OS and handled via system calls. Scheduling on thread level possible, use threads for its own execution.
 
-- Benefits: Scheduling based on threads, CPU cores max. utilized
+- Benefits: Scheduling based on threads, CPU cores maximally utilized
 - Weakness: Slower, more resource intensive due to syscalls. Less flexible.
 
 ### Hybrid thread

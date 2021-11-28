@@ -25,6 +25,10 @@ img {
     max-width: 600px;
 }
 
+table img {
+    width: 300px;
+}
+
 table, th, td {
   border: 1px solid black;
   border-collapse: collapse;

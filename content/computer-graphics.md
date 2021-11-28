@@ -247,6 +247,12 @@ near plane (negative z direction), far plane (positive z direction)
 
 OpenGL only renders **Simple, Convex, Flat** polygons.
 
+**Convex:**
+
+- Every internal angle $\leq 180$​ degrees.
+- Every line segment between two points in/on the polygon's boundary is fully contained in the polygon.
+- Polygon is the convex hull of its edges.
+
 ### RGB Color Coordinates
 
 `glShadeModel(GL_SMOOTH)` allows smooth interpolation of colors across the interior of the polygon.
@@ -276,8 +282,6 @@ However the triangles are drawn in the order defined by the program, the black ,
 #### Hidden surface removal
 
 OpenGL now must use HSR via the **z-buffer algorithm** that saves depth info (via depth buffer, aka z-buffer) as only objects with lowest z-value at that pixel are rendered.
-
-
 
 # Chapter 3 -- Input and Interaction
 
@@ -1073,6 +1077,7 @@ $$
 
 ### Ray Tree (Recursion)
 
+$k$ levels of recursion = $k$ reflection/refraction vectors in this case (i.e. 0 levels of recursion means eye to object ray only.)
 $$
 \begin{aligned}
 I &= I_{\text{local}, 0} + I_{\text{reflected}, 0} + I_{\text{transmitted}, 0} \\
@@ -1089,6 +1094,8 @@ $$
 I_\text{local} = I_ak_a + \textcolor{red}{k_\text{shadow}}I_\text{source}[\dots],\quad  \textcolor{red}{k_\text{shadow} \in \{0,1\}}
 $$
 
+Shoot another ray from view ray's intersection point towards the light source to tell if that spot is illuminated.
+
 Hence shadow constant turns the diffuse, specular and transmitted values on or off. 	
 
 Only need to find one opaque occluder to determine occlusion.
@@ -1097,6 +1104,11 @@ Only need to find one opaque occluder to determine occlusion.
 
 - Light attenuation by $k_\text{tg}$
 - Refraction is **ignored**
+
+### Total ray count
+
+- One primary ray per pixel
+- (1 primary + $l$ shadow rays for $l$ light sources) + $k(1+l)$ for the recursed levels
 
 ### Scene Descriptions in Ray tracing
 

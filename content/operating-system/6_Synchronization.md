@@ -12,11 +12,9 @@ header-includes:
 
 # 6 -- Synchronization
 
-$\require{color}$
-
 ## Concurrent Execution
 
-- Interleaving execution
+- Interleaving execution $\require{color}$
 - Sharing modifiable resource
   - P1 load, P2 load, P1 operate, P2 operate, P1 store, P2 store
   - P1 load ... **P1 store -> P2 load** ... P2 store
@@ -29,28 +27,16 @@ Examples of **unsynchronized access** that may lead to non-deterministic outcome
 
 ### Implementing Critical Sections
 
-- **Mutual exclusion**
-  - If $P_i$ in CS, all other processes prevented.
-- **Progress**
-  - If no process in CS, allow 1 waiting process to enter
-- **Bounded wait**
-  - No process is starved (upper bound on number of times other processes can access CS before any process $P_i$)
-- **Independence**
-  - Process not in CS should never block other processes (in CS or not).
+- **Mutual exclusion:** If $P_i$ in CS, all other processes prevented.
+- **Progress:** If no process in CS, allow 1 waiting process to enter
+- **Bounded wait:** No process is starved (upper bound on number of times other processes can access CS before any process $P_i$)
+- **Independence:** Process not in CS should never block other processes (in CS or not).
 
 ## Incorrect Synchronization
 
-### Deadlock
-
-No progress, all processes blocked.
-
-### Livelock
-
-Usually due to deadlock avoidance. Processes jump between states avoiding deadlock, but not making progress
-
-### Starvation
-
-Some processes blocked forever.
+- **Deadlock:** No progress, all processes blocked.
+- **Livelock:** Usually due to deadlock avoidance. Processes jump between states avoiding deadlock, but not making progress
+- **Starvation:** Some processes blocked forever
 
 ## Implementations
 
@@ -166,7 +152,7 @@ How to wait for another thread to do something specific?
 
 #### Monitor:
 
-is a collection of procedures manipulating a shared data structure, one lock must be held when accessing the shared data.
+A collection of procedures manipulating a shared data structure, one lock must be held when accessing the shared data.
 
 ## Synchronization patterns
 
@@ -327,5 +313,33 @@ signal
 
 ### Dining philosophers
 
-Constraints: IN PROGRESS
+| Image                                                        | Specification                                                |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| <img src="/notes-blog/assets/img/os/diningphilosophers.png"> | - 5 philosophers seated around a table.<br />- 5 single chopsticks between them<br />- To eat, one must acquire his left and right chopstick<br />- Deadlock-free and starve-free to allow philosophers to freely eat |
+
+### Base solution
+
+- Think -> Wait until can pickup left -> Wait until can pickup right -> Eat -> Put down left -> Put down right
+  - Deadlock (all pickup left concurrently)
+- Think -> **(While right not picked up) Pickup left, put down if right not free** -> Wait until can pickup right -> Eat -> Put down left -> Put down right
+  - Livelock (all pickup left concurrently and put down left concurrently)
+
+### Simple solutions
+
+- Limiting eaters: Allow at most 4 philosophers at the table.
+- One right-hander: All other philosophers are left-handers (pickup left first) except one.
+
+Simple informal argument (for "One right-hander". Let **R** be the right hander):
+
+1. If R grabs left: R can eat (no deadlock)
+2. If R tries to grab left but it is taken: the philosopher to R's left has grabbed his right and is eating (no deadlock)
+3. If R tries to grab right but it is taken: Many situations but in the worst case scenario everyone else has picked up their left chopstick except R. i.e. philosopher to R's left has his right chopstick free and can start eating (no deadlock)
+
+### Tanenbaum solution
+
+![Tanenbaum solution](/notes-blog/assets/img/os/tanenbaum.png)
+
+| Take chopsticks                                              | Safe to eat                                                  | Put chopsticks                                               |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| <img src="/notes-blog/assets/img/os/takechop.png" width="100%"> | <img src="/notes-blog/assets/img/os/safetoeat.png" width="100%"> | <img src="/notes-blog/assets/img/os/putchop.png" width="100%"> |
 

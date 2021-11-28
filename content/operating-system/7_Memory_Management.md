@@ -49,16 +49,16 @@ Both can grow/shrink.
 
 ## Memory Abstraction
 
-- How to access memory location of process
-- Multiple processes sharing memory
-- Protection of address space
+- How to **access memory location** of process
+- Multiple processes **sharing memory**
+- **Protection** of address space
 
 **Option 1**: Use physical memory directly.
 
-| Pros                         | Cons                                    |
-| ---------------------------- | --------------------------------------- |
-| No further conversion (fast) | Hard to protect memory space            |
-|                              | Processes will erroneously share memory |
+| Pros                         | Cons                                                |
+| ---------------------------- | --------------------------------------------------- |
+| No further conversion (fast) | Hard to protect memory space                        |
+|                              | Memory address collisions: Erroneously share memory |
 
 **Option 2**: Translate all memory addresses at **load time**
 
@@ -103,18 +103,18 @@ When memory is full, remove terminated processes OR [swap](/notes-blog/os/ch9#se
 
 **Fixed-size partitions:** physical memory split into a fixed **number of partitions**. Each process occupies a partition
 
-| Pros                                     | Cons                                                         |
-| ---------------------------------------- | ------------------------------------------------------------ |
-| Easy to manage                           | Partition size needs to be $\max(\{p_1 \dots p_n\})$​ <br />i.e. small programs waste memory space (**internal fragmentation**) |
-| No need further computations to allocate |                                                              |
+| Pros                                                     | Cons                                                         |
+| -------------------------------------------------------- | ------------------------------------------------------------ |
+| Easy to manage                                           | Partition size needs to be $\max(\{p_1 \dots p_n\})$​ <br />i.e. small programs waste memory space (**internal fragmentation**) |
+| No need further computations to allocate                 |                                                              |
+| No external fragmentation (every page equally allocable) |                                                              |
 
 **Variable-size partitions:** size allocated based on actual size of process. OS tracks occupied/free regions, splits and merges as necessary.
 
-| Pros                      | Cons                                                         |
-| ------------------------- | ------------------------------------------------------------ |
-| Better memory utilization | Many holes from termination/swapping/creation (**external fragmentation**) |
-|                           | Needs to maintain more information in OS                     |
-|                           | Allocation algorithm needed                                  |
+| Pros                                              | Cons                                                         |
+| ------------------------------------------------- | ------------------------------------------------------------ |
+| Better memory utilization                         | Many holes from termination/swapping/creation (**external fragmentation**) |
+| No internal fragmentation (partition sizes exact) | Needs to maintain more information in OS                     |
 
 ### Allocation Algorithms
 
@@ -140,6 +140,8 @@ Note allocation is $O(n)$​ but deallocation is $O(1)$​ **assuming** that the
 OS represents each equal memory partition with a bit.
 
 Incurs overhead for bit manipulation operations because the memory is not bit-addressable.
+
+**Very important:** Everytime a bitmap's space is involved, remember to divide number of bits by 8 to get number of bytes!
 
 ### Linked list representation
 
@@ -176,3 +178,5 @@ At most $\log M$ steps for fixed total physical memory size $M$: $O(1)$
 **Internal fragmentation**: all memory requests are rounded up to the nearest power of two.
 
 **External fragmentation**: due to limited coalescing ability of this allocator (unable to coalesce blocks of different sizes, if they are not buddy blocks)
+
+- e.g. Currently process A takes up 24% of RAM. Then process B cannot take up > 50% ram

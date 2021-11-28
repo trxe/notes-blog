@@ -6,20 +6,14 @@ permalink: /os/ch10
 
 # 10 - File Management
 
-## MMU - Hardware component
+## Summary
 
-![Memory management unit](/notes-blog/assets/img/os/mmu.png)
-
-1. CPU needs page 2
-2. Memory management unit (MMU) checks TLB
-   - If in TLB, then MMU can just access the frame directly
-3. Not in TLB, MMU accesses the page table (in memory space of OS)
-
-4. Not in page, MMU signals a page fault and control passed to OS.
-   - The MMU may also generate illegal access error/invalid page faults leading to segfaults/bus errors.
-5. OS brings from secondary storage to the physical memory.
-
-The page table is not in the PCB. Rather it is connected by links, and held in a register (**page directory register**) which is populated at the context switch
+| File structure          | Directory structure | File information tables      | Buffers      |
+| ----------------------- | ------------------- | ---------------------------- | ------------ |
+| Byte array              | Single-level        | Per-process file descriptors | Read buffer  |
+| Fixed length records    | Tree-structured     | System-wide open-files       | Write buffer |
+| Variable length records | DAG                 | System-wide V-nodes          |              |
+|                         | General graph       |                              |              |
 
 ## File system
 
@@ -42,7 +36,7 @@ Where to find information (storage media) on a device when moved?
   - management of free/used space
   - minimum overhead
 
-A mental picture of secondary storage:
+### Desired file structure
 
 1. Metadata is contained within the file itself
 2. The files in a folder may not be in a contiguous region (similar fragmentation problems)
@@ -58,27 +52,28 @@ A mental picture of secondary storage:
 | Usage              | Address space of process, implicit during process execution | Non-volatile data, explicit access             |
 | Organization       | Paging/Segmentation                                         | ext* (Linux), FAT/NTFS (Windows), HFS* (MacOS) |
 
-every time OS has to access a different file system, the file management has to be replaced.
+Every time OS has to access a different file system, the file management has to be replaced.
 
-File
+### File
 
 Definition: A logical unit of information created by a process
 
 - Abstract Data Type (ADT)
 - Common operations with various implementation
 - Contains **Data**: info structure in some way
-- Contains **Metadata**: additional info  associated with file (attributes)
-  - Name (human readable fileref), Identifier (unique id), Type (e.g. executable vs text files vs object file vs directory), size, protection (access), time-date-owner, table of contents (how to access a file).
+- Contains **Metadata**: additional info associated with file (attributes)
+  - Rename: Change filename
+  - Change attributes: File access permissions, Dates, Ownership
+  - Read attributes: Creation timestamps, file size
 
-Definition, Metadata, Data (Structure, access methods), File Operation
+### Linux vs Windows FS
 
-### Some differences between Linus `ext` and Windows `NTFS` filesystems
-
-|                    | Linux                                               | Windows                      |
-| ------------------ | --------------------------------------------------- | ---------------------------- |
-| File names         | Case-sensitive                                      | Case-insensitive             |
-| Special characters | Allowed                                             | Not allowed                  |
-| File type          | Determined by first 8 bits (first byte) of the file | Determined by file extension |
+|                    | Linux                                  | Windows                      |
+| ------------------ | -------------------------------------- | ---------------------------- |
+| File names         | Case-sensitive                         | Case-insensitive             |
+| Special characters | Allowed                                | Not allowed                  |
+| File type          | Magic number                           | Determined by file extension |
+| Directory entry    | Variable (depends on file name length) | Fixed (32/64-bit)            |
 
 **File type:** a description of the information contained in the file (based on a certain format etc.)
 
@@ -88,7 +83,10 @@ Definition, Metadata, Data (Structure, access methods), File Operation
 
 **Access Control List (ACL):**
 
-- Minimal ACL (same as permission bits) -- `drwxr--r--` (user - group - others)
+- Minimal ACL (same as permission bits) -- `drwxr--r--` (owner - group - universe)
+  - Owner: creator of file
+  - Group: set of users who need same access to file
+  - Universe: all other users
 - Extended ACL (added named users/group) -- `getfacl`
 
 ## File system architecture
@@ -126,21 +124,20 @@ The operation of `open` has an important role to keep references to the all the 
 - Current position is maintained by the **file pointer**.
 - Via system calls (protection, concurrent and efficient access)
 - **File descriptor** should link to the following information for each opened file:
-  - File pointer (current location in file)
-  - Disk location (file location in disk)
-  - Open count (how many process has this file opened)
+  - **File pointer** to system-wide open-file table entry
 
 **File information (3 tables)**:
 
-- Per-process open-file table
+- **Per-process open-file table**
   - Each PCB contains a file descriptor (fd) table
   - Each fd entry stores a pointer to an entry in sys-wide open-file table
   - Open files for a process
   - Each entry points to the system-wide open-file table
-- System-wide open-file table (accessed on `open` syscall)
+  - Minimum 3 file descriptors: `stdin, stdout, stderr`
+- **System-wide open-file table** (accessed on `open` syscall)
   - Open files for the system
   - Each entry points to a V-node entry
-- System-wide V-node entry
+- **System-wide V-node entry**
   - Link with file on physical drive ([I-node](/notes-blog/os/ch11#extended-file-system-2))
 
 ![The three file information tables](/notes-blog/assets/img/os/filetables.png)
@@ -150,11 +147,11 @@ The operation of `open` has an important role to keep references to the all the 
 1. **Case 1**: Same file, 2 processes, independent offsets.
    - Different PCB -> Different fd tables -> Different system-wide open file table entry -> **Same V-node entry**
 2. **Case 2**: Same file, 1 parent and 1 child process (just forked, no mod)
-   - Different PCB -> **Cloned fd tables** -> **Same system-wide open file table entry** -> Same V-node entry
+   - Different PCB -> **Cloned fd tables** -> **Same file pointers in fd tables** -> Same V-node entry
 
 | Different FD table                                           | Same FD table                                                |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| <img src="/notes-blog/assets/img/os/difffd_same_file_access.png" width="80%"> | <img src="/notes-blog/assets/img/os/samefd_same_file_access.png" width="80%"> |
+| <img src="/notes-blog/assets/img/os/difffd_same_file_access.png"> | <img src="/notes-blog/assets/img/os/samefd_same_file_access.png"> |
 
 ## Directories
 
@@ -162,17 +159,17 @@ The operation of `open` has an important role to keep references to the all the 
 
 Possible data structures:
 
-- Single level: A directory cannot contain other directories.
-- Tree-structured: A directory can contain other directories.
+- **Single level:** A directory cannot contain other directories.
+- **Tree-structured:** A directory can contain other directories.
   - Absolute pathname: path from root dir to file
   - Relative pathname: path from **current working directory (CWD)** to file.
   - CWD can be explicitly/implicitly changed by moving to a new dir in shell prompt.
-- DAG: Used to show the nature of symlinks
+- **DAG:** Used to show the nature of **hard links**
   - One file appears linked to multiple directories
   - **Hard links** can only be made from interior node to leaves to prevent cycles.
-- General graph: 
+- **General graph:** 
   - Not desirable: hard to traverse (cycle), and hard to determine when to remove a file/directory
-  - **Symbolic links**
+  - Fully represents **symbolic links**
 
 **Directory read write access:** This does **not** extend to the contents of the directory!
 
@@ -182,7 +179,7 @@ Possible data structures:
 
 ## Disk scheduling
 
-In HDD, two fundamental movements to access a particular disk location: **rotate disk** and **move head**.
+In HDD, two fundamental movements to access a particular disk location: **rotate disk** and **move head**. There are more sectors than data blocks (clusters).
 
 Traditional Disk scheduling algorithms to minimize latency necessary:
 
@@ -194,7 +191,7 @@ Traditional Disk scheduling algorithms to minimize latency necessary:
 
 ![SCAN](/notes-blog/assets/img/os/scan.png)
 
-Newer Disk scheduling algorithms
+### Newer Disk scheduling algorithms
 
 - Deadline - 3 queues
   - **Sorted**  (depending on what type of storage device, e.g. if in disk then sort by min head movement/rotation etc.)
@@ -210,3 +207,23 @@ Newer Disk scheduling algorithms
 
 1. Each file operation requires a syscall requiring execution mode (user -> kernel) change
 2. High disk access latency
+
+Maintains intermediate storage of information to be read/written into a file. 
+
+Typically implemented with circular array (see [stdin, stdout, stderr](/notes-blog/os/ch4)).
+
+Other benefits include: error checking, packing/unpacking of datatypes.
+
+Buffered read/write operations read/write to the buffered memory region until they are full or flushed (via system call).
+
+```
+// Buffered read example:
+bufread(file, outputArr, reqSize):
+	if buf.availCount < reqSize:
+		read(file, buf, buf.size - buf.availCount)
+		buf.availCount = buf.size
+	memcpy(buf, outputArr, reqSize)
+	advance buf pointer by reqSize
+	buf.availCount -= reqSize
+```
+
