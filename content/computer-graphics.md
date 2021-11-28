@@ -354,6 +354,38 @@ Note that since the signatures of all GLUT callbacks are fixed, to pass around v
 4. Keyboard callbacks `glutKeyboardFunc(...)`
 5. Window resizing `glutReshapeFunc(...)`: good place to put viewing functions, since it is invoked from window first opening.
 
+### Reshape callbacks
+
+**Template**:
+
+```C++
+void myReshape(int w, int h) {
+	glViewport(0, 0, w, h);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+    /* set projection matrix here! */
+	glMatrixMode(GL_MODELVIEW);
+}
+```
+
+Viewport aspect ratio = Window aspect ratio:
+
+```C++
+// l, r, b, t are the original left right bottom top coordinates.
+if (w <= h)
+	gluOrtho2D( l, r, b * (GLfloat) h / w, t * (GLfloat) h / w );
+else
+	gluOrtho2D( l * (GLfloat) w / h, r * (GLfloat) w / h, b, t );
+```
+
+**Resize exactly** (clip if necessary):
+
+```C++
+// l, x, b, y are the original left (right-left) bottom (top-bottom) values.
+// This version anchors to the bottom left.
+gluOrtho2D( l, l + x * h/origWinWidth, b, b + y * h/origWinHeight );
+```
+
 
 
 # Chapter 4 -- Vector Geometry
@@ -655,11 +687,11 @@ If vertex $[x_{clip}, y_{clip}, z_{clip}, w_{clip}]$ is in canonical view volume
 
 ## Polygon Clipping
 
-| To be clipped  | Yields   |
-| -------------- | -------- |
-| Line segment   | 1        |
-| Polygon        | $\geq 1$ |
-| Convex polygon | 1        |
+| To be clipped   | Yields   |
+| --------------- | -------- |
+| Line segment    | 1        |
+| General Polygon | $\geq 1$ |
+| Convex polygon  | 1        |
 
 Hence change polygons to convex polygons (*tessellation*), commonly using **triangulation**.
 
@@ -878,6 +910,24 @@ Given **polygon, rasterization**: compute **color** of **fragment**
 - Gouraud: Each vertex is assigned the **average normal** of the **polygons sharing** the vertex. Its PIE **color** using that normal is then **interpolated** across the polygon.
   - `glShadeModel(GL_SMOOTH)`
 - Phong: Instead of interpolating color, we interpolate the normal vector instead. **per-pixel** lighting computation (more expensive)
+
+#### Shading a sphere:
+
+A sphere can be broken into $n$​ latitudinal lines and $2m$​​​ longitudinal lines. each polygon formed by intersecting two adjacent longitudinal lines and two adjacent latitudinal lines share a normal in flat shading.
+
+![Sphere reference](/notes-blog/assets/img/cg/spherevertex.png)
+
+Note: point on sphere on lines $(i,j)$​ ($i$ is latitude, $j$​ is longitude) has 
+$$
+p = \left[ \begin{matrix} 
+r\sin(i\pi/n)\cos(j\pi/m) \\ 
+r\cos(i\pi/n)\cos(j\pi/m) \\
+r\sin(j\pi/m)
+\end{matrix} \\ \right]
+$$
+
+- Precise normal: circle origin to point $p(x,y,z)$ on sphere​​
+- Flat shading: polygon normal average of the four vertices.
 
 # Chapter 8 -- Texture mapping
 
@@ -1169,22 +1219,24 @@ Only need to find one opaque occluder to determine occlusion.
 - Max recursion depth
 - the contribution from secondary ray is almost 0
 
-### Computing intersection
+### Intersections
 
-Ray = $P(t) = O(x,y,z) + t(\text{direction}(x,y,z))$
+Ray = $P(t) = O(x,y,z) + t(\text{direction}(x,y,z))$​
 
-Plane = $Ax + By + Cz + D = 0 \Rightarrow N \cdot p + D = 0$ for point $p$ on plane​
+For the following primitives, substitute $p = O(x,y,z) + tD$ in and find $t$.
 
-Spheres = $x^2 + y^2 + z^2 - r^2 = 0 \Rightarrow p\cdot p - r^2 = 0$ for point $p$​ from sphere origin.
+**Plane** = $Ax + By + Cz + D = 0 \Rightarrow N \cdot p + D = 0$​ for point $p$​ on plane​
+
+**Sphere** = $x^2 + y^2 + z^2 - r^2 = 0 \Rightarrow p\cdot p - r^2 = 0$​ for point $p$​​ from sphere origin.
 
 - If sphere isn't at origin, just translate the ray origin to sphere's local coordinate frame
 
-Axis-aligned box:
+**Axis-aligned box** (AABB):
 
 - typically used for quickly determining if a ray will hit the object (hitbox) or not
 - specify the two **opposite** corners
 
-Triangle (polygon): Using the **barycentric coordinates** method
+**Triangle** (polygon): Using the **barycentric coordinates** method
 
 $P = \alpha A + \beta B + \gamma C = \textcolor{limegreen}{A + \beta (B - A) + \gamma (C - A)}$​​ where $\alpha + \beta + \gamma = 1$​​ and $0 \leq \alpha, \beta, \gamma \leq 1$​​​.
 
@@ -1217,6 +1269,10 @@ t \\
 & \text{can be solved with Cramer's rule.}
 \end{aligned}
 $$
+
+Note: the centroid of a triangle is located at $p = \frac{1}{3} (A+B+C)$
+
+**General polygon**:
 
 
 1. Compute ray-plane intersection
@@ -1255,6 +1311,9 @@ $\epsilon$ is based on the floating point accuracy.
 1. Adaptive recursive depth control
 2. First-hit speed up with z-buffer
 3. Bounding volumes (**hierarchies**)
+   1. Must enclose the object as tightly as possible
+   2. Must be fast to compute
+   3. In order to accurately skip the expensive intersection computation between a ray and a complex object
 4. **Spatial subdivision**
    1. Uniform grid,
    2. Octree
