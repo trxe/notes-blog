@@ -18,6 +18,8 @@ The contents follow the NUS module CS3241 (taken in AY2021/22 S1).
 {:toc}
 ## Pipeline summary
 
+Given in order of progress.
+
 
 - Modelling (in API)
   - [x] Provides set of vertices
@@ -31,7 +33,7 @@ The contents follow the NUS module CS3241 (taken in AY2021/22 S1).
   - [x] Projection Matrix
 - **Primitive assembly etc.**
   - [x] Primitive assembly
-    - vertex data --> complete primitives for clipping & culling
+    - vertex data used fo complete primitives for clipping & culling
   - [x] Clipping
   - [x] Perspective division
     - To NDC space
@@ -590,7 +592,7 @@ The projection matrix is computed such that it maps to the **canonical view volu
 $$
 \begin{aligned}
 M_{ortho} =& S(\frac{2}{right - left}, \frac{2}{top-bottom}, \frac{2}{near-far}) \cdot \\
-& T(\frac{-(right+left)}{2}, \frac{-(top+bottom)}{2}, \frac{-(far+near)}{2})
+& T(\frac{-(right+left)}{2}, \frac{-(top+bottom)}{2}, \frac{far+near}{2})
 \end{aligned}
 $$
 
@@ -773,9 +775,9 @@ flood_fill(int x, int y) {
 
 ## Back-face culling
 
-Eliminate **back=facing** + **invisible** polygons (e.g. cube only have 3 faces facing viewport at all times. The rest can be culled.)
+Eliminate **back-facing** + **invisible** polygons (e.g. cube only have 3 faces facing viewport at all times. The rest can be culled.) $N_\text{face} \cdot V_\text{camera to vertex} \leq 0$​​​.
 
-If the vertices on a plane are specified **counterclockwise**, that face is **front-facing**.
+In OpenGL, if the vertices on a plane are specified **counterclockwise**, that face is **front-facing**.
 
 # Chapter 7 -- Illumination and Shading
 
