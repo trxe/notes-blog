@@ -48,7 +48,7 @@ Given in order of progress.
     - e.g. Bilinear interpolation
 - Fragment processing
   - [x] Fragment pixel --> Frame buffer pixel
-  - [x] Fragment color modifies by texture mapping
+  - [x] Fragment color modifies by **texture mapping**
     - Texture access, application
   - [x] **Z-buffer** Hidden surface removal: fragment discarded if occlused by pixel already in frame buffer
   - [x] **Blended**: blending with pixels already in frame buffer
@@ -239,15 +239,13 @@ void init() {
 
 At the beginning, **object coordinates** = **world coordinates**. The camera is positioned in **world**. 
 
-Then a **viewing volume** must be set. It is specified in **eye coordinates**.
+Then a **viewing volume** must be set. It is specified in **camera/eye/view coordinates**.
 
-Internally OpenGL converts vertices to **eye coordinates**, and then to **window coordinates**.
+Internally OpenGL converts vertices to **eye coordinates** with `GL_MODELVIEW`, and then to **window coordinates** with `GL_PROJECTION`.
 
 **Viewing volume**: The finite volume in world space in which objects can be seen. The coordinates are set relative to the camera's coordinates (**eye coordinates**).
 
-**Orthographic projection/viewing**: Th
-
-near plane (negative z direction), far plane (positive z direction)
+**Projection plane:** In OpenGL  this is equivalent to the near plane which is always perpendicular to the z axis of the camera coordinate axis. Note: near plane (negative z direction), far plane (positive z direction)
 
 ### Polygon problems
 
@@ -615,7 +613,7 @@ $$
 \end{aligned}
 $$
 
-Squashed into the $x,y$ plane. $z$ is retained (between 0 and 1) for hidden surface removal.
+Squashed into the $x,y$​ plane. $z$​ is retained (between 0 and 1) for hidden surface removal.
 
 ### Perspective Projection
 
@@ -724,9 +722,17 @@ Case 2: $\|m\| > 1$​​​​​. Then note that $0 \leq \frac{1}{\|m\|} \leq 
 
 ### Bressenham's Algorithm
 
-Saves time because of no floating point computations.
+Saves time because of no floating point computations. Let $x_k, y_k$​​ be the current pixel locations (integers).
 
-Here since $d_{upper} > d_{lower}$​, we choose to shade $(x_k + 1, y_k)$​​​.But how does it save FP computation time?
+![Candidates for binary choice](/notes-blog/assets/img/cg/bressenham.png)
+
+Note that:
+
+-  $d_{upper} = (y_k+1) - y, \ d_{lower} = y - y_k$​.
+- $\Delta y = y_{n} - y_{0}, \ \Delta x = x_{n} - x_{0}, y = x\Delta y/\Delta x + c$​​
+- $c' = 2\Delta y + \Delta x(2b + 1)$.
+
+Here since $d_{upper} > d_{lower}$, we choose to shade $(x_k + 1, y_k)$.But how does it save FP computation time? Compute **decision variable** $p_k$ for pixel $k$: If $p_k < 0$ plot lower pixel, if $p_k > 0$ plot upper pixel.
 
 
 $$
@@ -734,22 +740,21 @@ $$
 p_k =& \Delta x(d_{lower} - d_{upper}) \\
 =& \Delta x(y - y_k - (y_k+1) + y) \\
 =& \Delta x(2y - 2y_k - 1) \\
-=& \text{ to be filled in} \\
-=& 2x_k \Delta y - 2y_k \Delta x + c
+=& 2x_k \Delta y - 2y_k \Delta x + c'
 \end{aligned}
 $$
 
-
-If $p_k < 0$​ plot lower pixel, if $p_k > 0$​ plot upper pixel.
-
-![Candidates for binary choice](/notes-blog/assets/img/cg/bressenham.png)
-
 #### Incremental form: 
 
-$p_0 = 2\Delta y - \Delta x$. Since $p_{k+1} - p_k = 2(x_{k+1} - x_k)\Delta y + 2(y_{k+1} - y_k)\Delta x$​, we have
+Since $p_{k+1} - p_k = 2(x_{k+1} - x_k)\Delta y + 2(y_{k+1} - y_k)\Delta x$​, we have
 
-- $p_k < 0 \Rightarrow p_{k+1} =p_k +2\Delta y$​. (because $y_{k+1} = y_k$)
-- $p_k > 0 \Rightarrow p_{k+1} = p_k +2\Delta y - 2\Delta x$. (because $y_{k+1} = y_k + 1$)
+- $p_0 = 2\Delta y - \Delta x$
+- $p_k < 0 \Rightarrow p_{k+1} =p_k +2\Delta y$​​. (because $y_{k+1} = y_k$​)
+- $p_k > 0 \Rightarrow p_{k+1} = p_k +2\Delta y - 2\Delta x$​. (because $y_{k+1} = y_k + 1$​)
+
+#### Circle algorithm:
+
+See [Bressenham's circle algorithm](/notes-blog/cg/bressenhamcircle).
 
 ## Polygon Scan Conversion (Fill)
 
@@ -778,6 +783,15 @@ flood_fill(int x, int y) {
 Eliminate **back-facing** + **invisible** polygons (e.g. cube only have 3 faces facing viewport at all times. The rest can be culled.) $N_\text{face} \cdot V_\text{camera to vertex} \leq 0$​​​.
 
 In OpenGL, if the vertices on a plane are specified **counterclockwise**, that face is **front-facing**.
+
+### Fragment processing
+
+### z-buffer and z-fighting
+
+- Two or more fragments having very similar depth values in the z-buffer, due to floating point inaccuracies
+- Causes noisy rasterization as it is nearly random which one of the two fragments are drawn in that pixel
+
+Can be remedied by reducing the distance between near and far planes in view volume, or increasing the floating point accuracy of the z-buffer.
 
 # Chapter 7 -- Illumination and Shading
 
@@ -978,6 +992,10 @@ For each **texture coordinate** $(s, t)$ we can get:
 | <img src="/notes-blog/assets/img/cg/interpolationtriangle.png"> | <img src="/notes-blog/assets/img/cg/interpolationtexel.png"> |
 
 **Texture filtering**: determine the texture color of a fragment using the colors of the nearest 4 texels. May be implemented via bilinear interpolation.
+
+Performing bilinear interpolation:
+
+![Bilinear Interpolation](/notes-blog/assets/img/cg/bilinearinterpolation.png)
 
 ### Wrapping modes
 
@@ -1560,4 +1578,6 @@ $$
 | known $p \rightarrow$​ find unknown $c$​                | known $q \rightarrow$​ find unknown $c$                |
 | Simple blending functions ($M_B$)                     | Rather messy blending functions ($M_I = u^TA^{-1}$)   |
 | Includes $M_B$​ in bezier patch                        | Doesn't include $M_I$​ in interpolation patch          |
+
+
 
