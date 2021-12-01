@@ -42,6 +42,7 @@ Given in order of progress.
     - Depth range scaling
   - [x] Back face culling
     - throw away faces that are back-facing the viewport
+    - Note: can take place in *camera space, clip space or window space*.
 - **Rasterization** in window space
   - [x] Produces **fragments** of unclipped-out primitives (potential pixels [*location + color + depth*])
   - [x] Attributes are interpolated over the primitive
@@ -622,6 +623,8 @@ Squashed into the $x,y$​ plane. $z$​ is retained (between 0 and 1) for hidde
 ![Frustum Mapping](/notes-blog/assets/img/cg/frustum_mapping.png)
 
 #### Perspective Division:
+
+Should happen *after* clipping to prevent any division by zeroes (for a vertex at $z = 0$)
 
 Essentially using similar triangles (as described in first chapter) to get coordinates adjusted for perspective depth. note that $z_p = d$​​​​, the projection plane.
 
