@@ -579,6 +579,10 @@ The projection matrix is computed such that it maps to the **canonical view volu
 - retain depth (z-buffer information)
 - preserve lines
 
+> At the end of each vertex shader run, OpenGL expects the coordinates to  be within a specific range and any coordinate that falls outside this  range is clipped. Coordinates that are clipped are discarded, so the remaining coordinates will end up as fragments visible on your  screen. This is also where clip space gets its name from. 
+> 
+> Source: https://learnopengl.com/Getting-started/Coordinate-Systems
+
 ### Orthographic projection
 
 **Mapping** from $(right,top,-far) \rightarrow (1, 1, 1)$, and $(left,bottom,-near) \rightarrow (-1, -1, -1)$.

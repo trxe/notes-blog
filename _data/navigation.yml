@@ -1,5 +1,7 @@
 - name: Home
   link: /notes-blog/
+- name: Graphics Rendering
+  link: /notes-blog/render
 - name: Operating Systems
   link: /notes-blog/os
 - name: Algorithms II
