@@ -174,3 +174,126 @@ GLM: OpenGL Mathematics library
 - Header only library based on GLSL specifications
 - Handles e.g. matrices
 
+GLFW: Alternative to GLUT as a library for
+
+- Windowing
+- I/O
+
+#### Components
+
+(Note: all "Objects" are identifiers of type `GLuint`)
+
+- shader text files
+- `shaderProgramObj` (after making the program, [`glUseProgram`](https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glUseProgram.xhtml))
+- `VAO` vertex array object (`glGenVertexArray`, `glBindVertexArray`)
+  - If there are many 3D objects in the scene, we usually have one VAO for each 3D object.
+- `VBO`s vertex buffer objects ([`glGenBuffers`](https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glGenBuffers.xhtml)), [`glBindBuffers`](https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glBindBuffer.xhtml), [`glBufferData`](https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glBufferData.xhtml))
+  - e.g. separate attributes`vertPosBufferObj`, `vertColorBufferObj`
+  - One VBO can be linked to multiple VAOs
+- Link VBOs to VAO as the attribute indices of the VAO, and then enable them
+
+#### Main Display function
+
+- **Uniform** location (aka `UniLoc`): The location of the variable in the shader that receives the data from the OpenGL program.
+- Initialize `UniLoc`s (`glGetUniformLocation`)
+- set up MVP (model-view-projection matrix) with the GLM library
+  - projection matrix via `glm::perspective`
+  - modelview matrix via `glm::lookat`
+  - connect `UniLoc`s 
+- `glDrawArrays`
+- `glutSwapBuffers`
+
+#### Make Shader Program From Files
+
+For each shader (vertex and fragment):
+
+- `glCreateShader`
+- `glShaderSource` (get the source text file of the shader)
+- `glCompileShader`
+
+After creating both:
+
+- `glCreateProgram`
+- Attach both shaders `glAttachShader`
+- `glLinkProgram` and return the linked program.
+
+### Shader programs in GLSL
+
+#### Vertex Shader
+
+```glsl
+#version 330 core // openGL version and profile
+
+// input attributes from buffers (per vertex)
+layout (location = 0) in vec4 vPos; 
+layout (location = 1) in vec4 vColor;
+
+// uniform variables from initialization of UniLocs (global)
+uniform mat4 ModelViewMatrix;
+uniform mat4 ProjectionMatrix;
+
+// output variable to the fragment shader
+out vec4 v2fColor;
+
+void main()
+{
+    v2fColor = vColor;
+    // mandatory: clip space position of the vertex.
+    gl_Position = ProjectionMatrix * ModelViewMatrix * vPos;
+}
+```
+
+#### Fragment Shader
+
+```glsl
+#version 330 core
+
+// output attributes from buffers (per fragment)
+// location = 0: default color buffer
+layout (location = 0) out vec4 fColor;
+
+// input variable from the vertex shader
+// must match output name from vertex shader
+in vec4 v2fColor;
+
+void main()
+{
+    fColor = v2fColor;
+}
+```
+
+### Alternate implementation
+
+#### Use one VBO to represent multiple attributes per VAO
+
+```c++
+GLfloat vertPosColor[numVerts*2][3] = { /* alternate pos and color */ }
+
+// for vPos
+glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), 0);
+// for vColor
+glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), 		(void*)(3 * sizeof(GLfloat))); 
+```
+
+#### Repeating vertices with Indexed array
+
+```c++
+// define vertPos[count][3], vertColor[count][3]
+GLushort vertIndex[] = 
+	{ 0, 1, 2,  3, 4, 5,  0, 5, 4,  1, 3, 5,  2, 4, 3 };
+
+// create buffer objects for each of vertPos, vertColor, vertIndex
+
+// Index buffer is bound to GL_ELEMENT_ARRAY_BUFFER target binding point.
+glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertIndexBufferObj);
+
+void MyDisplay(void) {
+    // ...
+    
+    glBindVertexArray(VAO);
+	glDrawElements(GL_TRIANGLES, sizeof(vertIndex)/sizeof(GLushort),
+		GL_UNSIGNED_SHORT, 0);
+    glutSwapBuffers();
+}
+```
+
