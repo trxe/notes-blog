@@ -21,7 +21,7 @@ permalink: /network/ch1
 
 ## Network edge
 
-- End systems
+- End systems are **connected** to the network via access networks but are not part of it!
 
 - **Network edge**: The area where the local network of a device interfaces with the internet
   - Hosts: clients, servers
