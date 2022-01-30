@@ -8,7 +8,7 @@ permalink: /network/ch1
 {:toc}
 
 
-# 1 - Introduction
+# 1 -- Introduction
 
 ## Internet components
 

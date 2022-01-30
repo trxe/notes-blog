@@ -29,3 +29,5 @@ Topics include:
 ## Table of Contents
 
 1. [Introduction to Modern OpenGL](/notes-blog/render/ch1)
+2. [Geometric Transformation and Viewing](/notes-blog/render/ch2)
+3. [GLSL](/notes-blog/render/ch3)

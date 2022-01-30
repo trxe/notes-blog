@@ -29,3 +29,4 @@ permalink: /3d
 ## Table of Contents
 
 1. [Polygonal Mesh](/notes-blog/3d/ch1b)
+2. [Mesh Operations](/notes-blog/3d/ch2)

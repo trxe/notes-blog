@@ -282,6 +282,28 @@ Does not belong to the hierarchy of distributed database that stores mapping per
 
 ### Root DNS Server
 
-Iterative query ()
+#### Iterated query
 
-Recursive query (overload the DNS server)
+Local DNS server receives the next server to contact from the previous server, and calls them one by one until the authoritative DNS is found.
+
+![Iterated Query](/notes-blog/assets/img/network/iterated_query.png)
+
+#### Recursive query
+
+Local DNS server requests for the authoritative DNS from the root DNS server, where if it isn't cached, requests from the TLD, which if it isn't cached, it requests from the next level domain etc. and passes the information back to the local DNS server.
+
+![Recursive Query](/notes-blog/assets/img/network/recursive_query.png)
+
+This is problematic:
+
+- Every request has to pass through the root server, which may overload the root server.
+- In the iterated structure, the responsibility of each layer is a lot clearer.
+
+#### Caches
+
+Once (any) name server learns mapping, it caches mapping, but mappings **expire** after some Time To Live (TTL).
+
+Cached entries might be out of date. (If a named host changes IP address, this won't be universally known until all TTLs expire.)
+
+Response failure?
+

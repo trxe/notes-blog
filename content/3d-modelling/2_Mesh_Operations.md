@@ -1,7 +1,7 @@
 ---
 layout: default
 usemathjax: true
-permalink: /3d/ch1b
+permalink: /3d/ch2
 ---
 
 # Mesh Modification
@@ -21,7 +21,7 @@ Whereas surface modification is **topological** (i.e. no changes to the underlyi
 
 .Underlying space: "the structure" of the object.
 
-### Vertex insertion
+## Vertex insertion
 
 A new vertex can be inserted onto 
 
@@ -31,23 +31,39 @@ A new vertex can be inserted onto
 
 ### Barycentric subdivision
 
-Recursively subdivide into 6 triangles (angles getv small but mathematically easy)
+Recursively subdivide into 6 triangles (angles get very small but mathematically easy to do.)
 
-Loop subdivision: add three vertices and cut
+A type of vertex insertion; new vertices are inserted into the centroid of the subdivided triangles.
 
-Loop subdivision with smoothing
+![Barycentric subdivision](/notes-blog/assets/img/3d/barycentric_sub.png)
 
-Partial Barycentric
+### Loop subdivision
 
-### Edge swapping
+Add a vertex to each edge and cut. Can be done with and without smoothing.
 
-Delete 2 triangles and add the opposite edge, recreating two triangles
+![Loop subdivision](/notes-blog/assets/img/3d/loop_sub.png)
 
-### Edge contraction
+### Partial Barycentric
 
-BE CAREFUL! Overalapping edges
+![Partial Barycentric subdivision](/notes-blog/assets/img/3d/partial_bary.png)
 
-- You can only contract an edge $Lk(a) \cup Lk(b) = Lk(ab)$​ Lk is a link function​
+## Edge swapping
+
+Delete 2 triangles and add the opposite edge, recreating two triangles. Used for mesh refining
+
+![Edge swap](/notes-blog/assets/img/3d/edge_swap.png)
+
+## Edge contraction
+
+- Merge two adjacent vertices
+- Delete two original triangles and extra edges
+- Stitch the empty hole
+
+BE CAREFUL! Overlapping edges may result in some cases.
+
+![Edge contraction](/notes-blog/assets/img/3d/edge_contr.png)
+
+You can only contract an edge $Lk(a) \cup Lk(b) = Lk(ab)$​ Lk is a link function​
 
 These are sufficient, other operations are a combination of the above. How to do these efficiently?
 
