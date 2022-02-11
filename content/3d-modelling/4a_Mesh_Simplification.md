@@ -80,9 +80,10 @@ Note: this could lead to topology changes, where mesh connectivity changes etc.
 ## Iterative decimation
 
 1. Set up goal (triangle count, error margin, etc.)
-2. Choose a single decimation operation
+2. Choose a single decimation operation for a vertex/edge/triangle from a priority queue (**decimation priority**: which triangles you want to decimate first?)
    - Vertex deletion/Edge contaction/Vertex merging one at a time
-3. Repeat steps 1 and 2 until goal is reached
+3. Modify the priority queue if needed
+4. Repeat steps 1 and 2 until goal is reached
 
 Vertex deletion
 
@@ -98,26 +99,28 @@ Merge 2 vertices
 
 ### Potential issues
 
-Flipped triangles
+1. Change in topology (due to vertex merging): handled by link check
+2. Flipped triangles: handled by normal checking of neighbouring triangles
 
-Criteria for deletion
+![Flipped triangles](/notes-blog/assets/img/3d/flipped_triangles.png)
+
+### Possible Criteria for deletion
 
 - Shortest edge
 - Least difference in volume after decimation
-- curvature
-- triangle quality: 
-- Local error metrics: distance of previous point from new planes
-- Global error metrics: Create an envelope before decimation
+- Curvature
+- Triangle quality
+- Local error metrics: **Distance** of previous point from new planes
+- Global error metrics: Create an envelope before decimation, to guarantee **any shift in position remains within the boundary**
+- **Hausdorff distance**: Max distance between all the minimum distances between 2 shapes.
+- 
 - user-defined: e.g. coloring of faces so the boundaries are less decimated, highlighted regions.
 
-### Quality
+#### Quality
 
-Triangle Shape: Ratio of the circumscribed circle's radius to the shortest edge (bigger is worse)
+- **Triangle Shape:** Ratio of the circumscribed circle's radius to the shortest edge (bigger is worse)
 
-Dihedral angles
+![Circumcircle](/notes-blog/assets/img/3d/circumcircle.png)
 
-Valence balance (degree of vertices)
-
-Color difference
-
-## The Decimation Problem
+- **Dihedral angles**: Angles between intersecting planes.
+- **Valence balance**: Roughly equal degree of vertices

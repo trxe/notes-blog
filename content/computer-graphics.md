@@ -992,7 +992,7 @@ Per polygon, only the vertices coordinates' mappings are specified (the rest are
 For each **texture coordinate** $(s, t)$ we can get:
 
 - $(s', t', w) = (s/z_e, t/z_e, 1/z_e)$ where $z_e$ is depth in eye space
-- $(s'/w, t'/w)$​​ as the final window space coordinates
+- $(s'/w, t'/w)$​​​ as the final window space coordinates of the 2D texture
 
 | Interpolation in a triangle polygon                          | Interpolation of 4 texels                                    |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |

@@ -1,3 +1,9 @@
+---
+layout: default
+usemathjax: true
+permalink: /network/ch3
+---
+
 # 3 -- Socket Programming
 
 **Socket** is the interface between the application and transport layer.

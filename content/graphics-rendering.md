@@ -31,3 +31,6 @@ Topics include:
 1. [Introduction to Modern OpenGL](/notes-blog/render/ch1)
 2. [Geometric Transformation and Viewing](/notes-blog/render/ch2)
 3. [GLSL](/notes-blog/render/ch3)
+4. [Texture Mapping](/notes-blog/render/ch4)
+5. [Example Shaders](/notes-blog/render/ch5)
+5. [Frame Buffer Objects, Shadows](/notes-blog/render/ch6)

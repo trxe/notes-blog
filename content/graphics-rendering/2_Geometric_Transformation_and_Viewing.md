@@ -33,7 +33,7 @@ permalink: /render/ch2
   - Projection matrix: maps the points in the view volume to a **canonical view volume**
 - Normalized Device Coordinates (NDC) space:
   - 2x2x2 cube defined by planes $x=\pm1, y=\pm1, z=\pm1$
-- Window space:
+- Window space
 
 After reaching the **window** space, we will have the xy-coordinates of the fragment, and its depth (z-value) and reciprocal of
 
@@ -47,7 +47,7 @@ You can use arrays to represent the 4x4 matrix, arranged in column major order.
 
 With a local illumination model e.g. Phong Model (i.e. ignore other objects' reflections)
 
-vertex shader - gouraud shading
+Vertex shader -- Gouraud shading
 
 ```glsl
 // ec = eye coordinate
@@ -73,13 +73,13 @@ v2fColor = LightAmbient * MatlAmbient +
     LightSpecular * MatlSpecular * pf;
 ```
 
-fragment shader
+Fragment shader
 
 ```glsl
 fColor = v2fColor;
 ```
 
-vertex shader - phong shading
+Vertex shader -- Phong shading
 
 ```glsl
 out vec3 ecPosition;
@@ -87,7 +87,7 @@ out vec3 ecNormal;
 // computed as above, gl_position set as above
 ```
 
-fragment shader - phong shading
+Fragment shader -- Phong shading
 
 ```glsl
 uniform mat4 ViewMatrix;
@@ -113,4 +113,4 @@ v2fColor = LightAmbient * MatlAmbient +
     LightSpecular * MatlSpecular * pf;
 ```
 
-Basically move the computation from the vertex shader to the fragment shader
+Basically move the lighting computation from the vertex shader to the fragment shader.
