@@ -58,3 +58,22 @@ void init(void) {
 `sampler2D` for 2D texture maps. `samplerCube` for texture maps.
 
 To sample from a texture, GLSL inbuilt function `texture`.
+
+## Mipmap Level Computation
+
+The appropriate mipmap level $L$, given
+
+- $W, H$ are the width and height of the base mipmap
+- $x_\text{win}, y_\text{win}$ are the window coordinates
+
+$$
+L = \log_2 \left( \max\left( 
+
+\sqrt{\frac{\partial sW}{\partial x_\text{win}}^2 + \frac{\partial tH}{\partial x_\text{win}}^2}, 
+
+\sqrt{\frac{\partial sW}{\partial y_\text{win}}^2 + \frac{\partial tH}{\partial y_\text{win}}^2}
+
+\right) \right)
+$$
+
+Each derivative represents how fast is the texture coordinate changing from pixel to pixel on screen (in x or y axis)?

@@ -113,7 +113,6 @@ Merge 2 vertices
 - Local error metrics: **Distance** of previous point from new planes
 - Global error metrics: Create an envelope before decimation, to guarantee **any shift in position remains within the boundary**
 - **Hausdorff distance**: Max distance between all the minimum distances between 2 shapes.
-- 
 - user-defined: e.g. coloring of faces so the boundaries are less decimated, highlighted regions.
 
 #### Quality

@@ -90,3 +90,4 @@ Checksum to detect errors. Then the receiving side (via network) informs sender 
   - Sequence number
 
 NAK
+
