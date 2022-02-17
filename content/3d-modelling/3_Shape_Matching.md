@@ -14,6 +14,10 @@ permalink: /3d/ch3
 - Angle preserving
 - Composition of rigid motion is also a rigid motion.
 
+**Translation**: $f(\mathbf{p}) = \mathbf{p + v}$
+
+**Rotation**: $f(\mathbf{p}) = R\mathbf{p}$
+
 ## Iterative Closest Pair (ICP)
 
 For objects $K_1, K_2$, sample $S$ and $R$ 

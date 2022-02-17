@@ -32,4 +32,5 @@ permalink: /3d
 2. [Mesh Operations](/notes-blog/3d/ch2)
 3. [Shape Matching](/notes-blog/3d/ch3)
 4. [Surface Simplification](/notes-blog/3d/ch4a), [Thickening](/notes-blog/3d/ch4b)
+5. [Surface Reconstruction](/notes-blog/3d/ch5)
 

@@ -99,8 +99,6 @@ A **simplicial complex** is a set $K$ of simplices that must satisfy:
 1. Every face of a simplex in $K$​ also belongs to $K$​
 2. For any two simpleices $\sigma_1, \sigma_2$​ in $K$​, if $\sigma_1 \cap \sigma_2$​ is non-empty, then $\sigma_1 \cap \sigma_2$​ is a common face of both $\sigma_1, \sigma_2$​.
 
-- 
-
 ### Edge contraction Math Explanation
 
 Given simplicial complex $K$ and a subset $S \subseteq K$:
@@ -128,11 +126,14 @@ How to check in a mesh with $n$ vertices for intersections?
 
 **More efficient**: We can use binary search trees to partition the triangles into pairs.
 
-- kd-trees for 2D
-- 3D Binary space partitioning: To find the nearest neighbour vertex in 3D space. $O(n^\frac{1}{3} + k)$ wtf is $k$??
+- **kd-trees** (3D): Given a triangle, we use its bounding box and range search on the 3d-tree.
+  - $k$ intersections, $n$ triangles
+  - $O(n^\frac{1}{3} + k)$ time
 - **Octree**: finds the bounding box of a mesh. Adaptive method that stops cutting a region when there's very few vertices in it.
   - Take median and partition points into left and right of the median plane.
-  - If number of triangles (shouldn't it be vertices) exceed certain number, subdivide into 
+  - If number of triangles (shouldn't it be vertices) exceed certain number, subdivide into 8 cubes
+
+These more efficient methods reduce the number of triangles we have to brute-force compare on.
 
 If 2 triangles share a common edge, we don't consider them as intersecting (we can detect by checking the fnexts).
 

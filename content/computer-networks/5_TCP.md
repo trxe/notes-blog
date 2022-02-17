@@ -8,7 +8,7 @@ permalink: /network/ch5
 
 Needs to keep track of historical info (state)
 
-- Packets sent but not yet acknoowledged, 
+- Packets sent but not yet acknowledged, 
 - Packets received so far
 - etc.
 

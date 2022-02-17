@@ -4,6 +4,8 @@ usemathjax: true
 permalink: /3d/ch4a
 ---
 
+$\require{color}$
+
 # Mesh simplification
 
 ## Motivation
@@ -50,21 +52,8 @@ One whole cluster of vertices $\rightarrow$​​ One vertex.
 2. **Median**: The point closest to all of the points
    - Similar to subsampling
 3. **Error quadrics (best)**: The point that minimizes the sum of distance to all the planes of the triangles.
-   - By eigenvalue computation.
+   - $\sum (v \cdot q)^2 = \sum (v \cdot q)(q \cdot v) = \sum v^Tqq^Tv = \textcolor{red}{v^T \sum qq^T v}$​​
    - Preserves features.
-
-#### Recap on eigenvectors, eigenvalues (TBC)
-
-If $T$​​ is a linear transformation of vector space $V$​​ and $\mathbf{v}$​​​ is a non-zero vector in $V$​, then $\mathbf{v}$​ is an **eigenvector** of $T$​ if $\textcolor{red}{T(\mathbf{v}) = \lambda \mathbf{v}}$​, where $\lambda$​​ is the **eigenvalue**.
-
-Let the desired point be $p = (x,y,z,1)^T$.
-
-The distance of $p$ to plane $q = (a, b, c, d)^T$ [i.e. $ax + by + cz - d= 0$]​ is
-$$
-(q \cdot p)^2 = p^TQp
-$$
-
-where $Q = qq^T$​.
 
 ### Retriangulation
 
