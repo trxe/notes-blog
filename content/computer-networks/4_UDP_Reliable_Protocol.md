@@ -28,6 +28,10 @@ Is unreliable, and to achieve reliable UDP transmission, **application** impleme
 
 ### Demultiplexing
 
+**Multiplexing**: method via which analog/digital signals combine into one signal over shared medium.
+
+**Demultiplexing**: opposite process that separates signals.
+
 For the server, a single port serves **every client**. UDP's segment includes:
 
 - source port number (16-bit)
