@@ -102,14 +102,14 @@ Only 2 types of services provided by transport layer.
 - Nothing else except data integrity
 - Connection 
 
-## UDP
+### UDP
 
 - Unreliable data transfer
 - Does not provide anything!
 - Cheaper (overhead, complexity etc. hence shorter delay)
   - Multimedia
 
-## App-layer protocol
+### App-layer protocol
 
 - Open protocols
   - defined in RFC (Request for Comment) open documents
@@ -147,7 +147,7 @@ Features of HTTP:
 - Persistency (Present and absent)
   - Non-persistent
     - At most 1 object sent over TCP connection, and immediately closed
-    - Requires 2 RTT per object
+    - Requires 2 RTT per object (1 to initiate TCP, 1 to request & transmit file)
     - OS overhead for each TCP
     - Often browsers open parallel TCP connections
   - Persistent
@@ -300,6 +300,11 @@ This is problematic:
 - In the iterated structure, the responsibility of each layer is a lot clearer.
 
 #### Caches
+
+Satisfies client request without involving origin server.
+
+- Page cached: If not expired, return cache
+- Otherwise: Request cache from origin server and return to client.
 
 Once (any) name server learns mapping, it caches mapping, but mappings **expire** after some Time To Live (TTL).
 

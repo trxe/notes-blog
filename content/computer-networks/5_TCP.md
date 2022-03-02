@@ -24,7 +24,7 @@ Needs to keep track of historical info (state), hence the requirement of sender/
 
 A TCP socket is identified by 4-tuple: **(source IP, source port, dest IP, dest port)**
 
-In TCP, the acknowledgement is`n't acking segments, but a stream of bytes
+In TCP, the acknowledgement isn't acking segments, but a stream of bytes.
 
 We can combine sending info and acknowledgement in the same segment!
  
@@ -34,7 +34,8 @@ We can combine sending info and acknowledgement in the same segment!
 
 How much app-layer data can a TCP segment carry?
 
-- 1460B maximum segment size (MSS).
+- Maximum Segment Size: maximum amount of data that can be stored in a segment.
+- TCP has 1460B maximum segment size (MSS).
   - Maximum amount of data that can be grabbed and placed in one segment
 - limited by max transmission unit (MTU): 1500B for ethernet. This is to exclude 40B of packet headers
   - 20B TCP packet header
@@ -123,7 +124,7 @@ TCP time out value must be minimally longer than RTT.
 
 - Too short: unnecessary retransmits
 - Too long: slow reaction to segment loss.
-- Estimation of RTT: $(1-\alpha)\ cdot \text{EstRTT} + \alpha \cdot \text{LastSampleRTT}$
+- Estimation of RTT: $(1-\alpha)\ \cdot \text{EstRTT} + \alpha \cdot \text{LastSampleRTT}$
   - Exponential weighted moving average, $\alpha \approx 1/8$.
 - Estimation of Deviation from RTT (DevRTT): $(1-\beta) \cdot \text{EstRTT} + 4 \cdot \text{DevRTT}$
   - Typically $\beta \approx 1/4$

@@ -136,7 +136,7 @@ Note that the timeout + seuqence number handles multiple cases without different
 
 ## Performance of rdt3.0 (Stop and Wait)
 
-Very bad because of poor utilization.
+Very bad because of poor utilization (too much waiting).
 
 $D_\text{trans} = L/R = 1KB / (10^9 \text{ bits}/s) = 8 \text{ms}$
 
@@ -147,6 +147,8 @@ $U_\text{sender} = \frac{D_\text{trans}}{RTT + D_\text{trans}}$ is very small wh
 ![rdt3.0](/notes-blog/assets/img/network/rdt-pipeline.png)
 
 Sender sends multiple "in-flight" packets at once, so range of sequence numbers must be increased. 
+
+$U_\text{sender} = \frac{kD_\text{trans}}{RTT + D_\text{trans}}$  utilization for $k$-packet pipeline
 
 ### Go-Back-N
 
@@ -166,9 +168,18 @@ No need for a buffer as **all out of order packets are discarded**
 
 ### Selective repeat
 
-Receiver individually acknowledges all received packets. Out of order packets are discarded.
+Receiver individually acknowledges all received packets. Out of order packets are buffered.
 
-The sender now has to maintain a timer for each unACKed packet.
+SR **sender**:
+
+1. Send **data**: If within window, packetized and sent
+2. **Timeout**: For each packet, if timeout before ACKed, retransmit
+3. **ACK** received: If `send_base` = ACK, `send_base` is moved forward to *unACKed packet with smallest sequence number*
+
+SR **receiver**:
+
+1. Seq $\in$ [`rcv_base+1, rcv_base+N-1`]: Buffered, not sent up.
+2. Seq = `rcv_base`: Sent up with all subsequent buffered packets until first unreceived. Sliding window is moved by number of packets sent up.
 
 **Pros**: Less wasted transmissions
 

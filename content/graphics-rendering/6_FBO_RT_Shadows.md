@@ -12,7 +12,7 @@ permalink: /render/ch6
 
 `internalFormat` refers to either the colorbuffer (`GL_RGBA`) or the depth buffer (`GL_DEPTH_COMPONENT`).
 
-```
+```c++
 glCopyTexImage2D(GL_TEXTURE_2D, 0, internalFormat, 0, 0, viewportWidth, viewportHeight, 0);
 ```
 
@@ -228,9 +228,163 @@ Then on rendering from another view point, compare the depth buffer channel to t
 
 Then map the 3D location of the fragment to the original lightsource view. If the depth values are the same, then the fragment is visible from the lightsource.
 
+Brighter in shadow map corresponds to deeper (greater) depth value.
+
+![](/notes-blog/assets/img/render/shadow_map.png)
+
 1. Render scene with light source as viewpoint
 2. Save depth buffer (**shadow map**)
 3. Clear the framebuffer
 4. Render from the camera's viewpoint
    - For each fragment, change coordinate space from world space to light's view space to determine which fragment it is.
-   - If LS[A] > 
+   - If LS[A] < VP[A] then another primitive is blocking point A from the light source.
+   - Else if LS[A] $\approxeq$ VP[A], the point A is the top most primitive.
+   - Note: LS[A] > VP[A] is impossible as the depth test would have not culled a deeper primitive.
+
+### Approach
+
+**First pass: Saving the shadow map**
+1. Setup an FBO and attach depth texture
+2. Setup **viewport, view and projection** matrices for the light source
+3. Bind FBO with shadow map
+4. Clear depth buffer
+5. Draw the scene
+**Second pass: drawing from actual rendering camera**
+6. Set viewport, view and projection matrices for the camera
+7. Bind to defuault framebuffer
+8. Clear color and depth buffer
+9. Draw the scene 
+   1.  Vertex from **modelling space** to **shadow map space** (viewpoint = light source world position)
+   2.  Each fragment has shadow map coordinates $[s, t, p]$, and $p$ is compared to shadow map's z-value at $[s, t]$.
+
+#### Shadow Map coordinates
+
+$$
+p_L = B \cdot P_L \cdot V_L \cdot M \cdot p_M
+$$
+
+- $M$ is the modelling matrix (model space to world space)
+- $V_L$ view transformation matrix from light source
+- $P_L$ projection matrix from light source
+- Conversion of $[-1, 1] \mapsto [0, 1]$: $B = \left[ \begin{matrix} 
+         0.5 & 0 & 0 & 0.5 \\
+         0 & 0.5 & 0 & 0.5 \\
+         0 & 0 & 0.5 & 0.5 \\
+         0 & 0 & 0 & 1 \\
+         \end{matrix} \right]$ 
+
+#### Shadow Map
+
+```c++
+GLfloat border[] = {1.0f, 0.0f, 0.0f, 0.0f};
+
+// Usual setup of textures
+glActiveTexture(GL_TEXTURE0);
+GLuint depthTex;
+glGenTextures(1, &depthTex);
+glBindTextures(GL_TEXTURE_2D, depthTex);
+glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, shadowMapWidth, 
+   shadowMapHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+glTexParameteri(...);
+/* set Mag and Min filter to GL_NEAREST and not interpolated.
+ * set Wrap mode for S and T coordinates to Clamp to Border
+ * set border color to border. This is to uniformly make the depth 
+ * value 1.0 outside of the view frustum (FOV of light source).
+ */
+
+glTexParameteri(GL_TEXTURE2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
+glTexParameteri(GL_TEXTURE2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
+```
+
+#### Setup FBO
+
+#### Vertex shader
+
+```glsl
+...
+out vec3 ecPosition;
+out vec3 ecNormal;
+out vec4 ShadowCoord;
+
+uniform mat4 ModelViewMatrix;
+uniform mat4 NormalMatrix;
+uniform mat4 MVP;
+uniform mat4 ShadowMatrix; // B * Pl * Vl
+
+void main() {
+   ...
+   ShadowCoord = ShadowMatrix * vPosition;
+   ...
+}
+```
+#### Fragment Shader
+
+```glsl
+
+in vec3 ecPosition;
+in vec3 ecNormal;
+in vec4 ShadowCoord;
+
+uniform sampler2DShadow ShadowMap;
+uniform int RenderPass;
+
+layout (location = 0) out vec4 FragColor;
+
+void recordDepth() {
+   // No need to do anything! Depth buffer automatically saved by OpenGL.
+}
+
+void shadeWithShadow() {
+   vec3 ambient = ...;
+   vec3 diffuseSpec = ...;
+
+   /* Lookup shadow-map. textureProj does perspective division.
+    * i.e. textureProject(texture, vec4(x, y, z, w)) converts to 
+    * (x/w, y/w, z/w, 1) = (s, t, p, 1) which is used to lookup texture.
+    */
+}
+
+void main() {
+   if (RenderPass == 0) { // shadow mapping pass
+      recordDepth();
+   } else { // actual render pass
+      shadeWithShadow();
+   }
+}
+```
+
+### Limitations
+Self shadowing values at unshadowed surfaces causes shadow acne.
+
+-  Subtract a tolerance value from `ShadowCoord.z`
+-  Or offset the scene backwards when generating shadow map from light source.
+
+### Percentage Closer Filtering
+
+Average depth comparison in a neighbourhood of the shadow map.
+
+#### Shadow Mapper with PCF
+```glsl
+/* everything same as above until TexParameters.
+ * Instead of using GL_NEAREST as the texture filtering option, use GL_LINEAR.
+ */
+
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+```
+
+#### Fragment shader with PCF
+```glsl
+void shadeWithShadow() {
+   // ...
+
+   float sum = 0.0f;
+   sum += textureProjOffset(ShadowMap, ShadowCoord, ivec2(-1, -1));
+   sum += textureProjOffset(ShadowMap, ShadowCoord, ivec2(-1, 1));
+   sum += textureProjOffset(ShadowMap, ShadowCoord, ivec2(1, 1));
+   sum += textureProjOffset(ShadowMap, ShadowCoord, ivec2(1, -1));
+   float shadow = sum * 0.25; // averaging
+
+   // ...
+}
+```

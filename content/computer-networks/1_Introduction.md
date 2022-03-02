@@ -7,6 +7,7 @@ permalink: /network/ch1
 * Table of Contents
 {:toc}
 
+$\require{color}$
 
 # 1 -- Introduction
 
@@ -43,17 +44,18 @@ permalink: /network/ch1
 3. **Store-and-forward**: Entire packet arrives at destination router before transmission to the next link.
 
 $$
-\text{transmission delay} = \text{ time to push 1 packet on link} = L / R
+\text{transmission delay} = \text{ time to push 1 packet on link} = \frac{L}{R} \\
+\text{end-to-end delay} = \text{ time to push $N$ packets on link} = N\frac{L}{R} \\
 $$
 
 Implications: 
 
-1. $R$ is never shared. You can only transmit one packet at a time.
+1. $R$ is never shared/run in parallel. You can only transmit one packet at a time.
 2. For each link the packet is transmitted on, incurs $\geq L/R$ delay.
 
 **End-to-end delay**: delay incurred across first source to final destination
 
-The router **can** send a packet to a destination **while** receiving another packet from source.
+The router can **send** a packet to a destination **while receiving** another packet from source.
 
 #### Queueing delay and loss:
 
@@ -144,6 +146,7 @@ T_\text{ave} &= F/t & \text{where $t$ is the time to send F bits} \\
 &= \frac{1}{1/R_s + 1/R_c}
 \end{aligned}
 $$
+
 Instantaneous throughput: Depends on the bottleneck rate $\min(R_s, R_c)$​
 
 Reality: in between (due to packet based atomic)
