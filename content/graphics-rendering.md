@@ -35,3 +35,4 @@ Topics include:
 5. [Example Shaders](/notes-blog/render/ch5)
 6. [Frame Buffer Objects, Shadows](/notes-blog/render/ch6)
 7. [Image Processing](/notes-blog/render/ch7)
+8. [Deferred Shading and Screen Space Techniques](/notes-blog/render/ch8)
