@@ -91,8 +91,15 @@ for (uint i = 0; i < numRays; i++) {
       // if Q is deeper than the z-coord at it's world pos, then it is occluded.
       if (Q.z < thatEyeZ) {
          occ += 1.0;
+         // stop marching this way
          break;
       }
    }
 }
+
+float ao_amt = float(numRays - occ) / float(numRays);
+
+vec4 object_color = texelFetch(sColor, ivec2(gl_FragCoord.xy), 0);
+// ssao_level * vec4(0.2) + (1-ssao_level) * ao_amt
+FragColor = object_level * object_color + mix(vec4(0.2), vec4(ao_amt), ssao_level);
 ```
