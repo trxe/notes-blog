@@ -4,7 +4,7 @@ usemathjax: true
 permalink: /render/ch1
 ---
 
-# 1 - Introduction to Modern OpenGL
+# Introduction to Modern OpenGL
 
 OpenGL (like Direct3D, Metal, etc.) is a **graphics API**, which provides the interface for specialized hardware on the GPU.
 

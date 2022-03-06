@@ -4,7 +4,7 @@ usemathjax: true
 permalink: /render/ch2
 ---
 
-# 2 - Geometric Transformation and Viewing
+# Geometric Transformation and Viewing
 
 ## Coordinates Pipeline
 

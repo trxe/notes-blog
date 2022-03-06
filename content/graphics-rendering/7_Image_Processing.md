@@ -92,19 +92,30 @@ float g = sx * sx + sy * sy;
 
 Lens blur/bloom useful.
 
-The Gaussian Kernel/Filter is defined as such:
+The Gaussian Kernel/Filter is defined as such ($\sigma$ is the standard deviation):
 
 $$
 G(x,y) = \frac{1}{2\pi\sigma} e^{-\frac{x^2 + y^2}{2\sigma^2}}
 $$
 
-It i s a production of two 1D Gaussian functions , i.e. $G(x,y) = G(x)G(y)$.
-
-Hence the 2D digital convolution:
+We exploit that it is a product of two 1D Gaussian functions (2D gaussian blur is **separable**), i.e. $G(x,y) = G(x)G(y)$, where
 
 $$
-C_{l,m} = \sum_{i= -4}^4 \sum_{j=-4}^4 G(i,j) C_{l+i, m+j} 
+G(x) = \frac{1}{\sqrt{2\pi\sigma}} e^{-\frac{x^2}{2\sigma^2}}
 $$
+
+Gaussian kernel weights **should add up to 1**.
+
+Hence the 2D digital convolution has the following 9x9 kernel ($C_{a,b}$ is the original ):
+
+$$
+\begin{aligned}
+C'_{l,m} &= \sum_{i= -4}^4 \sum_{j=-4}^4 \frac{G(i,j)}{k} C_{l+i, m+j} \\
+&= \sum_{i= -4}^4 \frac{G(i)}{k} \sum_{j=-4}^4 \frac{G(j)}{k} C_{l+i, m+j} \\
+\end{aligned}
+$$
+
+where $k = \sum_{i=-4}^4 G(i)$ to ensure weights sum to one.
 
 ### Efficient Gaussian Blur
 
@@ -113,4 +124,74 @@ $$
 
 ### Approach
 
-1. 
+1. Pass #1:
+   1. Bind to FBO
+   2. Render 3D scene without adding anything
+2. Pass #2:
+   1. Bind to 2nd FBO
+   2. Draw screen-filling quad
+   3. Vertical Gaussian blur to texture from Pass #1, write result to another **texture**
+3. Pass #3
+   1. Bind to default framebuffer
+   2. Draw screen-filling quad
+   3. Horizontal Gaussian blur to texture from Pass #1, write result to **output colorbuffer**
+
+```glsl
+uniform int PassNum;
+// the gaussian filter pixel offsets. needs to be declared here 
+// cos texelFetchOffset only works with stuff known at compile time.
+uniform int PixOffset[5] = int[](0, 1, 2, 3, 4);
+// Gaussian filter weights
+uniform float Weight[5];
+
+// Results of first and second pass
+uniform sampler2D RenderTex;
+
+layout (location = 0) out vec4 FragColor;
+
+void pass1() {
+    // Lighting computation
+    FragColor = ...;
+}
+
+void pass2() {
+    ivec2 pix = ivec2(gl_FragCoord.xy);
+    // Weight[0] is the center value of the kernel
+    vec4 sum = texelFetch(RenderTex, pix, 0) * Weight[0];
+    // 
+    for (int i = 1; i < 5; i++)  {
+        sum += texelFetchOffset(RenderTex, pix, 0, ivec2(0, PixOffset[i])) * Weight[i];
+        sum += texelFetchOffset(RenderTex, pix, 0, ivec2(0, -PixOffset[i])) * Weight[i];
+    }
+    FragColor = sum;
+}
+// pass 3 is the same but instead ivec2(+-PixOffset[i], 0)
+```
+
+How to compute Gassian blur? No need for the constant $\frac{1}{\sqrt{2\pi\sigma}}$.
+```c++
+char uniName[20];
+float weights[5], sum, sigma2 = 4.0f; 
+
+// Compute and sum the weights
+weights[0] = gauss(0, sigma2); // gauss is the 1D Gaussian function
+sum = weights[0];
+
+for (int i = 1; i < 5; i++) {
+    weights[i] = gauss(i, sigma2);
+    sum += 2 * weights[i];
+}
+
+for (int = 0; i < 5; i++) {
+    snprintf(uniName, 20, "Weight[%d]", i);
+    prog.setUniform(uniName, weights[i] / sum);
+}
+```
+
+## Application of Gaussian Filter: Bloom
+
+1. Rendering in HDR (Texture 1)
+2. Bright-pass filter of Texture 1, shrink (downsample) (Texture 2)
+3. **Gaussian Blur** Texture 2, magnify (Texture 3)
+4. Tone map the HDR rendered image (Texture 4)
+5. Final = Texture 3 + Texture 4
