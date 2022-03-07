@@ -213,6 +213,31 @@ A **ray** enters (**+1**) and exits (**-1**) the shadow volume. If any point on 
 
 Fixed with **depth fail** method, which traces from the reverse direction instead (polygon to viewpoint).
 
+### Summary and comparison
+
+**Advantages of depth pass**:
+
+- No need capping to work (depth fail requires capping of the front surfaces)
+- Less geometry
+- Easier implementation (if near-plane clipping problem ignored).
+
+**Disadvantages of depth pass**:
+
+- If camera is in shadow volume, it necessarily sees the backbuffer first so -1 to everything.
+- Not fixable even when capped.
+
+**Advantages of shadow volume**:
+
+- Accurate and robust
+- Artifact free
+- Omnidirectional
+
+**Disadvantages of shadow volume**:
+
+- Hard edges
+- Fill intensive
+- CPU work intensive (extending silhouette edges not easily parallelizable)
+
 ## Shadow mapping
 
 Uses texture mapping.
@@ -296,6 +321,19 @@ glTexParameteri(GL_TEXTURE2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE
 glTexParameteri(GL_TEXTURE2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
 ```
 
+### Summary and comparison
+
+**Advantages**:
+
+- Requires no explicit knowledge of object geometry
+- View independent
+
+**Disadvantages**:
+
+- Samplin artifacts
+- Not omnidirectional
+- Only objects within view volume of light can cast shadows.
+
 #### Setup FBO
 
 #### Vertex shader
@@ -361,7 +399,13 @@ Self shadowing values at unshadowed surfaces causes shadow acne.
 
 ### Percentage Closer Filtering
 
-Average depth comparison in a neighbourhood of the shadow map.
+Blockiness (Aliasing) as depth buffers only store discrete samples of the scene's depth, 
+and `textureProj` only returns a binary value.
+
+Even more noticeable when **duelling frusta**: Camera is close to an object (more fragments to compare)
+but light is far from it (less samples).
+
+Average depth comparison in a neighbourhood of the shadow map can smoothen out edges.
 
 #### Shadow Mapper with PCF
 ```glsl
