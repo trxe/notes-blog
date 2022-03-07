@@ -291,6 +291,7 @@ $$
 - $M$ is the modelling matrix (model space to world space)
 - $V_L$ view transformation matrix from light source
 - $P_L$ projection matrix from light source
+- Since coordinates in canonical cube $< 0$ will be out of range in the map coordinates,
 - Conversion of $[-1, 1] \mapsto [0, 1]$: $B = \left[ \begin{matrix} 
          0.5 & 0 & 0 & 0.5 \\
          0 & 0.5 & 0 & 0.5 \\
