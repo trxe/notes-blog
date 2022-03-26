@@ -1263,6 +1263,8 @@ For the following primitives, substitute $p = O(x,y,z) + tD$ in and find $t$.
 - typically used for quickly determining if a ray will hit the object (hitbox) or not
 - specify the two **opposite** corners
 
+![](/notes-blog/assets/img/cg)
+
 **Triangle** (polygon): Using the **barycentric coordinates** method
 
 $P = \alpha A + \beta B + \gamma C = \textcolor{limegreen}{A + \beta (B - A) + \gamma (C - A)}$​​ where $\alpha + \beta + \gamma = 1$​​ and $0 \leq \alpha, \beta, \gamma \leq 1$​​​.
