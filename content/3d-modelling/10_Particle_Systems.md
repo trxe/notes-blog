@@ -96,6 +96,8 @@ Acceleration (2nd derivative) $x'' = f(x, x', t) / m$ can be:
 
 **Vector field** of velocities/accelerations (depends on what this field represents)
 
+![Vector field](/notes-blog/assets/img/3d/vector_field.png)
+
 Differential equations to solve **initial value problems**.
 
 ### Euler's method
@@ -115,3 +117,26 @@ Position-time: $x_{t+1} = x_t + \Delta t v_t$.
 
 Use the midpoint velocity to derive the next step's position, instead of the velocity at the start of the interval.
 
+## Advanced Particle Systems
+
+1. Mass Spring systems
+2. Smoothed particle hydrodynamics (SPH)
+3. Crowd simulation (human crowds)
+
+### Mass spring systems
+
+Hooke's law: $f_s = k_s(x - r) - k_d v$
+
+- 1D line of springs (hair)
+- 2D (cloth)
+  - Triangulated particles (see below)
+- 3D (jello)
+  - More sophisticated methods FEMs (Finite elemental methods)
+
+Right layout, stiffness, integration.
+
+Layout of 2D mass spring particles in cloth:
+
+![Cloth layout](/notes-blog/assets/img/3d/cloth.png)
+
+$$ x'' = M^{-1} (- \frac{\delta})$$

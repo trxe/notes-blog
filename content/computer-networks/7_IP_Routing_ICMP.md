@@ -57,3 +57,63 @@ Same as IPv4 in header structure, except **source, destination** addresses are n
 Header is 40-byte.
 
 # Routing
+
+Routing between Autonomous Systems (ASs) in the internet (network of networks) is done hierarchically.
+
+**Intra-AS** 
+- Single admin
+- No policy decisions
+- Performance priority
+- Ignore hosts; view only routers and the links between them.
+- **Least cost** path between source and destination routers.
+  - Shortest path? Congestion level? Money?
+
+**Inter-AS** routing.
+- Multiple admins
+- Policy priority
+
+## Routing algos
+
+**Link state** algorithms: all routers kow the whole network topology (graph) and link cost (edge weight). Can use Dijkstra's Algorithm.
+
+A lot of broadcasting global information between each other, so not used cos too costly.
+
+**Distance vector** algorithms: routers know **immediate neighbours** only. Exchange of "local views" and update its own "local views".
+
+## Bellman-Ford
+
+Let $d_x(y)$ be the least cost path from $x$ to $y$.
+
+Let $c(x,y)$ be the cost of the direct link between nodes $x$ and $y$.
+$c(x,y) = \infty$ if $x, y$ are not neighbours.
+
+$$
+d_x(y) = \min_{v \in \text{neighbours}(x)} {c(x,v) + d_v(y)}
+$$
+
+```python
+n = V.length
+for i in range(0, n):
+  for edge in graph:
+    relax(edge)
+```
+
+Key property: If P is the shortest path from S to D, and node X is on P, then P must be the shortest path from S to X $\cup$ shortest path from X to D.
+
+## Routing Information Protocol (RIP)
+
+- Hop count as metric, using the distance-vector (DV) protocol with BF algorithm.
+- Entries in routing table: subnet masks
+- Exchange routing table updates every 30s
+- If no update <3min, assume neighbour failed
+
+# Internet Control Message Protocol (ICMP)
+
+ICMP are carriedin IP datagrams.
+
+Contained after IP header (IP - ICMP - data).
+
+Examples
+- Echo request reply (`ping`).
+- Use of `ping` and TTL to create `traceroute`:
+  - 
