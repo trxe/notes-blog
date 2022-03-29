@@ -60,6 +60,8 @@ Header is 40-byte.
 
 Routing between Autonomous Systems (ASs) in the internet (network of networks) is done hierarchically.
 
+AS: Mini internet under **one organization's** control.
+
 **Intra-AS** 
 - Single admin
 - No policy decisions
