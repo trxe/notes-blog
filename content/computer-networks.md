@@ -18,4 +18,5 @@ permalink: /network
 6. [IP Addressing](/notes-blog/network/ch6)
 7. [IP, Routing, ICMP](/notes-blog/network/ch7)
 8. [Link Layer](/notes-blog/network/ch8)
-9. [ARP, Switched LANs](/notes-blog/network/ch9)
+9. [ARP, Ethernet and Switched LANs](/notes-blog/network/ch9)
+10. [Multimedia Networking](/notes-blog/network/ch10)

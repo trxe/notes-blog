@@ -160,7 +160,7 @@ Usually means longer back-off interval with more collision.
 
 ## Star topology
 
-Each end host is connected to a 
+Each end host is connected to a switch, which provides a dedicated channel per host.
 
 ### Ethernet switches
 
@@ -173,3 +173,19 @@ A pure ethernet switch has no IP address, and is transparent/invisible to hosts.
 - It attempts to learn which port is connected to which end host to improve performance [Switch table]
 - Buffers frames, is full duplex.
 - Ethernet protocol: no collisions
+
+#### Switch table
+
+Records of **[MAC addr, Interface (port), TTL]**:
+- which endhost through which interface?
+- On receiving a frame from A, cache in the table
+- If B is found in the table, forward the frame via its port
+- Otherwise send to all ports
+
+A hub does not keep a switch table, but otherwise does the same thing.
+
+![](/notes-blog/assets/img/network/switch_v_router.png)
+
+## Other Userful References
+
+https://www.practicalnetworking.net/series/packet-traveling/host-to-host-through-a-switch/
