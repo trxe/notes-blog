@@ -1,7 +1,7 @@
 ---
 layout: default
 usemathjax: true
-permalink: /3d/ch5
+permalink: /3d/ch10
 ---
 
 # Particle systems

@@ -36,3 +36,4 @@ Topics include:
 6. [Frame Buffer Objects, Shadows](/notes-blog/render/ch6)
 7. [Image Processing](/notes-blog/render/ch7)
 8. [Deferred Shading and Screen Space Techniques](/notes-blog/render/ch8)
+9. [Raytracing](/notes-blog/render/ch9)

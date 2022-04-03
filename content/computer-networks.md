@@ -15,3 +15,7 @@ permalink: /network
 3. [Socket Programming](/notes-blog/network/ch3)
 4. [UDP Reliable Protocol](/notes-blog/network/ch4)
 5. [TCP](/notes-blog/network/ch5)
+6. [IP Addressing](/notes-blog/network/ch6)
+7. [IP, Routing, ICMP](/notes-blog/network/ch7)
+8. [Link Layer](/notes-blog/network/ch8)
+9. [ARP, Switched LANs](/notes-blog/network/ch9)

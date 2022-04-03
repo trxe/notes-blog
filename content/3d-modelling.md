@@ -33,4 +33,6 @@ permalink: /3d
 3. [Shape Matching](/notes-blog/3d/ch3)
 4. [Surface Simplification](/notes-blog/3d/ch4a), [Thickening](/notes-blog/3d/ch4b)
 5. [Surface Reconstruction](/notes-blog/3d/ch5)
+9. [Forward and Inverse Kinematics](/notes-blog/3d/ch9)
+10. [Particle Systems](/notes-blog/3d/ch10)
 
