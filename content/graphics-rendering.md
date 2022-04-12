@@ -37,3 +37,4 @@ Topics include:
 7. [Image Processing](/notes-blog/render/ch7)
 8. [Deferred Shading and Screen Space Techniques](/notes-blog/render/ch8)
 9. [Raytracing](/notes-blog/render/ch9)
+10. [Global illumination](/notes-blog/render/ch10)
