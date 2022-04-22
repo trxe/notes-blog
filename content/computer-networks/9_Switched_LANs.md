@@ -70,19 +70,20 @@ Q: How do you know you are sending to a different subnet?
 
 A: If subnet doesn't have the same IP prefix.
 
-When A sends out the ARP query, since there is no IP match, it will get nothing in return.
-
-Hence A should create link layer frame with 
+A should create link layer frame with 
 - dest MAC: **gateway (router) interface (of the subnet) MAC**
   - Hence router will receive a match for this frame.
   - Router accept and passes the datagram to the network layer
   - Network layer **checks IP address**, use routing protocol to send it to B's gateway router.
-- dest IP: B's IP address
+- dest IP: **B's IP address**
   - B's router receives the datagram
   - Sends from source (MAC is that of B's router) to destination (B's MAC)
   - If B's MAC not known, ARP query is performed.
 
 Router interface then receives and passes on to the next interface via RIP or other routing protocol.
+
+Once the destination IP is in the same subnet as the src IP, the link-layer frame with B's MAC address
+is made.
 
 # LAN technologies
 
@@ -115,8 +116,8 @@ Optical Fibre:
 - Left SC/PC, right SC/PC connectors
 - Single mode fibre
 
-Ethernet frame:
-NIC adapter  encapsulates IP datagram   .
+Ethernet frame: NIC adapter encapsulates IP datagram
+
 Payload : minsize 46 bytes, maxsize  MT
 - dest addr + src addr + type + payload + crc = 64 byte window frame soze;
 - Cell synchronization
@@ -140,7 +141,7 @@ Delivery service features:
 ![](/notes-blog/assets/img/network/bus_ethernet.png)
 
 If A sends frame at time $t$, propagation time between A and D is $d$,
-and D sends at $t + d - 1$.
+and D sends at $t + d - 1$ => COLLISION!
 
 Ethernet CSMA/CD:
 1. Create frame with Network layer datagram.
@@ -149,8 +150,8 @@ Ethernet CSMA/CD:
 4. If another transmission is detected: abort + **send jam signal** to alert of collision.
 
 Post abortion of signal: Binary/**Exponential back-off**
-- After $m$th collision, chose $k \in {0, 1, \dots, 2^m - 1}$
-- NIC waits for $512k$ bit times
+- After $m$th collision, chose $K \in {0, 1, \dots, 2^m - 1}$
+- NIC waits for $512K$ bit times
 - Retry transmission.
 
 Maximum $m$ imposed: 16.

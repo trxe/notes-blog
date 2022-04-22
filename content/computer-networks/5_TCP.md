@@ -41,6 +41,10 @@ How much app-layer data can a TCP segment carry?
   - 20B TCP packet header
   - Not including app-layer packet header (this is within the payload).
 
+### Checksum
+
+Same algorithm as UDP, over **pseudo IP header**, **other TCP header fields** and the TCP body itself.
+
 ### Sequence/Acknowledgement number
 
 Two separate values, each counting by bytes.

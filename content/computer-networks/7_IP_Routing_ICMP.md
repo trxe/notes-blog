@@ -13,6 +13,18 @@ Notes:
 
 ![](/notes-blog/assets/img/network/ipv4.png)
 
+**Flag**: 1 if there's a next segment, otherwise 0
+
+**Lenght**: length of entire IP fragment (header + payload)
+
+**Offset**: offset from start of original datagram in **8-bytes** (sets of 8 bytes)
+
+**MTU** (Max Transfer Unit): The maximum amount of data (bytes) a **link-level frame** can carry.
+
+**Checksum**: same checksum as in transport layer
+
+![](/notes-blog/assets/img/network/internet_checksum.png)
+
 ## Why fragment?
 
 Different link layers have different physically determined Maximum Transfer Units
@@ -76,13 +88,20 @@ AS: Mini internet under **one organization's** control.
 
 ## Routing algos
 
-**Link state** algorithms: all routers kow the whole network topology (graph) and link cost (edge weight). Can use Dijkstra's Algorithm.
+**Link state** algorithms: all routers know the whole network topology (graph) and link cost (edge weight). 
+- Can use Dijkstra's Algorithm.
+- Routers periodically broadcast links to each other 
+- A lot of broadcasting global information between each other, so not used cos too costly.
 
-A lot of broadcasting global information between each other, so not used cos too costly.
+**Distance vector** algorithms: 
+- routers know **immediate neighbours** only. 
+- Exchange of "local views" and update its own "local views".
+- Iterative
+  - Swap local view with neighbours
+  - Update local view
+  - Repeat until no change in local view.
 
-**Distance vector** algorithms: routers know **immediate neighbours** only. Exchange of "local views" and update its own "local views".
-
-## Bellman-Ford
+### Bellman-Ford
 
 Let $d_x(y)$ be the least cost path from $x$ to $y$.
 
@@ -100,11 +119,18 @@ for i in range(0, n):
     relax(edge)
 ```
 
-Key property: If P is the shortest path from S to D, and node X is on P, then P must be the shortest path from S to X $\cup$ shortest path from X to D.
+Key property: If P is the shortest path from S to D, and node X is on P, 
+then P must be the shortest path from S to X $\cup$ shortest path from X to D.
+
+Distributed: Each node receive info from neighbours, recompute and distributes again
+
+Iterative: Continues until two iterations are the same (no more information)
+
+Asynchronous: Nodes do not have to compute in a certain order.
 
 ## Routing Information Protocol (RIP)
 
-- Hop count as metric, using the distance-vector (DV) protocol with BF algorithm.
+- **Hop count** as metric, using the distance-vector (DV) protocol with BF algorithm.
 - Entries in routing table: subnet masks
 - Exchange routing table updates every 30s
 - If no update <3min, assume neighbour failed
@@ -113,9 +139,10 @@ Key property: If P is the shortest path from S to D, and node X is on P, then P 
 
 ICMP are carriedin IP datagrams.
 
-Contained after IP header (IP - ICMP - data).
+Contained after IP header (IP header - ICMP header - data).
+
+**Header**: Type + Code (for specific status) + Checksum
 
 Examples
 - Echo request reply (`ping`).
 - Use of `ping` and TTL to create `traceroute`:
-  - 

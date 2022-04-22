@@ -223,9 +223,19 @@ playout time = $t_i + d_i + Kv_i$
 # Real Time Protocol (RTP)
 
 Runs over UDP (in UDP segments). Each packet contains
-- payload type spec
-- packet sequence number
+- payload type identification
+- packet sequence numbering
 - timestamp
+
+Does **not** provide QoS guarantees:
+- encapsulation ony seen at end systems
+- best-effort service
+
+Example:
+- sending 64kbps PCM-encoded voice over RTP
+- Every 20ms, 160 bytes of encoded data is collected as chunk
+- audio chunk + RTP header = RTP packet $\subset$ UDP seg
+  - RTP header contains info of audio encoding, sequence numbers, timestamps
 
 Suite:
 - RTP -- UDP, sender to receiver
@@ -233,3 +243,29 @@ Suite:
 - RTSP (Streaming) -- receiver to sender
 
 Above transport layer, below application layer, considered transport layer.
+
+Advantage:
+- short end-to-end latency (100 to 500ms)
+
+Challenges:
+- Requires special-purpose server for media, e.g. fine-grained packet scheduling, keep state
+- firewall issues (TCP/UDP)
+- No web-caching
+
+# DASH
+
+Divide media into streamlets, which will be
+transcoded into different quality.
+
+.mpd file describes available videos and qualities.
+
+Client executes ABR (adaptive bitrate algorithm) to determine which segment to next download.
+
+Advantage:
+- simple server (no state, scalable)
+- no firewall issues
+- image web-caching usable for video
+
+Disadvantage:
+- Based on media segment transmissions (long, 2-10s)
+- No low-latency due to buffering on both sides

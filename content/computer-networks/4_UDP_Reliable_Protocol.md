@@ -44,6 +44,8 @@ For the server, a single port serves **every client**. UDP's segment includes:
 
 To detect errors in the segment.
 
+Important: UDP Checksum is performed over entire payload **AND other header fields** (source IP, dest IP, length)
+
 Computation:
 
 1. Let UDP segment be a sequence of 16-bit integers

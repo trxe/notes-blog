@@ -77,8 +77,126 @@ Key: n substitution ciphers, cyclic pattern
 
 #### Encryption standards
 
-DES: Data Encryption Standard
+**Block cipher**: applies deterministic algo with symmetric key to encrypt blocks of text of fixed length.
 
-AES: Advanced Encryption Standard
+**DES**: Data Encryption Standard
+- block cipher with cipher block chaining (block size  64-bit)
+- No analytic attack
+- 56-bit symmetric key is too insecure
+- 3DES: 3x encryption with 3 different keys.
+
+**AES**: Advanced Encryption Standard
+- 128, 192, 256 bit keys
+- Brute force (search space has $2^{256}$ keys as opposed to DES' $2^{56}$)
 
 ### Public Key Cryptography
+
+![](/notes-blog/assets/img/network/public_key_crypto.png)
+
+$$
+K_B^-(K_B^+(m)) = K_B^+(K_B^-(m)) = m
+$$
+
+Given public key $K_B^+$, should be impossible to compute $K_B^-$.
+
+#### RSA
+
+Message = bit pattern = integer number.
+
+**Public private key generation**
+1. Choose 2 large primes $p, q$ (e.g. 1024 bits each)
+2. $n = pq$, $z = (p-1)(q-1)$
+3. Choose $e$ such that $e < n$ and $e, z$ are coprime
+4. Choose $d$ such that $ed \mod z = 1$
+5. **Public** key = $(n, e)$. **Private** key = $(n, d)$.
+
+**RSA encryption, decryption**
+
+Obtain $(n,e), (n,d)$.
+
+To **encrypt** message $m$: $c = m^e \mod n$.
+
+To **decrypt** cipher $c$: $m = c^d \mod n$.
+
+**Proof**:
+
+Remember: $n = pq, z = (p-1)(q-1)$.
+
+$$
+\begin{aligned}
+m &= c^d \mod n\\
+&= (m^e \mod n)^d \mod n\\
+&= (m^{ed} \mod n) \mod n\\
+&= (m^{(ed \mod z)} \mod n)\\
+&= (m^1 \mod n)\\
+&= m
+\end{aligned}
+$$
+
+Exponentiation is expensive computationally.
+
+**Why is RSA secure**:
+- How to obtain $d$ from $e$?
+- Very hard as computing $d$ requires knowledge of the factors of $n$: $p$ and $q$
+- Multiplication easy, factorization hard
+
+### Session keys
+
+Use RSA to setup a secure encrypted channel, and exchange
+a symmetric key. 
+
+Then use symmetric key to encrypt and decrypt.
+
+# Digital Signatures
+
+Establishment of authorship/ownership of a document
+
+Must be **verifiable**, **non-forgeable**: so recepient
+can prove to owner that it is the intended recepient
+and that it has received.
+
+### Simple digital signature
+
+Bob sends message $m$ and encrypted with private key $K^-_B(m)$.
+
+Alice receives both and checks if $m = K^+_B(K^-_B(m))$.
+
+So we know whoever signed $m$ must have used Bob's private key (non-repudiation).
+
+## Message digest
+
+$m$ is run through a hash function $H$ which gives us a digest $H(m)$.
+
+Cannot use 1s complement checksum (aka Internet Checksum):
+has too many collisions.
+
+![Using hash function](/notes-blog/assets/img/network/digital_sig.png)
+
+Digest functions:
+- MD5: 128-bits (short fixed length outputs)
+- SHA-1
+- SHA-256
+
+**Criteria**: Small change in input should lead to large change in digest.
+
+**Example -- Password storage**:
+- database should store hashed password
+- app hashes password input
+- server compares hashed password to stored hash
+
+## Certification Authorities
+
+**Public keys have to be known!** Otherwise someone can
+replace the public key and say its mine when its really theirs.
+
+Hence we have CAs
+- Person E registers public key with CA.
+- CA provides certificate binding E to the public key submitted
+- Certificate containing E's public key to be signed by CA.
+- Person F wants  public key.
+- Get Person E's certificate
+- F apply CA's public key to E's certificate to get B's public key.
+
+## Virtual Private Networks
+
+## Firewalls

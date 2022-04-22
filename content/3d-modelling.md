@@ -33,6 +33,9 @@ permalink: /3d
 3. [Shape Matching](/notes-blog/3d/ch3)
 4. [Surface Simplification](/notes-blog/3d/ch4a), [Thickening](/notes-blog/3d/ch4b)
 5. [Surface Reconstruction](/notes-blog/3d/ch5)
+7. [Introduction to Animation and Rigidbodies](/notes-blog/3d/ch7)
+8. [Quaternions](/notes-blog/3d/ch8)
 9. [Forward and Inverse Kinematics](/notes-blog/3d/ch9)
 10. [Particle Systems](/notes-blog/3d/ch10)
-
+11. [Motion Capture](/notes-blog/3d/ch11)
+12. [Skinning](/notes-blog/3d/ch12a), [Reinforcement Learning](/notes-blog/3d/ch12b)
