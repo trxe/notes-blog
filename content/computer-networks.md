@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Computer Networks
+usemathjax: true
 permalink: /network
 ---
 
