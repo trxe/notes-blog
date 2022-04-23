@@ -151,14 +151,21 @@ Chunk + header encapsulated in UDP/TCP segment.
 
 App sends segment into socket per 20ms.
 
-### Packet loss/delay
-1. Network (packet) loss
-2. Delay loss (IP datagram arrives too late for playout)
-   1. delays: processing, queuing, end host delays
-3. Loss tolerance (due to human perception error correction)
+ ## Two types of packet loss
 
-Receiver attempts to playout each chunk $q$ ms after each chunk is generated.
-If chunk with timestamp $t$ arrives before $t+q$, ok. After $t+q$: packet loss.
+1. Network loss: datagram lost due to network congestion
+2. Delay loss: datagram arrives after scheduled playout time
+  - Due to processing/queueing/end-system delays
+  - Max tolerable delay: 400ms
+
+Loss can be tolerated to some extent depending on encoding and concealment.
+
+### Playout delay
+
+**Fixed playout delay** $q$: 
+- Play chunk with timestamp $t$ at time $t+q$.
+- Large $q$: Less packet loss, less interactivity
+- Small $q$: More interactivity, higher loss rate
 
 **Adaptive playout delay**: To achieve low playout delay AND low late loss rate.
 - estimate network delay
@@ -238,9 +245,10 @@ Example:
   - RTP header contains info of audio encoding, sequence numbers, timestamps
 
 Suite:
-- RTP -- UDP, sender to receiver
-- RTCP (Control) -- bidirectional
-- RTSP (Streaming) -- receiver to sender
+- RTP -- UDP, Sender to receiver
+- RTCP (Control) -- UDP, Bidirectional
+- RTSP (Streaming) -- TCP (port 554), Receiver to sender
+  - defines control sequences useful in controlling multimedia playback.
 
 Above transport layer, below application layer, considered transport layer.
 
@@ -252,7 +260,7 @@ Challenges:
 - firewall issues (TCP/UDP)
 - No web-caching
 
-# DASH
+## DASH
 
 Divide media into streamlets, which will be
 transcoded into different quality.
@@ -269,3 +277,15 @@ Advantage:
 Disadvantage:
 - Based on media segment transmissions (long, 2-10s)
 - No low-latency due to buffering on both sides
+
+Transport layer protocol: **TCP**
+- No heavy real time requirements (not bidirectional communication)
+- Allows for retransmission of lost packets to prevent corrupted video data from being played.
+
+## WebRTC
+
+Transport layer protocol: **UDP**
+- Real time bidirectional communication
+- Too much delay significantly would significantly impact call quality
+  - Retransmission worses delay
+- Accpetability of packet loss

@@ -203,6 +203,20 @@ Hence we have CAs
 
 ![Encryption and decryption](/notes-blog/assets/img/network/digital_sig_crypt.png)
 
+### TLS Handshake
+
+![TLS Handshake](/notes-blog/assets/img/network/tls_handshake.png)
+
+1. Client hello: Client sends client random
+2. Server hello: Server sends SSL cert + server random
+3. Authentication: Client verifies SSL cert with the CA's public key.
+4. Premaster secret: Client sends a byte string with the public key extracted from the SSL cert
+5. Server decrypts secret with private key.
+6. Session keys: Both client and server generate session keys from **client random, server random and premaster secret**.
+   1. Both client and server should arrive at the same results.
+7. Client and server send each other "finished" message encrypted with their session keys
+8. Handshake complete.
+
 ### Chain of Trust 
 
 From end entity/domain, to Certification Authorities, to Root Certification Authorities

@@ -145,6 +145,11 @@ No coordination between nodes. **Collision** handling instead.
 - How to detect collisions
 - How to recover from collisions
 
+#### Collision
+
+When two or more hosts are trying to transmit signals 
+over the same link at the same time.
+
 **Slotted ALOHA**:
 - Assume that
   - frames are equal size
@@ -166,7 +171,16 @@ Problems: synchronization of clocks.
 
 ![Pure ALOHA](/notes-blog/assets/img/network/pure_aloha.png)
 
+#### Carrier sense
+
 What if when detecting someone else is using the channel, don't use it?
+
+Carrier sense detects if the link is currently used for transmission.
+
+**However** for the transmmission signal to propagate to the endpoint of a node,
+some extra time (propagation delay) will be incurred, leading to the pattern below.
+
+![](/notes-blog/assets/img/network/csma_collision.png)
 
 **Carrier Sense Multiple Access (CSMA)**:
 - Sense channel before transmission
@@ -176,17 +190,26 @@ What if when detecting someone else is using the channel, don't use it?
   - YES. Propagation delay means two nodes may not immediately hear each other's transmission.
   - Even after a collision, it will continue to transmit the whole frame.
 
-![](/notes-blog/assets/img/network/csma_collision.png)
-
 **CSMA/CD (Collision detection)**:
 - Same as CSMA but on collision detect, the sender will abort asap
   - Not instantaneous but fast.
 
 ![](/notes-blog/assets/img/network/csma_cd.png)
 
+#### Limits on Frame Size
+
+![](/notes-blog/assets/img/network/collision_frame_limit.png)
+
 What if the frame size is too small? 
 - The sender/receiver may not realise that their frame has collided.
-- Hence there is a minimal frame size.
+- Hence there is a minimal frame size, which **restricts the maximum link length**
+- Transmission time > 2 * Propagation time 
+  - (time for signal to go from source to point of collision and back, as a jam signal)
+
+Suppose minimal frame size = 512 bits. Link speed = 100Mbps.
+- Transmission time = 5.12$\mu$s
+- Transmission time > 2 * Propagation time $\Rightarrow$ Propagation time < 2.56$\mu$s
+- $d_\max / c < 2.56\mu s => d_\max = 3 \times 10^{8}m/s \times 2.56 \mu s = 768m$
 
 Early ethernet used CSMA/CD, but today ethernet uses star topology 
 with point-to-point connections so no need for multiple access protocol. 

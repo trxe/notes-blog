@@ -19,6 +19,7 @@ permalink: /network
 9. [ARP, Ethernet and Switched LANs](/notes-blog/network/ch9)
 10. [Multimedia Networking](/notes-blog/network/ch10)
 11. [Network Security](/notes-blog/network/ch11)
+12. [Physical Layer (Incomplete)](/notes-blog/network/ch12)
 
 ## Web request summary
 
