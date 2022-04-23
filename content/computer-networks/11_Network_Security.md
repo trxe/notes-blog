@@ -184,10 +184,14 @@ Digest functions:
 - app hashes password input
 - server compares hashed password to stored hash
 
+![](/notes-blog/assets/img/network/password.png)
+
 ## Certification Authorities
 
 **Public keys have to be known!** Otherwise someone can
-replace the public key and say its mine when its really theirs.
+replace the public key and say its mine when its really theirs (Impersonation).
+
+![Example of CA](/notes-blog/assets/img/network/digital_sig_cert.png)
 
 Hence we have CAs
 - Person E registers public key with CA.
@@ -197,6 +201,33 @@ Hence we have CAs
 - Get Person E's certificate
 - F apply CA's public key to E's certificate to get B's public key.
 
+![Encryption and decryption](/notes-blog/assets/img/network/digital_sig_crypt.png)
+
+### Chain of Trust 
+
+From end entity/domain, to Certification Authorities, to Root Certification Authorities
+
+![](/notes-blog/assets/img/network/chain_of_trust.png)
+
 ## Virtual Private Networks
 
 ## Firewalls
+
+Isolates internal network, allowing some packets to pass but block others.
+
+- Prevent DoS attacks
+- Prevent illegal modification of data
+- Authorization only
+
+### Three types of firewalls
+
+Setting up policy rules, with which packets and filtered and dropped/forward if necessary.
+
+Packet filtering types:
+- stateless: Analyses per packet individually, forward/drop based on
+  - Source/Dest IP
+  - TCP/UDP source/dest port numbers
+  - ICMP message type
+- stateful: Track status of each TCP connection,
+  - Tracking connection setup (SYN) and teardown (FIN)
+- application gateways
