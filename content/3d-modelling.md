@@ -28,6 +28,8 @@ permalink: /3d
 
 ## Table of Contents
 
+[CHEATSHEET](/notes-blog/3d/cheatsheet)
+
 1. [Polygonal Mesh](/notes-blog/3d/ch1b)
 2. [Mesh Operations](/notes-blog/3d/ch2)
 3. [Shape Matching](/notes-blog/3d/ch3)
