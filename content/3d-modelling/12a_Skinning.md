@@ -1,7 +1,7 @@
 ---
 layout: default
 usemathjax: true
-permalink: /render/ch12a
+permalink: /3d/ch12a
 ---
 
 # Skinning

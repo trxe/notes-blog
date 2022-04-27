@@ -1,7 +1,7 @@
 ---
 layout: default
 usemathjax: true
-permalink: /render/ch11
+permalink: /3d/ch11
 ---
 
 # Motion Capture

@@ -1,7 +1,7 @@
 ---
 layout: default
 usemathjax: true
-permalink: /render/ch12b
+permalink: /3d/ch12b
 ---
 
 # Reinforcement Learning
