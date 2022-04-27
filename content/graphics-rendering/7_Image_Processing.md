@@ -30,9 +30,35 @@ $\require{color}$
 
 ## Digital Convolution
 
-Replaces a pixel's value with a weighted sum of pixels in the neighbourhood of the pixel (e.g. 3x3). A **convolution filter/kernel** is a matrix that specifies the weights.
+Replaces a pixel's value with a weighted sum of pixels in the neighbourhood of the pixel (e.g. 3x3). 
+A **convolution filter/kernel** is a matrix that specifies the weights.
 
 ![](/notes-blog/assets/img/render/convolution.png)
+
+### Using `texelFetch` to read from texture maps
+
+```glsl
+ivec2 pix = ivec2(gl_FragCoord.xy);
+// Weight[x] is the value of the kernel at position x
+vec4 sum = texelFetch(RenderTex, pix, 0) * Weight[0];
+// Horizontal convolution kernel
+for (int i = 1; i < 5; i++)  {
+    sum += texelFetchOffset(RenderTex, pix, 0, ivec2(0, PixOffset[i])) * Weight[i];
+    sum += texelFetchOffset(RenderTex, pix, 0, ivec2(0, -PixOffset[i])) * Weight[i];
+}
+FragColor = sum;
+```
+
+| `texture` | `texelFetch` |
+| --------- | ------------ |
+| handles filtering | no filtering, directly accesses a texel from image |
+| via **texture** coordinates $\in(0,1)$ | via **texel** coordinates $(0, w \text{or} h)$ |
+
+*Note on fragment position*: 
+- A fragment's 2D position is coordinates of fragment's center in window space. 
+  - bottom most (0.5, 0.5)
+- A texel coordinate is integer values
+  - bottom most (0, 0)
 
 ## Edge detection
 
@@ -81,12 +107,6 @@ float sx = s00 + 2 * s10 + s20 - (s02 + 2 * s12 + s22);
 float sy = s00 + 2 * s01 + s02 - (s20 + 2 * s21 + s22);
 float g = sx * sx + sy * sy;
 ```
-
-*Note on fragment position*: 
-- A fragment's 2D position is coordinates of fragment's center in window space. 
-  - bottom most (0.5, 0.5)
-- A texel coordinate is integer values
-  - bottom most (0, 0)
 
 ## Gaussian Blur
 

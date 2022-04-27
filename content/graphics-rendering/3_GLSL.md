@@ -92,6 +92,18 @@ pos = p.position;
 - `buffer` read-write memory shared with application
 - `shared` (compute shaders only)
 
+How to pass uniforms:
+
+```cpp
+GLint uniformLocations[n];
+uniformLoations[0] = glGetUniformLocation(CurrShaderProgObj, "NameOfMatrixUniform");
+uniformLoations[1] = glGetUniformLocation(CurrShaderProgObj, "NameOfFloatVecUniform");
+...
+
+glUniformMatrix4fv(uniformLocations[0], 1, isTranspose, &matrix[0][0]);
+glUniform4fv(uniformLocations[1], 1, &vector[0]);
+```
+
 ## Overloaded Operators
 
 important: matrix vector multiplication

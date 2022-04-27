@@ -38,3 +38,5 @@ Topics include:
 8. [Deferred Shading and Screen Space Techniques](/notes-blog/render/ch8)
 9. [Raytracing](/notes-blog/render/ch9)
 10. [Local Reflection](/notes-blog/render/ch10)
+11. [Global Illumination](/notes-blog/render/ch11)
+12. [Radiosity](/notes-blog/render/ch12)

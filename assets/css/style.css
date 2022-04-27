@@ -14,7 +14,7 @@ body {
     margin: auto;
     padding: 50px;
     max-width: var(--content-width);
-    line-height: 1.7em;
+    line-height: 2.0em;
 }
 
 @media screen and (max-width: 600px) {

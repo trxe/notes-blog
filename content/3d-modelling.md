@@ -4,7 +4,7 @@ title: 3D Modelling and Animation
 permalink: /3d
 ---
 
-# 3D Modelling and Animation
+# 3D Modelling and Animation (INCOMPLETE)
 
 - Analysis of surface quality
 

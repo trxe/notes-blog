@@ -53,6 +53,19 @@ void init(void) {
 }
 ```
 
+##  `texture` vs `texelFetch`
+
+| `texture` | `texelFetch` |
+| --------- | ------------ |
+| handles filtering | no filtering, directly accesses a texel from image |
+| via **texture** coordinates $\in(0,1)$ | via **texel** coordinates $(0, w \text{or} h)$ |
+
+*Note on fragment position*: 
+- A fragment's 2D position is coordinates of fragment's center in window space. 
+  - bottom most (0.5, 0.5)
+- A texel coordinate is integer values
+  - bottom most (0, 0)
+
 ## GLSL
 
 `sampler2D` for 2D texture maps. `samplerCube` for texture maps.
@@ -65,6 +78,8 @@ The appropriate mipmap level $L$, given
 
 - $W, H$ are the width and height of the base mipmap
 - $x_\text{win}, y_\text{win}$ are the window coordinates
+
+Higher valued mipmap $\LeftRightarrow$ Smaller mipmap texture size
 
 $$
 L = \log_2 \left( \max\left( 

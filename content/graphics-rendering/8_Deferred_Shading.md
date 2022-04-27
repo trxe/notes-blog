@@ -16,10 +16,21 @@ Techniques to avoid applying time-consuming shaders not in final image.
 > Q: How is time saved? 
 > 
 > A: In the final pass, we only do expensive lighting computation only for pixels viewable
-in the final frame 
+> in the final frame 
 
-**Useful** if high depth complexity and scene fills almost whole viewport, and/or shading expensive.
-**Memory** required is very high, so try to pack some data into Textures, or reduce precision.
+**Advantage**:
+- Whatever fragment ends up in the G-buffer is the fragment that will be seen in the final render.
+- **Useful** if high depth complexity and scene fills almost whole viewport i.e. many overdrawn fragments.
+- Lighting is calculated only once per pixel.
+
+**Disadvantage**:
+- **Memory** required is very high, so try to pack some data into Textures, or reduce precision.
+
+*Note*: `flat` indicates a variable to be passed to rasterizer should **not** be interpolated
+
+![Deferred Overview](/notes-blog/assets/img/render/deferred_overview.png)
+
+## Data packing precisions
 
 Some data and the space required:
 - Fragment's world space position (2 x 32b FP)
@@ -28,7 +39,29 @@ Some data and the space required:
 - Frag's object/material index (32b int)
 - Frag's specular power factor (32b FP)
 
-*Note*: `flat` indicates a variable to be passed to rasterizer should **not** be interpolated
+Q: Why vertex normal is less precise than vertex world space position?
+
+A: Reduced precision in world space precision causes **jagged edges** artifacts
+since there are less possible depth values which causes larger fragments that are blocky.
+Also **z-fighting**.
+
+### Z-fighting
+
+When two fragments have identical z-buffer values $\in [0, 1]$ and competing fragments are randomly discarded.
+- Near and far plane greater $\Rightarrow$ worsen z-fighting as less precision is given to the fraction component.
+- Lower precision, worse z-fighting
+
+Example of linear depth buffering:
+
+$$
+z_\text{depth} = \frac{z - \text{near}}{\text{far} - \text{near}}
+$$
+
+Non-linear depth-buffering:
+
+$$
+z_\text{depth} = \frac{1/\text{near} - 1/z}{1/\text{near} - 1/\text{far}}
+$$
 
 # Screen Space Technique: Ambient Occlusion
 
