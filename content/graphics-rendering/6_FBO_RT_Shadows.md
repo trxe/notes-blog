@@ -4,6 +4,8 @@ usemathjax: true
 permalink: /render/ch6
 ---
 
+$\require{color}$
+
 # Frame Buffer Objects
 
 ## Framebuffer Data
@@ -35,7 +37,7 @@ Limitation:
 - Width and height of texture is limited to window size
 - Data format: Limited by the framebuffer's data format (8-bit per channel color bit).
 - Cannot output to multiple color buffers
-- Fragment shader output clamped to [0.0, 1.0]
+- Fragment shader output clamped to [0.0, 1.0] for each float channel
 
 ## FBO
 
@@ -74,7 +76,7 @@ glBindTexture(GL_TEXTURE_2D, renderTexB);
 glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, renderTexB, 0);
 ```
 
-### Renderbuffer 
+### Setting up FBO
 
 ```c++
 // Generate and bind framebuffer, same as above
@@ -95,6 +97,9 @@ glDrawBuffers(2, drawBufs);
 // Default framebuffer
 glBindFramebuffer(GL_FRAMEBUFFER, 0);
 ```
+
+Note that we have to set the targets in `drawBufs` for fragment shaders' outputs to have the 
+layouts here in the [Fragment Shader](/notes-blog/render/shaders#multipass-shader) to work.
 
 ### Drawing to the texture
 

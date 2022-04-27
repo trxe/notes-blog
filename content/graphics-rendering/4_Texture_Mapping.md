@@ -79,7 +79,7 @@ The appropriate mipmap level $L$, given
 - $W, H$ are the width and height of the base mipmap
 - $x_\text{win}, y_\text{win}$ are the window coordinates
 
-Higher valued mipmap $\LeftRightarrow$ Smaller mipmap texture size
+Higher valued mipmap $\Leftrightarrow$ Smaller mipmap texture size
 
 $$
 L = \log_2 \left( \max\left( 

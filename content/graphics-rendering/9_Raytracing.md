@@ -40,6 +40,34 @@ Scene description in raytracing:
   - Polygon
   - Parametric/Volumetric
 
+Psuedocode:
+
+```
+render() {
+  for each pixel:
+    ray = eye to pixel
+    pixelColor = trace(ray)
+}
+
+trace(ray) {
+  hit = (t = inf, hitPos = null, hitNormal = null, hitMaterial = null)
+  for each object in scene:
+    if intersect(object, ray) is nearer, set as hit
+  color = shade(ray, hit.hitPos, hit.hitNormal, hit.hitMaterial);
+}
+
+shade(ray, point, normal, material) {
+  for each light source:
+    trace a shadow ray to light source
+    if intersect(light source, shadow ray):
+      color += lighting(point, normal)
+  if specular:
+    color += trace(reflect(ray))
+  if translucent:
+    color += trace(refract(ray, material.refractiveIndexRatio))
+}
+```
+
  ## Ray Tracing Acceleration
  Research mostly within
  - Accelerating ray-scene intersection
@@ -106,7 +134,9 @@ Conditional schemes:
 | no caustics (focusing of light on surface) | NO caustics |
 | no color bleeding of diffuse surfaces | NO color bleeding |
 
-Distribution ray tracing also boasts depth of field and motion blur.
+Distribution ray tracing also demonstrates depth of field and motion blur.
+
+Perturbing reflection ray also allows us to have glossy reflection.
 
 ![](/notes-blog/assets/img/render/dof.png)
 
@@ -114,7 +144,37 @@ Per **pixel**: shoot out random multiple primary rays, whose fetched colors are 
 Per **intersection**: *reflection, refraction, shadow* rays are randomly **perturbed**.
 - Pick a random point in area light source as a **point** light source (shadow ray)
   - Using random sampling in the stratified area (jittered sampling)
-- Perturb the reflection ray by a random amount (in the gray bubble)
+- Perturb the reflection ray by a random amount (within the specular lobe)
+
+Psuedocode:
+
+```
+render() {
+  for each pixel:
+    for each sample:
+      ray = randomOffset(eye lens) to randomOffset(pixel)
+      pixelColor = trace(ray)
+    pixelColor /= samples
+}
+
+trace(ray) {
+  hit = (t = inf, hitPos = null, hitNormal = null, hitMaterial = null)
+  for each object in scene:
+    if intersect(object, ray) is nearer, set as hit
+  color = shade(ray, hit.hitPos, hit.hitNormal, hit.hitMaterial);
+}
+
+shade(ray, point, normal, material) {
+  for each light source:
+    trace a randomPerturbed(shadow ray) to Area light source
+    if intersect(light source, shadow ray):
+      color += lighting(point, normal)
+  if specular:
+    color += trace(randomPerturbed(reflect(ray)))
+  if translucent:
+    color += trace(randomPerturbed(refract(ray, material.refractiveIndexRatio)))
+}
+```
 
 ### Raytracing on GPU
 - Per frame, draw fullscreen quad (to generate all fragments)

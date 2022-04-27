@@ -32,6 +32,27 @@ void main() {
 }
 ```
 
+## Normal Computation without Precomputed Tangent
+
+*To figure out*
+
+```glsl
+void compute_tangent_vectors( vec3 N, vec3 p, vec2 uv, out vec3 T, out vec3 B )
+{
+    // get edge vectors of the pixel triangle
+    vec3 dp1 = dFdx( p );
+    vec3 dp2 = dFdy( p );
+    vec2 duv1 = dFdx( uv );
+    vec2 duv2 = dFdy( uv );
+
+    // solve the linear system
+    vec3 dp2perp = cross( dp2, N );
+    vec3 dp1perp = cross( N, dp1 );
+    T = normalize( dp2perp * duv1.x + dp1perp * duv2.x );  // Tangent vector
+    B = normalize( dp2perp * duv1.y + dp1perp * duv2.y );  // Binormal vector
+}
+```
+
 ## Procedural Texture Generation
 
 **Given**:
@@ -65,5 +86,25 @@ void main() {
     } else {
         pass2();
     }
+}
+```
+
+How to **pass uniforms out** of shader to save to texture:
+
+How to **render final image**: pass in textures as uniforms.
+
+```
+// pass 1: saving to texture
+layout (location = 0) out vec4 FragColorA;
+layout (location = 1) out vec4 FragColorB;
+
+// pass 2: rendering final image
+uniform sampler2D textureA;
+uniform sampler2D textureB;
+
+void main() {
+    ...
+    FragColorA = ...;
+    FragColorB = ...;
 }
 ```
