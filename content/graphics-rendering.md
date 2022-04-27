@@ -26,6 +26,8 @@ Topics include:
   - Screen-space techniques (ambient occlusion)
   - Post-rendering processing
 
+[Sample Shaders](/notes-blog/render/shaders)
+
 ## Table of Contents
 
 1. [Introduction to Modern OpenGL](/notes-blog/render/ch1)
