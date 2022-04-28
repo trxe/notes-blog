@@ -189,6 +189,7 @@ void pass2() {
 ```
 
 How to compute Gassian blur? No need for the constant $\frac{1}{\sqrt{2\pi\sigma}}$.
+
 ```c++
 char uniName[20];
 float weights[5], sum, sigma2 = 4.0f; 

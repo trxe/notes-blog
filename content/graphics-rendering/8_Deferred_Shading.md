@@ -41,9 +41,10 @@ Some data and the space required:
 
 Q: Why vertex normal is less precise than vertex world space position?
 
-A: Reduced precision in world space precision causes **jagged edges** artifacts
-since there are less possible depth values which causes larger fragments that are blocky.
-Also **z-fighting**.
+A: Reduced precision in world space precision causes **jagged edge** artifacts
+since there are fewer depth values, which reduces the number of fragments and 
+makes the produced image blocky.
+Also leads to worse **z-fighting** as the likelihood of z-values colliding is higher.
 
 ### Z-fighting
 
@@ -90,7 +91,7 @@ Limitations of pre-computed AO:
 2. Expensive to compute
 3. Inconvenient to compute in 3D object space, done mostly on CPU, and hard to move to GPU
 
-We can better harness GPU computation by **approximating oslution** by computing per-pixel accessibility in screen space.
+We can better harness GPU computation by **approximating** the solution by computing per-pixel accessibility in screen space.
 
 ### Approach
 
