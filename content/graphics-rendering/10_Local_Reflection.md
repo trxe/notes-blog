@@ -31,19 +31,24 @@ Local reflection models: rs between
 
 Radiometry: Physical measurement of light/radiation energy
 
-Radiant flux/power $Phi$:
-- **Total** energy flowing from/to/through surface per unit time
-- Light power (Watts)
+Summary:
 
-Irradiance $E$:
-- **Incoming** (Incident) radiant power on surface per unit surface area
-- W/$m^2$
-- $E= \frac{d\Phi}{dA}$
+$$
+\begin{aligned}
+\text{Radiant Power } \Phi &: \text{light energy over unit time} \\
+\text{Irradiance } E &= \frac{d \Phi}{dA} = \text{incident power per unit surface area}\\
+&= \int_\Omega L(x \leftarrow \Psi) (N \cdot \Psi) d\omega_\Psi \\
+\text{Radiosity } B &= \frac{d \Phi}{dA} = \text{outgoing power per unit surface area}\\
+&= \int_\Omega L(x \rightarrow \Theta) (N \cdot \Theta) d\omega_\Theta \\
+\text{Radiosity } L &= \frac{d^2 \Phi}{d\omega \cdot dA \cos \theta}
+\end{aligned}
+$$
 
-Radiant exitance/radiosity $M$, or $B$ (surface that's totally diffuse):
-- **Outgoing** (Exitance) radiant power on surface per unit surface area
-- W/$m^2$
-- $M$ (radiant exitance, more general), $B$ radiosity.
+Radiant power and radiance:
+
+$$
+\Phi = \int_A \int_\Omega L(x \rightarrow \Theta) cos \theta d\omega_\Theta dA_x
+$$
 
 **Radiance** $L$:
 - "Intensity" of light
@@ -56,33 +61,9 @@ Radiant exitance/radiosity $M$, or $B$ (surface that's totally diffuse):
   - The reason being we don't want the size of the light source (solid angle) and direction of the light (projected surface area) to affect the computation of radiance.
 - $W/(srm^2)$
 
-$$
-L = \frac{d^2 \Phi}{d\omega \cdot dA cos\theta}
-$$
-
 ![](/notes-blog/assets/img/render/radiance.png)
 
 ###  Radiometic quantities' relationship
-
-Radiant power and radiance
-
-$$
-\Phi = \int_A \int_\Omega L(x \rightarrow \Theta) cos \theta d\omega_\Theta dA_x
-$$
-
-Irradiance and radiance
-
-$$
-E(x) = \int_\Omega L(x \leftarrow \Theta) cos \theta d\omega_\Theta
-$$
-
-Radiosity and radiance
-
-$$
-B(x) = \int_\Omega L(x \rightarrow \Theta) cos \theta d\omega_\Theta
-$$
-
-Where $\Omega$ is the domain of all solid angles (i.e. the hemisphere) and $A$ is the surface area. $L(x \rightarrow \Theta)$ refers to outgoing radiance, whereas $\leftarrow$ refers to incoming.
 
 Radiometric quantities vary with wavelength, and is perception independent.
 
@@ -108,6 +89,8 @@ $$
 
 Describes the amount of incident light reflected in exitant direction.
 
+**BRDF = Outgoing radiance $L$ $\div$ Incoming irradiance $E$**
+
 ![](/notes-blog/assets/img/render/brdf.png)
 
 $$
@@ -115,7 +98,7 @@ $$
 = \frac{dL(x \rightarrow \Theta)}{L(x \leftarrow \Psi)(N_x \cdot \Psi) d\omega_\Psi}
 $$
 
-$\Psi$ is incident/incoming light source direction, $\Theta$ is outgoing light source.
+$\Psi$ is incident/incoming light source direction, $\Theta$ is outgoing light.
 
 Implications:
 - BRDF is **independent** on solid angle of incoming irradiance.
@@ -132,6 +115,10 @@ Dimensionality: 4D (incoming and outgoing each contribute two dimensions)
 
 The requirements for physically feasible BRDF are below:
 
+**Note about $R$**: 
+Occasionally the reflection ray $R = 2(N \cdot \Psi)N - \Psi$ would be included the BRDF.
+Remember to expand and replace all relevant values.
+
 ### Helmholtz reciprocity
 
 BRDF is symmetric.
@@ -147,6 +134,14 @@ Total power reflected in all directions must be equal to or less than incident p
 $$
 \int_\Omega f_r(x, \Psi \rightarrow \Theta)(N_x \cdot \Theta)d_\omega \le 1
 $$
+
+### Isotropic
+
+If the BRDF is independent of the incident light $\Psi$'s azimuth angle, 
+it would not include any angle formed by $\Psi$ and any **fixed** vector
+(e.g. the tangent of a hair strand.)
+
+Cook Torrance model cannot represent anisotropic (not isotropic) models.
 
 ## Example BRDFs
 
@@ -258,7 +253,7 @@ $1/(N \cdot V)$ to account for glare.
 
 ### Isotropic
 
-Independent of azimuthal (equatorial) angle $\phi$.
+(See above) Independent of azimuthal (equatorial) angle $\phi$.
 
 $$
 f_r(x, (\theta_i, \phi_i) \leftrightarrow (\theta_o, \phi_o))
