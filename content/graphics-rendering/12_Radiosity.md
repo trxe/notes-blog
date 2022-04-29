@@ -66,7 +66,7 @@ Computing hemicube delta form factors:
 
 ## System of linear equations
 
-From each patch's radiosity equation $B_i = E-i + R_i \int_j B_j F_{ij}$, we can get a system of 
+From each patch's radiosity equation $B_i = E_i + R_i \int_j B_j F_{ij}$, we can get a system of 
 $n$ linear equations that we can represent in a matrix.
 
 ![](/notes-blog/assets/img/render/radiosity_matrix.png)

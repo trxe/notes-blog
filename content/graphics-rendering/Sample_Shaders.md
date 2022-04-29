@@ -73,6 +73,20 @@ void main() {
     // ...
 }
 ```
+## Screen-space techniques
+
+```
+ivec2 pix = ivec2(gl_FragCoord.xy);
+// Weight[0] is the center value of the kernel
+vec4 sum = texelFetch(RenderTex, pix, 0) * Weight[0];
+
+// Example kernel filtering
+for (int i = 1; i < 5; i++)  {
+    sum += texelFetchOffset(RenderTex, pix, 0, ivec2(0, PixOffset[i])) * Weight[i];
+    sum += texelFetchOffset(RenderTex, pix, 0, ivec2(0, -PixOffset[i])) * Weight[i];
+}
+FragColor = sum;
+```
 
 ## Multipass Shader
 
