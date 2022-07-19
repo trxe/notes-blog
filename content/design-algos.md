@@ -12,6 +12,9 @@ The contents follow the NUS module CS3230 (taken in AY2021/22 S1).
 
 ## Table of Contents
 
+Lecture Notes:
+1. [Introduction to Algorithms](/notes-blog/algo2/l01)
+
 | Week | Chapter             | Problem Set                                        |
 | ---- | ------------------- | -------------------------------------------------- |
 | 7    | Amortized Analysis  | [Amortized Analysis](/notes-blog/algo2/amort_prob) |
