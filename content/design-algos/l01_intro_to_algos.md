@@ -1,5 +1,4 @@
 ---
-layout: qna
 title: Introduction to Algorithms
 usemathjax: true
 permalink: /algo2/l01
@@ -37,13 +36,15 @@ These are used to prove lower bounds of runtime, i.e.
 **Adversary**. Input model that returns the worst case answer for any operation the algorithm may perform.
 
 ### Outline of proving algorithmic lower bounds $L$
-
-<div class="important">
 *Theorem.* Show that any algorithm solving (insert problem) has runtime $ge$ (insert runtime) by the (insert comparison model).
 
-1. Come up with a representation model the adversary can visualize the state of the problem with. (Graph, tree, etc.) The Algorithm is constructing this representation model with each query.
-2. For each operation, the adversary must set the input such that the operation is as **least informative** as possible.
-3. Suppose some algorithm with runtime $<$ given amount **outputs the correct answer for some input**. Then in **another modified input**, the same algorithm will return the same answer but would be wrong.
+
+<div class="important">
+<ol>
+   <li> Come up with a representation model the adversary can visualize the state of the problem with. (Graph, tree, etc.) The Algorithm is constructing this representation model with each query. </li>
+   <li>For each operation, the adversary must set the input such that the operation is as <b>least informative</b> as possible.</li>
+   <li> Suppose some algorithm with runtime $<$ given amount <b>outputs the correct answer for some input</b>. Then in another modified input, the same algorithm will return the same answer but would be wrong. </li>
+</ol>
 </div>
 
 ### For the Zero-One problem
