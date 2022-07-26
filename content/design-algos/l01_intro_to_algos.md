@@ -51,10 +51,8 @@ These are used to prove lower bounds of runtime, i.e.
 
 Let $\textsf{Zero-One}$ bef the problem: given an array $A$ of size $n$ of 0s and 1s, determine if there are more 0s than 1s in the array.
 
-<div class="question">
 *Theorem.* Any algorithm solving $\textsf{Zero-One}$ has runtime $\ge n$
 by the query model (each query = one time unit).
-</div>
 
 *Proof.* Suppose there exists an algorithm $\mathcal{M}$ which solves $\textsf{Zero-One}$ in time $< n$ with the query model.
 1. [Can omit]
@@ -72,10 +70,8 @@ by the query model (each query = one time unit).
 Let $\textsf{Max}$ be the problem: given an array $A$ of numbers,
 return the number with maximum value in $A$.
 
-<div class="question">
 *Theorem.* Any algorithm solving $\textsf{Max}$ has runtime $\ge n - 1$
 by the comparison model (each comparison between 2 elements = one time unit).
-</div>
 
 *Proof.* Suppose there exists an algorithm $\mathcal{M}$ which solves $\textsf{Max}$ in time $< n - 1$ with the comparison model.
 1. Construct a graph of $n$ nodes where each node corresponds to an index.
@@ -101,10 +97,8 @@ $$
 Let $\textsf{Sort}$ be the problem: given an array $A$ of numbers,
 return the same array but in sorted order $B$ such that $B_1 < B_2 < \dots < B_n$.
 
-<div class="question">
 *Theorem.* Any algorithm solving $\textsf{Sort}$ has runtime $\ge \log(n!)$
 by the comparison model.
-</div>
 
 *Proof.* Suppose there exists an algorithm $\mathcal{M}$ which solves $\textsf{Max}$ in time $< n - 1$ with the comparison model.
 1. Let the set $U$ be the set of all the possible permutated inputs of the indices of $A$.
@@ -125,4 +119,26 @@ $$
    - For any two inputs $A, A' \in U_m$, the algorithm $\mathcal{M}$ will not be able to distinguish between them and will return the same answer.
    - This answer will be wrong for at least one of the two inputs $A, A'$.
 
-### For the 
+### For the connected graph problem
+
+Let $\textsf{Conn}$ be the problem: given an graph $G$ of size $n$ nodes, determine if the graph is connected.
+
+*Theorem.* Any algorithm solving $\textsf{Conn}$ has runtime $\ge {n \choose 2}$
+by the query model (each query = one time unit).
+
+*Proof.* Suppose there exists an algorithm $\mathcal{M}$ which solves $\textsf{Conn}$ in time $L < {n \choose 2}$ with the query model.
+1. [Can omit]
+2. Let graph $G$ be the input graph of $n$ nodes.
+   - Each query (Is G[i] connected to G[j]?) takes one time unit
+   - For each pair (i,j), suppose the adversary responds
+     - YES if G[i] and G[j] are already connected based on the previous answers
+     - YES if it is the last unqueried pair of G[i] with another node (i.e. an edge is added here)
+     - NO otherwise
+   - After $L$ queries, at least one pair of nodes is left unqueried. 
+   - Suppose in $G$ all the remaining unqueried pairs do not have an edge between them.
+   - Let $G'$ be the graph such that the remaining unqueried pairs are connected by an edge.
+3. $\mathcal{M}$ cannot distinguish between $G, G'$.
+   - By definition $G'$ is connected.
+   - $G$ is not connected.
+     - Suppose $G$ is connected, and $i, j$ was never queried by $\mathcal{M}$. We claim there is a path between $i, j$. There must then be some edge $i, i'$ and $j, j'$. This means that an edge $i, i'$ was confirmed even though $i'$ was not the last unqueried paired node for $i$. Contradiction. [Crappy explanation but pls]
+   - As such $\mathcal{M}$ will err on at least one of the inputs.

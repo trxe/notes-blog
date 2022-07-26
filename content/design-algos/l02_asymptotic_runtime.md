@@ -87,15 +87,28 @@ such that $0 < \mid x - p \mid < \delta \Rightarrow 0 < \mid f(x) - L \mid < \ep
 $f(n) = o(g(n)) \Leftrightarrow \lim_{x \rightarrow \infty}\frac{f(n)}{g(n)}= 0$. 
 
 *Proof.* Given $\lim_{n \rightarrow \infty}\frac{f(n)}{g(n)}= 0$,
-for all $\epsilon > 0$, we have $\delta = \infty$ such that 
+for all $\epsilon > 0$, we have $\delta > 0$ such that 
 
 $$
 0 < \infty - n < \delta = \infty \Rightarrow \frac{f(n)}{g(n)} < \epsilon 
 \Rightarrow f(n) < \epsilon g(n)
 $$
 
-Setting $c = \epsilon$ and $n_0 = 
+Setting $c = \epsilon$ and $n_0 = \delta$, we get for any $c > 0$, there is $n_0 > 0$ such that $f(n) < cg(n)$, which means by definition, $f(n) = o(g(n))$.
+
+Similar argument can be made for rest of the statements.
 
 ### Example
 
 <div class="question"> Show that $n^3 + 3n^2 + 4n + 1 = \omega(n^2)$. </div>
+
+$$
+\begin{aligned}
+&\lim_{n \rightarrow \infty} \frac{n^3 + 3n^2 + 4n + 1}{n^2} \\
+=& \lim_{n \rightarrow \infty} \left( n + 3 + \frac{4}{n} + \frac{1}{n^2} \right)\\
+=& \lim_{n \rightarrow \infty} (n) + 3 + 0 + 0 \\
+=& \ \infty \\
+\Rightarrow& \ n^3 + 3n^2 + 4n + 1 = \omega(n^2)
+\end{aligned}
+$$
+
