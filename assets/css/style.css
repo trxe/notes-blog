@@ -2,6 +2,7 @@
     --content-width: 70%;
     --navbox-color: #9b49ff;
     --box-color: #f1e6ff;
+    --highlight-color: #e7b74f;
     --code-color: #2e0063;
     --codebox-color: #f7f7f7;
     --title-color: #3c0081;
@@ -104,5 +105,10 @@ h1, h2, h3 {
 
 .question {
     background-color: var(--box-color);
+    padding: 0.5em;
+}
+
+.important {
+    background-color: var(--highlight-color);
     padding: 0.5em;
 }

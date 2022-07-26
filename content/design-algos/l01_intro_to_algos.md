@@ -36,19 +36,45 @@ These are used to prove lower bounds of runtime, i.e.
 
 **Adversary**. Input model that returns the worst case answer for any operation the algorithm may perform.
 
-### Outline of solving lower bounds $L$
+### Outline of proving algorithmic lower bounds $L$
 
-1. Come up with a representation model the adversary can visualize the state of the problem with. (Graph, tree, etc.)
-2. One can assume the Algorithm is constructing this representation model with each query. For each operation, the adversary must set the input such that the operation is as **least informative** as possible.
-3. After $L$ such operations, the algorithm must be unable to distinguish between two inputs which should give different outcomes.
+<div class="important">
+*Theorem.* Show that any algorithm solving (insert problem) has runtime $ge$ (insert runtime) by the (insert comparison model).
+
+1. Come up with a representation model the adversary can visualize the state of the problem with. (Graph, tree, etc.) The Algorithm is constructing this representation model with each query.
+2. For each operation, the adversary must set the input such that the operation is as **least informative** as possible.
+3. Suppose some algorithm with runtime $<$ given amount **outputs the correct answer for some input**. Then in **another modified input**, the same algorithm will return the same answer but would be wrong.
+</div>
+
+### For the Zero-One problem
+
+Let $\textsf{Zero-One}$ bef the problem: given an array $A$ of size $n$ of 0s and 1s, determine if there are more 0s than 1s in the array.
+
+<div class="question">
+*Theorem.* Any algorithm solving $\textsf{Zero-One}$ has runtime $\ge n$
+by the query model (each query = one time unit).
+</div>
+
+*Proof.* Suppose there exists an algorithm $\mathcal{M}$ which solves $\textsf{Zero-One}$ in time $< n$ with the query model.
+1. [Can omit]
+2. Let array $A$ be an array of size $n$ where $n$ is odd. 
+   - Consider an adversary which alternates between yes and no to the query "Is $A[i] == 0$?" Let $q \le n-1$ be the number of queries that $\mathcal{M}$ makes
+   - Note that the difference between the number of 0s and the number of 1s is 1 if the $q$ is odd, and 0 if $q$ is even.
+   - Suppose $\mathcal{M}$ determines correctly that there are more 0s than 1s in $A$.
+   - Let $A'$ be the array such that the remaining unqueried elements are 1.
+3. $\mathcal{M}$ cannot distinguish between $A, A'$.
+   - If $q$ is odd, there are at least 2 elements not queried and since $2 > 1$, there will be more 1s than 0s in the array $A$. A similar argument can be made if $q$ is even.
+   - As such $\mathcal{M}$ will err on at least one of the inputs.
 
 ### For the Maximum problem
 
 Let $\textsf{Max}$ be the problem: given an array $A$ of numbers,
 return the number with maximum value in $A$.
 
+<div class="question">
 *Theorem.* Any algorithm solving $\textsf{Max}$ has runtime $\ge n - 1$
-by the comparison model.
+by the comparison model (each comparison between 2 elements = one time unit).
+</div>
 
 *Proof.* Suppose there exists an algorithm $\mathcal{M}$ which solves $\textsf{Max}$ in time $< n - 1$ with the comparison model.
 1. Construct a graph of $n$ nodes where each node corresponds to an index.
@@ -74,8 +100,10 @@ $$
 Let $\textsf{Sort}$ be the problem: given an array $A$ of numbers,
 return the same array but in sorted order $B$ such that $B_1 < B_2 < \dots < B_n$.
 
+<div class="question">
 *Theorem.* Any algorithm solving $\textsf{Sort}$ has runtime $\ge \log(n!)$
 by the comparison model.
+</div>
 
 *Proof.* Suppose there exists an algorithm $\mathcal{M}$ which solves $\textsf{Max}$ in time $< n - 1$ with the comparison model.
 1. Let the set $U$ be the set of all the possible permutated inputs of the indices of $A$.
@@ -95,3 +123,5 @@ $$
 3. After any $m < \log(n!)$ rounds of comparisons, the size $U_{m}$ is more than 1.
    - For any two inputs $A, A' \in U_m$, the algorithm $\mathcal{M}$ will not be able to distinguish between them and will return the same answer.
    - This answer will be wrong for at least one of the two inputs $A, A'$.
+
+### For the 
