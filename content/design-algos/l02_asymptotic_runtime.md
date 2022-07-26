@@ -36,7 +36,7 @@ $$
 
 Meanwhile o-notation is a tighter restriction:
 $$
-f(n) = O(g(n)) \Leftrightarrow \text{for \textcolor{red}{any} } c>0, \quad 
+f(n) = o(g(n)) \Leftrightarrow \text{for \textcolor{red}{any} } c>0, \quad 
 0 \le f(n) \textcolor{red}{<} cg(n)\text{ for some $n_0$ and } n > n_0
 $$
 
@@ -68,3 +68,34 @@ or in other words,
 $$
 f(n) = \Theta(g(n)) \Leftrightarrow 0 \le cg(n) \le f(n) \le dg(n) \quad \text{for some } n_0, d > c >0
 $$
+
+## How to show an asymptotic bound
+
+### Limit definition
+<div class="important">
+<b>Epsilon-delta definition of a limit $\lim_{x \rightarrow p} f(x) = L$.</b></br>
+For all $\epsilon > 0$,<br/>
+there exists some $\delta > 0$<br/>
+such that $0 < \mid x - p \mid < \delta \Rightarrow 0 < \mid f(x) - L \mid < \epsilon$.
+</div>
+
+### Proving limits
+
+![](/notes-blog/assets/img/algo2/l02-limits.png)
+
+*Theorem.* Show that
+$f(n) = o(g(n)) \Leftrightarrow \lim_{x \rightarrow \infty}\frac{f(n)}{g(n)}= 0$. 
+
+*Proof.* Given $\lim_{n \rightarrow \infty}\frac{f(n)}{g(n)}= 0$,
+for all $\epsilon > 0$, we have $\delta = \infty$ such that 
+
+$$
+0 < \infty - n < \delta = \infty \Rightarrow \frac{f(n)}{g(n)} < \epsilon 
+\Rightarrow f(n) < \epsilon g(n)
+$$
+
+Setting $c = \epsilon$ and $n_0 = 
+
+### Example
+
+<div class="question"> Show that $n^3 + 3n^2 + 4n + 1 = \omega(n^2)$. </div>

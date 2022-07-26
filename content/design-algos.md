@@ -14,6 +14,7 @@ The contents follow the NUS module CS3230 (taken in AY2021/22 S1).
 
 Lecture Notes:
 1. [Introduction to Algorithms](/notes-blog/algo2/l01)
+1. [Asymptotic analysis](/notes-blog/algo2/l02)
 
 | Week | Chapter             | Problem Set                                        |
 | ---- | ------------------- | -------------------------------------------------- |
