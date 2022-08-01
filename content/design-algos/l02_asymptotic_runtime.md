@@ -4,6 +4,8 @@ usemathjax: true
 permalink: /algo2/l02
 ---
 
+\require{color}
+
 # Word RAM Model
 
 In the previous topic we went through the comparison and query models.
