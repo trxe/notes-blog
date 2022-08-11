@@ -73,9 +73,8 @@ $$
 
 ## How to show an asymptotic bound
 
-### Limit definition
+### Epsilon-delta definition of limit $\lim_{x \rightarrow p} f(x) = L$.
 <div class="important">
-<b>Epsilon-delta definition of a limit $\lim_{x \rightarrow p} f(x) = L$.</b></br>
 For all $\epsilon > 0$,<br/>
 there exists some $\delta > 0$<br/>
 such that $0 < \mid x - p \mid < \delta \Rightarrow 0 < \mid f(x) - L \mid < \epsilon$.
@@ -114,3 +113,31 @@ $$
 \end{aligned}
 $$
 
+## Big-O Properties
+
+### Reflexivity
+
+$$
+f(n) = O(f(n))\\
+f(n) = \Omega(f(n))\\
+f(n) = \Theta(f(n))
+$$
+
+### Transitivity
+
+$$
+f(n) = O(g(n)) \text{ and } g(n) = O(h(n)) \Rightarrow f(n) = O(h(n))
+$$
+
+Similar for other notations ($\Omega, \omega, o, \Theta$)
+
+### Symmetry
+
+$$f(n) = \Theta(g(n)) \Leftrightarrow g(n) = \Theta(f(n))$$
+
+### Complementarity
+
+$$
+f(n) = O(g(n)) \Leftrightarrow g(n) = \Omega(f(n))\\
+f(n) = o(g(n)) \Leftrightarrow g(n) = \omega(f(n))
+$$
