@@ -4,7 +4,7 @@ usemathjax: true
 permalink: /algo2/l02
 ---
 
-\require{color}
+$\require{color}$
 
 # Word RAM Model
 
