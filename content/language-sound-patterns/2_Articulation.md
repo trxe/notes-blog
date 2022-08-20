@@ -69,7 +69,7 @@ The limited case is marked
 
 - Plosives (oral stops) [p,b,k,t]
   - bring active and passive articulators together to stop air from exiting the mouth
-- Fricatives [f,s]
+- Fricatives [e.g. f,s]
   - articulators are brought close but not completely
   - narrow slit to force air through (hiss)
 - Affricates [ch]
