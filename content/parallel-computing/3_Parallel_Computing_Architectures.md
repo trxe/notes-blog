@@ -51,7 +51,7 @@ We often operate on **words**.
 |-----------------|------------------|
 | Pipelining      | Superscalar      |
 
-![5 stage instruction execution](/notes-blog/assets/img/parallel/datapath.png)
+![5 stage instruction execution](/notes-blog/assets/img/parallel/l3-datapath.png)
 
 #### Pipelineing
 
@@ -70,7 +70,7 @@ We often operate on **words**.
 
 #### Superscalar
 
-![Superscalar duplicating the ALU](/notes-blog/assets/img/parallel/superscalar.jpeg)
+![Superscalar duplicating the ALU](/notes-blog/assets/img/parallel/l3-superscalar.jpeg)
 
 Duplicates all or some the stages of the pipeline. Instead of 1 instruction in the fetch stage, 
 we can have 2 instructions in the stage at the pipeline.
@@ -82,7 +82,7 @@ we can have 2 instructions in the stage at the pipeline.
 
 Summary:
 
-![ILP](/notes-blog/assets/img/parallel/instruction-level-parallelism.png)
+![ILP](/notes-blog/assets/img/parallel/l3-instruction-level-parallelism.png)
 
 The speedup is still bottlenecked by the instruction execution, which all comes from the same thread.
 
@@ -117,13 +117,29 @@ These days we put multiple cores in the same processor.
 
 ## Flynn's Parallel Architecture Taxonomy
 
-### SISD
+### SISD (Single insn single data)
 
-### SIMD
+1. One stream of instruction
+2. One instruction one piece of data
+3. Uniprocessors
 
-### MISD
+![SISD](/notes-blog/assets/img/parallel/l3-sisd.png)
 
-### MIMD
+### SIMD (Single insn multiple data)
+
+1. One stream of instructions
+2. One instruction **multiple data**
+   1. Data parallelism / Vector processor
+3. Modern processors all have some form 
+   1. SSE
+   2. AVX
+4. GPGPUs will have
+
+![SIMD](/notes-blog/assets/img/parallel/l3-simd.png)
+
+### MISD (Multiple insn single data)
+
+### MIMD (Multiple insn multiple data)
 
 ### Stream processor variants (SIMD + MIMD)
 
