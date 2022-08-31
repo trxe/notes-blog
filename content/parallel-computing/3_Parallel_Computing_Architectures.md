@@ -91,6 +91,9 @@ The speedup is still bottlenecked by the instruction execution, which all comes 
 While software can run multiple threads concurrently, the processor can run multiple threads in **parallel**!
 - SMT (Simultaneous multithreading) at the hardware level
   - Hyperthreading (Proprietary to Intel)
+  - no need for context switch
+  - 2 threads ready to fire instruction at the same time
+  - interleaving instructions
 
 #### Implementations
 
@@ -127,40 +130,108 @@ These days we put multiple cores in the same processor.
 
 ### SIMD (Single insn multiple data)
 
-1. One stream of instructions
-2. One instruction **multiple data**
-   1. Data parallelism / Vector processor
-3. Modern processors all have some form 
-   1. SSE
-   2. AVX
-4. GPGPUs will have
+- One stream of instructions
+- One instruction **multiple data**
+  1. Data parallelism / Vector processor
+    - Modern processors all have some form (Intel SSE/AVX)
+    - An operations between 2 indexed vectors which doesn't run into dependency problems.
+- e.g. GPGPUs
+  1. 32 to 64 $\times$ 32-bit floating-point elements
+  2. Implicit parallelism, scalar binary with multiple instances are executed in lockstep and regrouped.
+
+![Data parallelism](/notes-blog/assets/img/parallel/l3-data-parallelism.png)
+
+- Compact: 1 instruction defines N ops
+- Parallel: N ops are data parallel and independent
+- Expressive: Regular patterns can be described
 
 ![SIMD](/notes-blog/assets/img/parallel/l3-simd.png)
 
 ### MISD (Multiple insn single data)
 
+- All instructions work on the same data at any time
+- No actual implementation
+- No useful scenario
+- e.g. Systolic array
+
+![MISD](/notes-blog/assets/img/parallel/l3-misd.png)
+
 ### MIMD (Multiple insn multiple data)
+
+- Each PU fetches its own instruction
+- Each PU operates on its own data
+- e.g. Multiprocessor
+
+![MIMD](/notes-blog/assets/img/parallel/l3-mimd.png)
 
 ### Stream processor variants (SIMD + MIMD)
 
-SMT:  2 threads with the same context on thesame core at the same time, immediately
-- no need  forocntext switch
-- 2 threads ready to fire instruction at the same time
-- interleaving instructions
+Multiprocessor + GPGPU
 
-Superscalar: 1 thread with one context, to fire instruction from another thread
-
-Kernel thread/Process. A kernel thread is almost like a process today.
+# Multicore architecture
 
 ## Data Design
 
+### Hierarchical design
+
+![Hierarchical design](/notes-blog/assets/img/parallel/l3-hierarchical.png)
+
+### Pipelined design
+
+![Pipelined design](/notes-blog/assets/img/parallel/l3-pipeline.png)
+
+- Often used with routers
+- Many headers to unpack/pack, one after the other (assembly line style)
+- Long sequence of data elements
+
+### Network-based design
+
+![Network-based design](/notes-blog/assets/img/parallel/l3-network-mesh.png)
+
+- Failure
+- interconnection very sensitive
+- Cores and local caches/MEM connected via interconnected network
+
 ## Memory Organizaiton
 
-Memory latency
+![Uniprocessor](/notes-blog/assets/img/parallel/l3-uniprocessor.png)
 
-Memory bandwidth (The bottleneck nowadays!)
+- processor
+- memory module
+- $\ge$ caches
+  - Caches reduce memory access latency as they
+  - Provide **high bandwidth data transfer** to the CPU
+- I/O
 
-Memory bus is fully occupied, cannot give out data faste rthan the bandwidht
+**Problems in memory management**:
+1.  Memory latency
+    1.  Time for a memory request to be serviced by memory
+    2.  e.g. 100 cycles or 100nsec
+2.  Memory bandwidth
+    1.  How fast can memory give you data
+    2.  e.g. 20GB/s
+    3.  The bottleneck nowadays
+
+Memory bus is fully occupied, cannot give out data faster rthan the bandwidth
+
+### Distributed-Memory systems
+
+- Each node is an independent uniprocessor
+- Physically distributed memory module
+- Message passing to exchange data btwn nodes
+
+### Shared Memory System
+
+- Program accesses memory thru shared mem provider,
+- the shared mem architecture is encapsulated
+- shared variables to exchange data
+
+We're not talking about the underlying hardware
+Do they have a **shared address space**.
+- Do they have their own local address space?
+- Can you directly access the memory in another node?
+
+UMA: Uniform Memory Access (Time) UMA
 
 - Fetch frmo memory less often
   - Reuse data
@@ -175,3 +246,26 @@ Cache coherence problem
 
 Memory consistency problem
 - Consistency model
+
+A=1 from proc 0
+
+then proc 1, can be very delayed or not
+it could print before Flag = 1 or after.
+
+while (Flag == 0); 
+print A when flat isn't 0 anymore
+
+proc1 and 2  print A
+proc 2 will always print 1
+
+always done in program order
+
+some overhead to maintain memory consistency (e.g. proc 2)
+
+lslide 42:
+BLUE: memory system is busy getting snad sending tothe processor
+GREEN: Load instruction in processor (if in cache, short time, if not, have to go to shared memory)
+EVERY LOAD is going to memory
+GRAY: rest of the pipeline
+
+memory contention:
