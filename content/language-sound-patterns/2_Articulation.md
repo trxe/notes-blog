@@ -16,10 +16,49 @@ Each vocal tract movement = an **articulatory gesture**.
 To define an articulatory gesture,
 
 - Airstream mechanism
+  - Pulmonary egressive, Glottalic egressive, Glottalic ingressive, Velaric ingressive
 - State of the velar port
+  - Closed: Oral sounds
+  - Open: Air can pass through the nose, Nasal sounds
 - State of the larynx
 - **Place** of articulation (where the articulator moves)
 - **Manner** of articulation (type of constriction made)
+
+### Place of articulation
+
+**Active** articulator: the "**mover**" articulator
+
+- Lower lip (labial)
+- Tongue front (coronal)
+- Tongue body
+- Larynx
+
+**Passive** articulator: the **place** to which the active articulator moves
+
+
+| **Active Articulator** | **+ Passive Articulator** | **= Place of Articulation** |
+|------------------------|---------------------------|-----------------------------|
+| lower lip              | upper lip                 | labial                      |
+|                        | upper teeth               | labio-dental                |
+| tongue front           | upper teeth               | dental                      |
+|                        | alveolar ridge            | alveolar                    |
+|                        | post-alveolar region      | retroflex (tip)             |
+|                        | post-alveolar region      | post-alveolar (blade)       |
+| tongue body            | hard palate               | palatal                     |
+|                        | soft palate               | velar                       |
+| larynx                 |                           | laryngeal                   |
+
+**Building descriptors**: 
+
+| PLACE | Voiced/Voiceless/Nasal | MANNER |  |
+|-------|------------------------|--------|--|
+| bilabial | nasal | plosive/stop | m |
+| dental | voiceless | fricative | θ |
+
+
+![Pulmonic consonant IPA chart](/notes-blog/assets/img/speech/ipa_pulmonic_consonants.png)
+
+![Affricates and Non-pulmonic consonants IPA chart](/notes-blog/assets/img/speech/ipa_affricates_others.png)
 
 ## Transcription
 
@@ -94,46 +133,29 @@ Voiced obstruents (stops/fricatives) are **marked**.
   - [r]: class of rhotics
   - [l]: class of laterals (air flow through side)
 
+### On approximants (laterals, trills, taps, flaps)
+
+Laterals: stops the airflow down the centre of the vocal tract, air flow through side
+
+- Dark [l] (l with tilde through centre): occurs when [l] is after a high vowel (e.g. feel, heal, pool)
+- Lateral fricatives: a tighter constriction at the sides and/or more airflow
+- Labial laterals are impossible.
+
+Taps [up-down] and flaps [one-way] are often rhotics.
+
+Approximants: constriction in the vocal tract
+
 Most sonorants are **voiced**.
 - Blowing out air --> vibration --> basics of sonorance
 
 Unvoiced sonorants are marked
 
-### Place of articulation
+### Contour vs complex segments
 
-**Active** articulator: the "**mover**" articulator
+Contour segments: Start with one manner and end with another manner
 
-- Lower lip (labial)
-- Tongue front (coronal)
-- Tongue body
-- Larynx
+Complex segments: 2 places of articulation are used at the same time
 
-**Passive** articulator: the **place** to which the active articulator moves
-
-
-| **Active Articulator** | **+ Passive Articulator** | **= Place of Articulation** |
-|------------------------|---------------------------|-----------------------------|
-| lower lip              | upper lip                 | labial                      |
-|                        | upper teeth               | labio-dental                |
-| tongue front           | upper teeth               | dental                      |
-|                        | alveolar ridge            | alveolar                    |
-|                        | post-alveolar region      | retroflex (tip)             |
-|                        | post-alveolar region      | post-alveolar (blade)       |
-| tongue body            | hard palate               | palatal                     |
-|                        | soft palate               | velar                       |
-| larynx                 |                           | laryngeal                   |
-
-**Building descriptors**: 
-
-| PLACE | Voiced/Voiceless/Nasal | MANNER |  |
-|-------|------------------------|--------|--|
-| bilabial | nasal | plosive/stop | m |
-| dental | voiceless | fricative | θ |
-
-
-![Pulmonic consonant IPA chart](/notes-blog/assets/img/speech/ipa_pulmonic_consonants.png)
-
-![Affricates and Non-pulmonic consonants IPA chart](/notes-blog/assets/img/speech/ipa_affricates_others.png)
 
 ### Vowels
 

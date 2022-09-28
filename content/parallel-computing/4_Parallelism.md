@@ -145,3 +145,53 @@ Functional Programming:
 ### Models of Coordination
 
 ### Program Parallelization
+
+```
+#pragma omp parallel for shared (a, b, result)
+  private (i, j, k)
+
+for (i = 0; i < size; i++)
+  for (j = 0; j < size; j++)
+    for (k = 0; k < size; k++)
+```
+
+## Parallel Programming Patterns
+
+- Fork Join
+  - T creates child tasks $T_1 \dots T_m$.
+  - T can  execute the same/different program part/function
+  - Implementation: Language construct/library function
+- Parbegin-Parend
+  - Parallel begin/end
+  - Set of threads is created at `parbegin` and statements of construct are assigned
+  - At the end of the parbegin-parend structure, join
+  - Implementation: Language construct/compiler directives
+  - e.g. Matrix multiplication
+- SPMD and SIMD
+  - SPMD: Same program on different cores but operate on different data.
+    - Threads have equal rights and different threads work asynchronously
+  - 
+- Master-Worker
+  - Single program controls execution of the other programs
+    - Assigns work to worker threads.
+    - Most common!
+- Client-server
+  - SErver cmputes requuests from multple client tasks
+  - More indepenent that I then Mast-Serer
+- Tasks Pool
+  - Improvement over client-server
+  - The threads survive beyond the tasks
+  - Tasks can be dynamicA op
+- Producer-Consumer
+  - Threads produce data (used as input by consumer threads)
+
+   number of threads that collect data
+
+
+## OpenMP
+
+Start with a parallelizable algorithm (SPMD model)
+
+Then annotate the code with parallelization and syncrhonization directives (pragma)
+- Parallel == Indepdendent
+- Programmer responsible for protection against race conditions

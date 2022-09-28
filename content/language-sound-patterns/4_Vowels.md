@@ -54,6 +54,13 @@ Jones 18 cardinal vowels with 8 **primary cardinal vowels**, 1, 5, 8 being the e
 
 Note: Cardinals 9 to 18 are just the rounded/unrounded counterparts.
 
+They are not actual vowels of a particular language, but they are just reference points for orientation in the vowel space.
+
+- Vowels are not exact, no contact btwn active and passive articulators
+- Other cardinal vowels are 'auditorily equidistant' between 3 extremes
+  - See the "leaf shape"
+- Actual tongue position producing various cardinal vowels aren't articulatorily equidistant
+
 ## Dimensions
 
 ### Height/Backness
@@ -61,14 +68,26 @@ Note: Cardinals 9 to 18 are just the rounded/unrounded counterparts.
 The [i e a o u] may not be the same as Jones' cardinal vowels.A
 
 -  If the vowel system is small/basic, the "space" each vowel occupies before they become indistinguishable is large
+-  Vowel height is the **most important** parameter in describing vowels
+   -  Vertical vowel systems typically only contrast 2 or 3 vowels
+    -  Height is the only parameter required to distinguish vowels in vowel system
+- In a typical 5 vowel system:
+  - [a] is usually produced quite centrally, but we don't need another position as usually no other vowel contrasts with it. (same height)
+  - vowels are **maximally distributed in the vowel space**
 
 ### Tense/Laxness
 
-- Tense/lax in English or more extreme, Akan
+- The definition tends to be fuzzy
+- Tense/lax in English
   - leave [liv] vs live [lɪv]
-- tense vowels are **higher/longer** than the lax
-- Advanced/retracted tongue root
-  - Forward --> tongue go up (which is why tense tends to be higher) and vice versa.
+  - tense vowels are **higher/longer** than the lax in English
+- BUT not in Akan
+  - tense and lax vowels are not contrasting in height
+  - Instead, advanced/retracted tongue root
+    - Forward --> tongue go up (which is why tense tends to be higher) and vice versa.
+- Typically foudn only in mid/high
+- Low vowels don't really have
+  - muscle tension raises the tongue body but body has to be lowered for low vowels.
 
 ### Rounding
 
@@ -76,6 +95,8 @@ The [i e a o u] may not be the same as Jones' cardinal vowels.A
   - back rounded is unmarked
 - Front the tongue and spreading the lips shrink the front cavity
   - fron unrounded is unmarked
+- Low vowels are rarely rounded:
+  - [ɒ] is marked instead of it's unrounded counterpart. its only used in RP
 
 ### 'r-ful'-ness
 
@@ -91,6 +112,13 @@ r-dropping
 In unstressed syllables with orthographic “r”, rhotic dialects have [schwa with a curl], non-rhotic
 have [schwa].
 
+You will never find a tap on a stressed syllable.
+
+Conventions for central vowels:
+- with **no orthographic r**, stressed central vowel is transcribed with wedge.
+  - Even though the pronunciation sounds more like a schwa
+  - the unstressed vowel is using the schwa instead.
+
 ### Low vowel contrasts
 
 ## Vowel nasality and voice quality
@@ -102,14 +130,33 @@ have [schwa].
   - creaky: tilde below
   - breathy: umlaut below
 
-Extra resonance of the nasal cavity interferes with the acoustics of tongue/lip: 
-so nasal vowels are harder to distinguish
+
+Coarticulation: overlap in the articulatory gestures
+- anticipatory coarticulation
+- if a nasal consonant is anticipated, you have to open the velar port and nasalize the vowel! e.g. [pæn]
+
+For every nasal vowel, there is a non-nasal vowel: nasal vowels are marked.
+- nasal tracts dampens acoustic cues differentiating the vowels
+- Extra resonance of the nasal cavity interferes with the acoustics of tongue/lip
+- so nasal vowels are harder to distinguish
 
 ## Length and diphthongs
 
 Dipthongs and dipthongized vowels
 
+Dipthongs are longer than dipthongized vowels generally, but
+crucially must **change tongue position** in constrast with diphthongized vowels.
+
+Voice quality contrasts tend to be more marked on vowels because vowels are necessarily voiced.
+
+Different **tension** in the vocal folds WILL be observable.
+
+
 ## Tone
+
+Voice quality contrasts tend to be more marked on vowels because vowels are necessarily voiced.
+
+Different **frequency** in the vocal folds WILL be observable.
 
 tone is a property of the unity larger than a segment, usually syllable/word.
 BUT the diff in pitch is the clearest at the vowel.
@@ -124,4 +171,10 @@ Tonal language:
 
 Level tones:
 
-Contour tones:
+Contour tones: are marked!
+
+Contour tone langs use both level and contour
+
+Register tone langs just use level;
+
+Chao tone levels

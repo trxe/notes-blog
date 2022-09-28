@@ -55,6 +55,8 @@ Why are we the only species to have adapted for speech?
   - Exhaling: Opposite
 - There are other tyeps of airstream mechanisms!
 
+## State of Larynx
+
 Larynx: Pitch and voicing
 - Vocal folds
   - Vocalis muscle
@@ -71,6 +73,10 @@ Rate of vibration of vocal folds determines pitch
 - Faster vibration, higher pitch
 - Larger vocal folds = Vibrate more slowly = Lower pitch
 - More stretched out = More tense = Higher pitch (Pulling vocal folds very tight)
+
+## Active and Passive Articulators
+
+![Some Passive Articulators](/notes-blog/assets/img/speech/passive_articulators.png)
 
 Shaping of the air is in the supra-larygeal vocal tract.
 - Active articulators (lower lip, tongue) move during speech

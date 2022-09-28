@@ -147,6 +147,8 @@ These days we put multiple cores in the same processor.
 
 ![SIMD](/notes-blog/assets/img/parallel/l3-simd.png)
 
+Only for the 
+
 ### MISD (Multiple insn single data)
 
 - All instructions work on the same data at any time
@@ -233,7 +235,7 @@ Do they have a **shared address space**.
 
 UMA: Uniform Memory Access (Time) UMA
 
-- Fetch frmo memory less often
+- Fetch from memory less often
   - Reuse data
   - Share data across threads
   - Store/reload values
@@ -243,6 +245,14 @@ DDRx the memory sped is constant, but bandwidth is improving
 Cache coherence problem
 - Cache coherence protocol to make sure when a value in a cache is modified
 - the overhead of updating all of the same piece of data in cache
+
+### Shared distributed architecture
+
+NUMA architectures can reduce memory contention in shared distriubuted memory systems
+
+Two separate cores accessing the same memory -- contention
+
+NUMA implicitly implies multiple memory units: reduces contention
 
 Memory consistency problem
 - Consistency model
