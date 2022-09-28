@@ -18,6 +18,20 @@ This week's answers:
 5. Which type of click is rarest crosslinguistically?
    - Bilabial click
 
+### Pulmonic and non-pulmonic airstream mechanisms
+
+1. Pulmonic egressive [lungs, air exits]
+2. Glottalic ingressive [larynx, air enter]
+   1. implosive
+   2. closure at the place of articulation, air flow from oral cavity into lungs, vibrating vocal folds and release oral closure
+   3. because larynx must always allow air flow in, always voiced.
+3. Glottalic egressive [larynx, air exit]
+   1. ejectives
+   2. closure at larynx and place of articulation, raise larynx to compress air and release oral closure
+   3. because larynx **must be closed**, ejectives are always voiceless.
+4. Velaric ingressive [velum, air enter]
+   1. clicks
+   2. air pocket between velum/uvula and other active articulator, expand air pocket and releae
 
 ## Exotic Sounds and phonetic environment
 
@@ -52,15 +66,19 @@ The environment may introduce variation in how a sound in pronounced.
 
 - The **coronal (dental/alveolar/post-alveolar)** stops/nasals
   - [t, d, n] spread across all 3 places
-    - dental variant: [t$_\sqcap$, d$_\sqcap$, n$_\sqcap$]
+    - dental variant: [t $_\sqcap$, d $_\sqcap$, n $_\sqcap$]
     - alveolar: [t,d,n]
-    - post-alveolar variant: [t$_\_$, d$_\_$, n$_\_$]
+    - post-alveolar variant: [t $_\_$, d $_\_$, n $_\_$]
   - languages generally only choose one of these places to use contrastively
   - the same symbol is used across all three regions here for each manner
   - not many languages contrast dental and alveolar
     - Exception: Malayalam and New Guinea
       - Alveolar made with tongue tip (apical)
       - Dental made with tongue blade (laminal)
+- The oral plosives/stops cannot be nasalized.
+  - complete oral closure
+  - but nasalization **lowers velum** to allow airstream to go through nose (nasal stop)
+  - impossible to "pop" from pressure buildup
 
 ![](/notes-blog/assets/img/speech/tongue-blade.jpg)
 
@@ -75,6 +93,10 @@ However, **positional variants** include the dental/post-alveolar versions.
       - aka **sibilants**
       - [ʃ] is more rounded than [s] $\Rightarrow$ bigger channel $\Rightarrow$ lower pitch.
     - [θ, ð] (dental fricatives) are **not**: tongue flat
+    - nasalized fricatives are possible **but are weaker**
+      - airstream split into half as velum lowers: through nasal cavity and oral cavity.
+- The **labial/labiodental** fricatives
+  - Typically not contrastive, languages choose one set.
 
 - Retroflex
   - Curled back tongue tip versions of the other coronals.
@@ -84,3 +106,9 @@ However, **positional variants** include the dental/post-alveolar versions.
   - Raising the tongue front and tongue body to the front palate.
 
 ![](/notes-blog/assets/img/speech/tongue-positions.jpg)
+
+## Rhotics
+
+Cover term for r-sounds. They are **very heterogenous** in production
+
+![](/notes-blog/assets/img/speech/rhotics.jpg)

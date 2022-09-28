@@ -56,6 +56,10 @@ Note: Cardinals 9 to 18 are just the rounded/unrounded counterparts.
 
 They are not actual vowels of a particular language, but they are just reference points for orientation in the vowel space.
 
+**Cardinal vowels don't appear in any language as it is super precise.**
+
+**No two vowels have the same physical height**.
+
 - Vowels are not exact, no contact btwn active and passive articulators
 - Other cardinal vowels are 'auditorily equidistant' between 3 extremes
   - See the "leaf shape"
@@ -63,9 +67,11 @@ They are not actual vowels of a particular language, but they are just reference
 
 ## Dimensions
 
+How to count how many degrees are required? Find the number of coinciding
+
 ### Height/Backness
 
-The [i e a o u] may not be the same as Jones' cardinal vowels.A
+The [i e a o u] will probably not be the same as Jones' cardinal vowels.
 
 -  If the vowel system is small/basic, the "space" each vowel occupies before they become indistinguishable is large
 -  Vowel height is the **most important** parameter in describing vowels
@@ -77,7 +83,7 @@ The [i e a o u] may not be the same as Jones' cardinal vowels.A
 
 ### Tense/Laxness
 
-- The definition tends to be fuzzy
+- The definition tends to be fuzzy, so **no one measure holds for all languages**
 - Tense/lax in English
   - leave [liv] vs live [lɪv]
   - tense vowels are **higher/longer** than the lax in English
@@ -130,7 +136,6 @@ Conventions for central vowels:
   - creaky: tilde below
   - breathy: umlaut below
 
-
 Coarticulation: overlap in the articulatory gestures
 - anticipatory coarticulation
 - if a nasal consonant is anticipated, you have to open the velar port and nasalize the vowel! e.g. [pæn]
@@ -142,10 +147,17 @@ For every nasal vowel, there is a non-nasal vowel: nasal vowels are marked.
 
 ## Length and diphthongs
 
-Dipthongs and dipthongized vowels
+### Diphthongs
+
+Require a change in tongue and lip position throughout it's duration.
 
 Dipthongs are longer than dipthongized vowels generally, but
 crucially must **change tongue position** in constrast with diphthongized vowels.
+
+The difference between diphthongs and diphthongized vowels is that 
+in a true diphthong, deleting the **offglide** (second part) changes the meaning of the word.
+
+e.g. [kait] vs [kat] and [waʊnd] vs [wand]
 
 Voice quality contrasts tend to be more marked on vowels because vowels are necessarily voiced.
 
@@ -169,12 +181,9 @@ Tonal language:
 
 ![](/notes-blog/assets/img/speech/tones.png)
 
-Level tones:
+**Level tones**: flat levels [Register tone languages only have levels]
 
-Contour tones: are marked!
-
-Contour tone langs use both level and contour
-
-Register tone langs just use level;
+**Contour tones**: Crucial pitch rising/falling 
+[are marked! you expect languages with contour tones to have level tones too]
 
 Chao tone levels

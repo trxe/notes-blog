@@ -156,6 +156,10 @@ Contour segments: Start with one manner and end with another manner
 
 Complex segments: 2 places of articulation are used at the same time
 
+- labio-velar approximant [w]
+- labio-velar plosives [kp, gb]
+- labialization, palatalisation, velarization, pharyngealization
+
 
 ### Vowels
 
