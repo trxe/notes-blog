@@ -59,7 +59,7 @@ Speech sounds contains different number of pitches at the same time.
 ## Pitch
 
 High/low pitch $\approx$ rate of vibration of the vocal folds
-- Rate of vibration = Fundamental frequency (F0)
+- Vocal folds' Rate of vibration = Fundamental frequency (F0)
 - It is our **only sensation of pitch** (its the only pitch we are constantly aware of.)
 - it isn't in the spectrogram.
 

@@ -125,6 +125,16 @@ Conventions for central vowels:
   - Even though the pronunciation sounds more like a schwa
   - the unstressed vowel is using the schwa instead.
 
+Orthographic r: Drop the r for non-rhotic accents.
+ - Stressed: [ɜɹ]
+ - unstressed: [əɹ]
+
+### Assimilation
+
+Look at the neighbours, do they share common characteristics?
+
+If they do, an unusual or marked segment may be the result of assimilation as opposed to being contrastive
+
 ### Low vowel contrasts
 
 ## Vowel nasality and voice quality
@@ -140,7 +150,7 @@ Coarticulation: overlap in the articulatory gestures
 - anticipatory coarticulation
 - if a nasal consonant is anticipated, you have to open the velar port and nasalize the vowel! e.g. [pæn]
 
-For every nasal vowel, there is a non-nasal vowel: nasal vowels are marked.
+For every nasal vowel, there is a non-nasal vowel: **nasal vowels are marked**.
 - nasal tracts dampens acoustic cues differentiating the vowels
 - Extra resonance of the nasal cavity interferes with the acoustics of tongue/lip
 - so nasal vowels are harder to distinguish
@@ -162,7 +172,6 @@ e.g. [kait] vs [kat] and [waʊnd] vs [wand]
 Voice quality contrasts tend to be more marked on vowels because vowels are necessarily voiced.
 
 Different **tension** in the vocal folds WILL be observable.
-
 
 ## Tone
 
