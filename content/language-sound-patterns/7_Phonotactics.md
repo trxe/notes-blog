@@ -1,7 +1,7 @@
 ---
 layout: default
 usemathjax: true
-permalink: /speech/ch6
+permalink: /speech/ch7
 ---
 
 # Reading quiz qns
