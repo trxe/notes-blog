@@ -134,12 +134,25 @@ Off-chip device memory:
   - Spatially coherent random-access readonly data
   - Filtering, address clamp and wrapping
 
+### Global Memory
+
 **Coalesced access to global memory**: threads in a warp (set of 32 threads) coalesced into a number of transactions.
 
 - **number of transactions** = number of 32-byte transactions required to service all threads of that warp.
     - $k$th thread accesses the $k$th word.
 **Strides**: If thread's global memory accesses with a stride of $k>1$ words within a warp, reduced efficiency/bandwidth
   - Stride of 2 words: 50% load store efficiency/bandwidth
+
+### Shared Memory
+
+Higher bandwidth + lower latency than local/global
+
+Equal sized memory modules (**banks**)
+- Each bank can service **one address per cycle** simultaneously
+- **Bank conflict**: 2 addresses trying to address the same bank in the same cycle
+  - needs to be serialized
+- Each bank has 32-bit **bandwidth** per clock cycle (transfer 32-bits)
+  - successive 32-bit words are assigned to successive banks.
 
 # Optimization
 
