@@ -141,9 +141,10 @@ These days we put multiple cores in the same processor.
 
 ![Data parallelism](/notes-blog/assets/img/parallel/l3-data-parallelism.png)
 
-- Compact: 1 instruction defines N ops
+- Compact: 1 instruction defines N ops (e.g. CUDA/MPI programming)
 - Parallel: N ops are data parallel and independent
 - Expressive: Regular patterns can be described
+- **Not good** for divergent executions (branching will lead to poorer performance as you can't do stuff in unison)
 
 ![SIMD](/notes-blog/assets/img/parallel/l3-simd.png)
 
@@ -176,9 +177,17 @@ Multiprocessor + GPGPU
 
 ### Hierarchical design
 
+- Cache levels
+- Core (with own registers) at the leaves
+- Cache size increase from the leaves to the root
+- Same external memory
+
 ![Hierarchical design](/notes-blog/assets/img/parallel/l3-hierarchical.png)
 
-### Pipelined design
+## Pipelined design
+
+- Multiple execution cores in a pielined way.
+- Useful if same computation applies to long sequence of data elements
 
 ![Pipelined design](/notes-blog/assets/img/parallel/l3-pipeline.png)
 
@@ -190,9 +199,18 @@ Multiprocessor + GPGPU
 
 ![Network-based design](/notes-blog/assets/img/parallel/l3-network-mesh.png)
 
-- Failure
+- Failed design from Intel
 - interconnection very sensitive
 - Cores and local caches/MEM connected via interconnected network
+
+BUT future trends indicate:
+
+- Efficient on-chip interconnects possible
+  - Sufficient Bandwidth for data transfers between cores
+  - Scalability
+  - Robustness
+  - Energy management
+  - Reduction of memory access time (in distributed memory model)
 
 ## Memory Organizaiton
 
@@ -232,6 +250,11 @@ We're not talking about the underlying hardware
 Do they have a **shared address space**.
 - Do they have their own local address space?
 - Can you directly access the memory in another node?
+
+| Pros                         | Cons                                |
+|------------------------------|-------------------------------------|
+| No partitions                | Synchronization constructs required |
+| No physical movement of data | Lack of scability (contention)      |
 
 UMA: Uniform Memory Access (Time) UMA
 

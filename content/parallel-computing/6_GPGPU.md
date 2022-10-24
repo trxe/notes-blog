@@ -163,7 +163,7 @@ Off-chip device memory:
    2. Zero-copy that accesses directly host memory
    3. In CUDA its `__managed__` memory (Unified memory model)
 
-![Pinned memory](/notes-blog/assets/img/parallel/pinned-memory.png)
+![Pinned memory](/notes-blog/assets/img/parallel/pinned-memory.jpg)
 
 ## Execution config
 
@@ -172,7 +172,7 @@ Occupancy vs resource utilization
 Avoid multiple contexts per GPU with same CUDA application.
 *(i.e. avoid running multiple CUDA application processes as it means multiple contexts)*
 
-# Instruction throughput
+# #Instruction throughput
 
 Max out fast arithmetic instructions!
 

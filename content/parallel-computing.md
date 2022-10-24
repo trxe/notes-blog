@@ -15,3 +15,4 @@ permalink: /parallel
 7. [Cache Memory](/notes-blog/parallel/ch7)
 8. [Performance Instrumentation](/notes-blog/parallel/ch8)
 9. [Parallelism Pt 2](/notes-blog/parallel/ch9)
+9. [Message Passing Interface (MPI)](/notes-blog/parallel/ch10)
