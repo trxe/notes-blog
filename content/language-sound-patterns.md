@@ -14,3 +14,4 @@ permalink: /speech
 6. [Phonology](/notes-blog/speech/ch6)
 7. [Phonotactics](/notes-blog/speech/ch7)
 8. [Distinctive Features](/notes-blog/speech/ch8)
+9. [Generative Grammar](/notes-blog/speech/ch9)

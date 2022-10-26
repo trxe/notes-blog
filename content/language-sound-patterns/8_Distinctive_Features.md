@@ -59,14 +59,14 @@ e.g. Obstruent assimilation in Russian may not apply to all natural classes
 ### Binary features
 
 1. [+/- Syllabic] Can form syllable nucleus?
-   1. [+syl]: Vowels
-   2. [-syl]: All others
+   1. [+syl] Vowels
+   2. [-syl] All others
 2. [+/- Consonantal] Significant vocal tract constriction?
-   1. [-cons]: Vowels and **glides** [j, w, ɰ, ɥ]
-   2. [+cons]: All other sounds
+   1. [-cons] Vowels and **glides** [j, w, ɰ, ɥ]
+   2. [+cons] All other sounds
 3. [+/- Sonorant] Build up of pressure behind oral constriction
-   1. [-son]: obstruents (plosives, fricatives, affricates)
-   2. [+son]: All other sounds
+   1. [-son] obstruents (plosives, fricatives, affricates)
+   2. [+son] All other sounds
 4. [+/- Continuant] **complete closure** in the oral cavity?
    1. [-cont] plosives, affricates and nasals.
    2. [+cont] All other sounds
@@ -139,24 +139,24 @@ What if just (dentals, alveolars) as a natural class? We don't have a way. This 
 **Coronals only (Place)**:
 
 1. [+/- anterior]: (+)In front/(-)Behind
-   1. [+ant]: in front or on alveolar ridge
-   1. [-ant]: otherwise
+   1. [+ant] in front or on alveolar ridge
+   1. [-ant] otherwise
 2. [+/- distributed]: 
-   1. [-dist]: apical (tongue tip) -- Alveolar and Palatal
-   2. [+dist]: laminal (tongue blade) -- Dental, Post-Alveolar and Retroflex
+   1. [-dist] apical (tongue tip) -- Alveolar and Palatal
+   2. [+dist] laminal (tongue blade) -- Dental, Post-Alveolar and Retroflex
 
 **Fricatives/affricates only (Manner)**
 1. [+/- strident]: High amplitude, high pitched frication
-   1. [+str]: Labiodental, Alveolar and Post-alveolar (*Sibilants*), Uvular fricatives & affricates)
-   2. [-str]: otherwise
+   1. [+str] Labiodental, Alveolar and Post-alveolar (*Sibilants*), Uvular fricatives & affricates)
+   2. [-str] otherwise
 
 **High and Low (post-alveolar to palatal, palatal to uvular**
 1. [+/- high]
-   1. [+ high]: post-alveolar and retroflex
-   2. [- high]: palatal
+   1. [+ high] post-alveolar and retroflex
+   2. [- high] palatal
 1. [+/- low]
-   1. [+ low]: all guttaral consonants (palatal to uvular), the dorsals + palatal
-   2. [- low]: 
+   1. [+ low] all guttaral consonants (palatal to uvular), the dorsals + palatal
+   2. [- low]
 
 No language ditinguishes bilabial vs labiodental, or post-alveolar vs palatals, or velars vs uvulars for non-fricatives/affricates
 

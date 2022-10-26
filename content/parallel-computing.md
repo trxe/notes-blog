@@ -16,3 +16,7 @@ permalink: /parallel
 8. [Performance Instrumentation](/notes-blog/parallel/ch8)
 9. [Parallelism Pt 2](/notes-blog/parallel/ch9)
 9. [Message Passing Interface (MPI)](/notes-blog/parallel/ch10)
+
+Misc:
+- [Quizzes](/notes-blog/parallel/quizzes)
+- [OpenMP and SLURM](/notes-blog/parallel/openmp)
