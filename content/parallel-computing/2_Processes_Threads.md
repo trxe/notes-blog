@@ -8,10 +8,10 @@ permalink: /parallel/ch2
 
 Breaking down a sequential algorithm:
 
-1. Human programmer: Decomposition and scheduling
-2. OS and libraries: Some scheduling and mapping of tasks on cores
+1. Human programmer: **Decomposition** and **scheduling**
+2. OS and libraries: Some scheduling and **mapping** of tasks on cores
 
-A single process:
+A single **process**:
 - One PID
   - View via `ps` or `top`
 - Comprises of
@@ -20,10 +20,10 @@ A single process:
   - register values
   - **Heap**
   - **Stack**
--- Has it's own address space, not shared
-Explicit communication required across processes
+- Has it's own address space, not shared
+- Explicit communication required across processes
 
-### Multiprogramming
+### Multiprogramming/Multitasking processes
 
 To **switch** between contexts, need to incur some **overhead**.
 This is wasted time.
@@ -33,6 +33,7 @@ Communication between processes expensive.
 - Shared memory and channels for communication require system calls
 - Must be handled by OS
 
+To support multiprogramming
 - Time slicing execution (context switching on the same core, pseudo-p)
 - Parallel execution of processes on different cores/resources
 

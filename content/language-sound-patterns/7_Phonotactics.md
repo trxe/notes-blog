@@ -34,6 +34,7 @@ Constraints can be:
    1. Allophonic Alternation: allophone choice depends on phonotactic constraints.
       - e.g. voiceless plosives are only aspirated syllable initially, unaspirated elsewhere (is one surface form of [p, b, k] etc.!)
       - e.g. /l/ is only velarized (dark [l]) at the end of a syllable
+      - language wide and not specific to a morpheme
    2. Allomorphic alternations (changes) or **Morphophonological alternations**
       - choice of the allomorph depends on the phonotactic constraints
       - Allomorphy that is determined by phonological factors.

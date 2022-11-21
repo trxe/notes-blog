@@ -10,7 +10,7 @@ permalink: /speech/ch9
 2. In the underlying representation of lexical items, every feature is specified for every segment (phone). T/F?
    1. False
 3. Which of the following correctly represents the symbols for word boundary, morpheme boundary, and null?
-   1. # / + / Ø
+   1. \# / + / Ø
 4. On the SPE Generative Grammar view of language, how do different languages differ?
    1. different algorithm
 5. Any phonological rule can only change one feature value. T/F?

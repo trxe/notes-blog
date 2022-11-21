@@ -171,8 +171,8 @@ But there are languages that contrast velar and uvular stops.
 2. [+/- high]
 3. [+/- low]
 4. [+/- back]
-   1. [+back]: central and back
-   2. [-back]: front
+   1. [+back] central and back
+   2. [-back] front
 5. [+/- advanced tongue root (ATR)]
    1. [+ATR] Articulatory: tongue is pulled forward
    2. [+ATR] Acoustic: Lowered F1 compared to [-ATR] counterpart
