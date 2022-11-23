@@ -132,7 +132,7 @@ What if just (dentals, alveolars) as a natural class? We don't have a way. This 
 |      | lab      | lab          | cor    | cor      | cor           | cor       | cor     | dor   | dor    |
 | ant  |          |              | +      | +        | -             | -         | -       |       |        |
 | dist |          |              | -      | +        | -             | -         | +       |       |        |
-| str  | -        | +            | -      | +        | +             | -         | -       | -     | +      |
+| str (fricatives/affricates only!!)  | -        | +            | -      | +        | +             | -         | -       | -     | +      |
 | high |          |              |        |          | +             | +         | -       |       |        |
 | low  |          |              |        |          |               |           | +       | +     | +      |
 
