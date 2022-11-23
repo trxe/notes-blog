@@ -6,14 +6,7 @@ permalink: /parallel/ch11
 
 # Interconnections
 
-Hardware parallelism
-
-3 parts:
-- Cache coherence
-- Memory consistency
-- Interconnects
-
-Any kind of connection between parts of a computer
+Back bone for parallelising distributed memory systems
 
 ## Sorting on linear array
 
@@ -30,38 +23,58 @@ While not in sequence:
 
 It is optimal for our Ps to be connected in linear interconnect.
 
-## Sorting on a 2D mesh
+## Shear sort: Sorting on a 2D mesh
 
-# Topology
+# Direct Interconnection
 
-direct interconnect
-indirect (usu for elements of diff types)
+direct links that form a graph.
 
-diameter max d btw any 2 nodes
-degree (small degree reduces hw overhead)
+## Metrics
 
-bisection width bg
-- total bw btwn 2 halves of a network
+1. Degree: 
+   1. Affects hardware overhead
+2. Diameter:
+   1. maximum message transmission distance
+3. Bisection width: min. number of edges to **remove** to divide the network into two halves.
+   1. Capacity of network to transmit messages at once
+4. Node connectivity: min. number of **nodes** that must **fail** to disconnect the network.
+   1. Robustness of network
+5. Edge connectivity: min. number of **edges** that must **fail** to disconnect the network.
+   1. Independent paths
 
-node connectivity nc
-- min num nodes to disconnect
+## Different topologies
 
-edge connectivity ec
-- 
+- Complete/Linear/Ring
+- 2D Mesh/Torus
+  - XY **routing**: Move in X direction until `srcX == dstX`, move in Y direction until `srcY == dstY`
+- Complete binary tree
+- Hypercube $n= 2^k$
+  - E-Cube **routing**: based on hamming distance
+  - While current bit is not the LSB, set current bit to the first different bit, and move to the neighboring node with the bit flipped
+- Cube connected cycles (CCC) $n = k2^k$
+  - reduces the degree of a hypercube
+  - make each original node a ring of size $k$.
+    - each ring still assigned a binary code
+    - each individual node on the ring has an index
+    - numbering can be clockwise or anticlockwise.
 
-CCC:
-reduces the degree of the hypercube
-each original node of  the hypercube becomes a ring
-encoding:
-- each ring still assigned gray code
-- indiv node on Ring has a number
+# Indirect interconnection
 
-CLockwise and anticlockwise
+Reducing hardware costs by **sharing switches/links**, dynamic configuration
 
-indirect interconnection: Overview
+## Metrics
+
 - Cost: number of switches / links
 - Concurrent connections
 
-Bus network
+## Different networks
+
+- **Bus** network: for limited number of processors.
+- **Crossbar** networks: configure switches to be straight or direction change
+- **Multistage switching** networks:
+  - Omega network: ONe unique path for each input to output
+    - Connections between stages are regular (patterned)
+  - Butterfly network
+  - Baseline network
 
 Crossbar network: $n \times m$ switches (worse than direct interconnect)

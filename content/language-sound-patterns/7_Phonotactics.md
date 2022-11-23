@@ -21,23 +21,23 @@ permalink: /speech/ch7
 
 ## Constraints
 
-Language specific constraints on sound sequences
+Language specific constraints on sound sequences (constraints are never language universal!)
 
 - What sounds can occur in a particular position
 - What sounds can occur next to each other
 
-Constraints can be:
-
-1. Static: Morpheme structure constraints.
-   1. *[bn] within a syllable
-2. Lead to alternations (Changes)
+- **Static generalization**: Structure constraints **within a single morpheme**
+   - Observe frequency of a certain pattern within a morpheme
+   - Example: Nasal must agree in place of place of articulation with following stop
+   - Example: Obstruent clusters must agree in voicing
+- **Alternations**: different **variants** of morphemes
    1. Allophonic Alternation: allophone choice depends on phonotactic constraints.
+      - **language wide** and not specific to a morpheme
       - e.g. voiceless plosives are only aspirated syllable initially, unaspirated elsewhere (is one surface form of [p, b, k] etc.!)
       - e.g. /l/ is only velarized (dark [l]) at the end of a syllable
-      - language wide and not specific to a morpheme
    2. Allomorphic alternations (changes) or **Morphophonological alternations**
       - choice of the allomorph depends on the phonotactic constraints
-      - Allomorphy that is determined by phonological factors.
+      - Specific to that combination of morphemes
       - Object of analysis is a **morpheme** and its *allomorphs*
       - e.g. past tense suffix /d/, /t/, /id/, even though underlying form is /d/. syllable final /k/ + /d/ --> /kt/
 
@@ -82,6 +82,34 @@ Non-adjacent segments become more similar
 - Tone harmony
   - African languages (e.g. Shona): Rightward spread of high tone.
 
+### Coalescence
+
+Two segments merge into one. **The segment demonstrates characteristics of both original**.
+
+### Dissimilation
+
+Segment changes to be less similar to an adjacent one. Purpose is to **reduce confusion** or
+**ease of pronunciation**.
+
+- Voicing dissimilation
+- Fricative dissimilation
+- Lateral dissimilation
+- Rhotic dissimilation
+- Long-distance dissimilation
+
+### Lenition/Fortition
+
+"Strength": **stops** $>$ **fricatives** $>$ taps or rhotics $>$ **all sonorants** $>$ [h] or glottal stop
+
+Lenition (Reduction) is **weakening**, fortition is **strengthening**
+
+- Consonant lenition
+- Post-nasal hardening
+- Stress
+
+### Debuccalization
+
+Any consonant becomes a glottal stop (losing its oral articulation).
 
 ### Epenthesis
 
@@ -92,6 +120,9 @@ Epenthesis is good at remedying hiatus
 ### Lengthening and Shortening
 
 Lengthening
+
+- Compensatory lengthening
+  - When a **deletion** occurs, the preceding  vowel lengthens to make up for the loss
 
 Shortening: long segment becomes short.
 
@@ -105,3 +136,10 @@ Shortening: long segment becomes short.
 Segment/syllables switching order.
 
 Can be local or long distance
+
+## Morphophonological alternations
+
+e.g. Nasal assismilation in Zoque only applies to prefixes but not within words.
+
+e.g. Nasal assimilation is obligatory for "in-" ("imbalance" vs "insanity"), but optional for "un-" ("unbalanced").
+(some pronounce [un], others [um].)

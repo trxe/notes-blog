@@ -52,7 +52,7 @@ See the diagram [here](/notes-blog/os/ch2#process-state-model)
 
 # Threads
 
-Multiple independent control flows in **one process**r
+Multiple independent control flows in **one process**
 
 A sequential execution stream in one process, with different
 - PC
