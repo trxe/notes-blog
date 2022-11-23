@@ -25,6 +25,14 @@ permalink: /speech/ch10
 
 # Syllables
 
+A syllable is a unit of sound composed of
+- a central peak of sonority (usually a vowel), and 
+- the consonants that cluster around this central peak.
+
+![Syllable structure](/notes-blog/assets/img/speech/syllable.png)
+
+![Syllable example](/notes-blog/assets/img/speech/syllable-examples.png)
+
 Suprasegmental: organization on the layer above the segments.
 
 It seems intuitive for most humans to count syllables. But it is hard to define.
@@ -36,14 +44,32 @@ It also seems to be the appropriate unit for
   - The environment $\{\#, C\}$ appears in many languages (i.e. at the word final position or before a consonant.)
   - This environment isn't a natural class
 
-## Sonority peaks
+## Sonority sequencing principle
 
-Sonority scale
+Segments **within** a syllable:
+- Should have **rising sonority before** the peak
+- Should have **falling sonority after** the peak
+
+Sonority scale:
 
 1. Low vowels
 2. Mid vowels
 3. High vowels and glides
+4. Rhotics
+5. Laterals
+6. Nasals
+7. Fricatives
+8. Plosives
 
+**exceptions**: Some **languages** have sonority-violating syllables (sprints, sixths)
+  - Possible Explanation: Special rule allowing violation at **word edges** not internally
+
+Syllables organize segments around **peak of sonority** .
+
+- Onset: preceding consonants
+- Nucleus: Highest sonority (peak)
+- Coda: following consonants
+- Least marked syllable: **CV** (with onset, without coda)
 
 # Syllable weight
 

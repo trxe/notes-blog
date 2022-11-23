@@ -38,7 +38,10 @@ A language is a process/algorithm that generates SRs from a set of URs concatena
 
 ## SPE notation (Sound Pattern of English)
 
-word boundary, morpheme boundary, and null:  # / + / Ø
+- Word boundary: \#
+- Morpheme boundary: +
+- Syllable boundary: $
+- Null: Ø
 
 A -> B / C _ D
 
@@ -47,6 +50,10 @@ A -> B: Rule Formalism. (-> represents "become" or "are")
 / : in the environment of
 
 C _ D: the preceding/following environment
+
+$V_0$: The **subscript** $0$ means zero or  more
+
+$(C)$: The **brackets** means either/or.
 
 Derivations: UR to SR
 
