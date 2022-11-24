@@ -58,3 +58,10 @@ $(C)$: The **brackets** means either/or.
 Derivations: UR to SR
 
 ![SPE Derivation](/notes-blog/assets/img/speech/spe-derive.png)
+
+## Do the rules need to be ordered?
+
+If the UR to output produces different outputs with different orders, then 
+
+- the rules interact
+- Yes you have to impose order.

@@ -27,6 +27,9 @@ The features are hypothesised to be the **same across all languages**.
 
 There are 3 different versions of DF theory (of which we will mostly go with the one from Zsiga's textbook).
 
+If a combination of segments do **not form a natural class**, this means that 
+**no feature combination will isolate** them from all the other segments.
+
 ## Language hypotheses
 
 1. Phonological Alternations target **only** natural classes

@@ -29,6 +29,17 @@ A syllable is a unit of sound composed of
 - a central peak of sonority (usually a vowel), and 
 - the consonants that cluster around this central peak.
 
+Principles:
+
+1. Sonority Sequencing Principle (SSP)
+   - Should have **rising sonority before** the peak
+   - Should have **falling sonority after** the peak
+2. Priority of onsets principle (POOP)
+   - Put as many consonants into next syllable's onset as possible
+   - Crosslinguistically, languages prefer syllables of CV type.
+   - No language requires codas
+   - No language forbids onsets
+
 ![Syllable structure](/notes-blog/assets/img/speech/syllable.png)
 
 ![Syllable example](/notes-blog/assets/img/speech/syllable-examples.png)
@@ -45,10 +56,6 @@ It also seems to be the appropriate unit for
   - This environment isn't a natural class
 
 ## Sonority sequencing principle
-
-Segments **within** a syllable:
-- Should have **rising sonority before** the peak
-- Should have **falling sonority after** the peak
 
 Sonority scale:
 
@@ -71,28 +78,110 @@ Syllables organize segments around **peak of sonority** .
 - Coda: following consonants
 - Least marked syllable: **CV** (with onset, without coda)
 
+![Onset Coda Typology](/notes-blog/assets/img/speech/onset-coda-typology.png)
+
 # Syllable weight
 
+Possible constraints/alternations:
+ 
+1. Closed syllable shortening 
+2. Minimal word constraint (move onsets to coda to fill up a threshold of mora)
 
+Constraints on how many elements in the rhyme (nucleus + coda).
+
+**Mora**: unit of syllable weight
+- "V:" : 2 mora
+- $V_\text{diphthong}$ : 2 mora
+- "V" : 1 mora
+- "C" : 1 mora
+   - In some languages even coda consonants don't get mora
+- Onsets do not get mora.
+
+
+- **Heavy** syllable:
+  - Coda or Long Vowel present
+    - Long vowel: Tense vowels/Diphthongs
+- **Light** syllable:
+  - no coda, short vowel for nucleus
+- Heavy syllable more likely to be stressed
 
 # Stress
 
-Stress is demarcative.
+Stress is demarcative: main stress occurs near word edges to definte the boundaries
 
-## Positional stress system
+Stress is **sometimes contrastive** (e.g. between vowels and nouns with the exact same segments).
+
+**Stress to weight principle**: A stressed syllable **must** be heavy.
+
+# Stress Rules
+
+## Compound tress rule:
+
+- leftmost **unit** (exact placement subject to language specific rules) of a compound (morpheme with >1 word) gets the stress
+- **Compound**: word combination is **not literal modifying**
+  - (lighthouse)
+  - (lighthouse keeper)
+  - (heavy metal)
+
+# Nuclear stress rule
+
+- rightmost **unit** of a phrase gets the stress
+- **Phrase**: word combination is "literal modifying" (as in changing the properties via adjective etc.)
+  - (light) (house)
+  - (light) (housekeeper)
+  - (heavy) (metal)
+  - (Buddhist) (heavy metal)
+
 
 ## Lexical stress system
 
+Unpredictable stress. e.g. Russian
+
+## Positional stress system
+
+Completely predictable. e.g. 
+
+- Czech/Finnish/Georgian: stress always inital. 
+- French: stress final
+- Polish: stress penult
+- No language consistently stresses the middle syllable of all words
+
 ## Paradigmatic stress system
 
-Compound stress rule:
-leftmost syllable of a compound (morpheme with >1 word) gets the stress
+Depends on morphological information.
 
-Nuclear stress rule:
-main stress on the noun (or the keyword??) of a phrase (>1 morpheme)
+- English: main stress **never moves more than 3 syllables from right edge**.
+  - No phonological rule to explain e.g. [banana]
+  - Verbs/Adj tend to have stress on the final syllable [reject, insult]
+  - Nouns on the penult [sculpture, reject, insult]
+
+## Rhythmic stress patterns
+
+## English stress patterns
+
+**Nouns**:
+- **Ignore final syllable** if not monosyllabic
+- If penult is heavy, stress penult
+- else stress antepenult
+
+**Verbs/Adjectives**:
+- **Ignore final consonant** if any
+- if final (rime - 1 consonant) is still heavy, stress final
+  - e.g. Long vowel (includes tense vowel)
+  - e.g. Short vowel + rest of consonant cluster
+- else stress penult
+
+Stress clash: when two adjacent syllables across a **word boundary** are stressed: stress shift the first primary stress backwards
+
+## Words with affixes and Lexical Phonology
 
 Tonic suffix: the suffix itself is stressed
 
 Neutral suffix: no change
 
-Post-tonic suffix: suffix coming immediately before the suffix is stressed
+Post-tonic suffix: stress coming immediately before the suffix is stressed
+
+### Lexical Phonology
+
+Dividing the lexicon into separate **modules/levels**:
+- different phonological rules for each level
