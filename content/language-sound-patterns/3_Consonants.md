@@ -22,11 +22,11 @@ This week's answers:
 
 1. Pulmonic egressive [lungs, air exits]
 2. Glottalic ingressive [larynx, air enter]
-   1. implosive
+   1. **voiced implosives**
    2. closure at the place of articulation, air flow from oral cavity into lungs, vibrating vocal folds and release oral closure
    3. because larynx must always allow air flow in, always voiced.
 3. Glottalic egressive [larynx, air exit]
-   1. ejectives
+   1. **ejectives**
    2. closure at larynx and place of articulation, raise larynx to compress air and release oral closure
    3. because larynx **must be closed**, ejectives are always voiceless.
 4. Velaric ingressive [velum, air enter]
