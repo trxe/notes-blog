@@ -145,7 +145,7 @@ class SleepingBarber {
     int n;
     int inBuf = 0, outBuf = 0;
     BS mutex = new BS(true);
-    CS notEmpty = newCS(0);
+    CS notEmpty = new CS(0);
     BS[] hair;
     int numCustomers = 0;
 

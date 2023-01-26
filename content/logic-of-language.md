@@ -78,6 +78,13 @@ It supports the idea that sign/sound and meaning mapping is arbitrary.
 If it were not, then there would be more consistency between the onomatopoeia cross-culturally,
 but in many cases they have no similarities at all, especially for the sounds of dog, pig.
 
+But it is not **completely arbitrary** as patterns can be still seen across.
+
+- cat and cow always start with nasals.
+- sheep mostly start with [m], but [b] is sonorant also
+- [h] and [k] and post-palatal
+- 
+
 Likely due to brain picking up different sounds.
 
 # Lecture 2: Properties and Organization of Words
@@ -133,6 +140,8 @@ This gives rise to **morphological structure trees**:
 
 ## Problem Set 2
 
+![Question 1](/notes-blog/assets/img/lol/ps2-1.png)
+
 1. dis-obey
 2. happ-ily
 3. logic-ally
@@ -150,3 +159,105 @@ a) singular "um", plural "aba"
 b) "a"
 c) "i" is a suffix for noun class
 d) "baz", "fund"
+
+# Lecture 3: Properties and Organization of Words
+
+**Alphabet** $\Sigma$: finite set of symbols
+
+**String**: finite sequence of symbols from $\Sigma$
+
+**Language**: set of strings
+
+*Length*: Number of symbols in a string. (if $a$ = "10110", $\|a\| = 5$)
+
+*Empty string*: $\Lambda$. ($\|\Lambda| = 0$)
+
+*Infinite Language* $\Sigma^*$: is the language of all possible strings over $\Sigma$.
+
+Any language $L$ of $\Sigma$ is a subset of $\Sigma^*$.
+
+*Empty Language* $\emptyset$: language with no strings.
+
+**Concatenation**: 
+1. Concatenation of strings: 
+   1. $x$ `CONCAT` $y$ = $xy$
+   2. $x\Lambda = x = \Lambda x$ ($\Lambda$ is identity element)
+   3. $xx^{k} = x^{k+1}$
+   4. $x^0 = \Lambda$
+2. Concatenation of languages:
+   1. $L_1 L_2 = \{xy \mid x \in L_1 \vee y \in L_2\}$.
+   2. $L_1 L_2 \neq L_2 L_1$ as $xy \neq yx$ (non-commutative).
+   3. $LL_k = L^{k+1}$
+   4. **Closure**: $L^* = \Cup_{i=0}^\infty L_i$.
+
+### Computational questions
+
+1. **Generation**: How do we generate the sentences of a language?
+   1. **Grammar**: rules of production for a language
+2. **Recognition**: How do we recognize if a string $x \in L$?
+   1. We don't consider this programmatically to prevent the influence of a specific PL.
+   2. Describe recognition in a **computing machine/automatron** that isn't a language
+3. **Specification**: What's the best way to specify a language $L$?
+   1. Providing an automaton that recognizes
+   2. Providing a grammar that generates
+   3. Intensional formal definition
+   4. None of the above are "best"!
+   5. Must show the correspondence between them.
+4. Language Classes
+   1. Complexity of languages
+   2. **Regular languages** $\subset$ **Context-free Languages**
+      1. Regular language: A language that can be specified by an FSM/FA
+  
+**Automata**: Recognizes tokens. Specifies a **symbol recognition machine**
+
+**Regular expressions**: algebraic notation to **generate** languages
+
+Context Free Grammars (CFG): Formation of statements from tokens.
+
+Turing Machines: Most powerful form of automata.
+
+### Automata
+
+1. State
+2. Finite Automaton (FA): Automaton with a finite number of states
+3. Transition
+4. State transition diagrams
+
+![FA Terminology and example](/notes-blog/assets/img/lol/fa-ex1.png)
+
+- Start state
+- Accepting state
+- Sink
+  - Accepting sink
+  - Non-accepting sink (can be removed together with all it's incoming links)
+
+Note that $D$ here is a **sink**, a state which once you enter you can't leave.
+
+### Distinguishability
+
+A string $x$ and $y$ are distinguishable from each other 
+if you can have another string $z$ such that either
+- $xz \in L \wedge yz \notin L$
+- OR $yz \in L \wedge xz \notin L$
+
+note that it is allowed for $x, z \notin L$.
+
+### Problem Set 3
+
+1. FSM
+
+a) Accept: $\{ab, aba, abb\}$. Reject: $\{a, b, bb\}$
+
+b) Any sequence of a and b preceded with a prefix $ab$.
+
+c) ![No trap states](/notes-blog/assets/img/lol/ps3-1c.png)
+
+2. ![aaa](/notes-blog/assets/img/lol/ps3-2.png) 
+
+3. $\Sigma = \{kopi, o, c, peng, kosong\}$
+
+![FSM](/notes-blog/assets/img/lol/ps3-3ac.png) 
+
+b) Add $teh$ link from $A$ to $B$. For all other states, add a $teh$ link to $F$.
+
+c) the diagram above allows for "kopi $\{o,c\}$ kosong peng".

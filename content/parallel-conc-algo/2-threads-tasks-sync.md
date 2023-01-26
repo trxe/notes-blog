@@ -49,3 +49,28 @@ enter scope = allocate and initialize (on heap if necessary).
 exit scope = deallocate and destroy (from heap if necessary).
 
 ### r-values and l-values
+
+l-values: Values to the left of the assign operator
+
+r-values: Values to the right of the assign operator (temporaries, variables without a fixed memory address)
+
+You pass r-value arguments in via `&&`. Can be used for move 
+
+### `std::mutex`
+
+- The standard guarantees
+  -  prior `unlock` on the samemutex synchronize with `lock`. 
+- The OS guarantees
+  - `futex()` linux syscall
+  - `futex`'s release-acquire semantics ensures synchronises-with.
+
+### Locks in cpp
+
+- `lock_guard`
+- `scoped_lock`
+  - guards against deadlock when locking/unlocking in the wrong order with **deadlock avoidance algorithm**
+  - The order in which it locks
+- `unique_lock` 
+  - `std::defer_lock_t` tells the compile to lock later.
+  - `std::try_to_lock`
+  - `unlock` the unique lock yourself (what makes unique lock more powerful than the others.)
