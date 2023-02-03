@@ -113,3 +113,13 @@ But I still don't know bodies exist!
 - "God won't deceive me" ??????
 - deus ex machina
 
+Radical Skepticism:
+
+- No one can really know anything/Have true knowledge about ___
+- Different from the method of skepticism
+- Counter: Pragmatism. Skepticism is an intellectual deadend
+  - William James
+- Writing tips: First paragraph tips
+  - Thesis statement
+  - Thesis **overstatement**: simple, exaggerated and clear.
+  - First paragraphs are not meant to be complicated/nuanced.

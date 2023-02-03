@@ -2,7 +2,7 @@
 layout: default
 usemathjax: true
 title: Threads, Tasks and Synchronization
-permalink: /palgo/ch2
+permalink: /pcp/ch2
 ---
 
 # Threads, Tasks and Synchronization in C++

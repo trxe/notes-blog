@@ -9,9 +9,10 @@ usemathjax: true
 
 # Current mods
 
-- [Sounds Patterns in Language](/notes-blog/speech)
-- [Parallel Computing](/notes-blog/parallel)
-- [Algorithms Analysis](/notes-blog/algo2)
+- [Logic of Language](/notes-blog/lol)
+- [Structure of Sentences and Meanings](/notes-blog/sos)
+- [Parallel and Concurrenct Programming](/notes-blog/pcp)
+- [Parallel and Distributed Algorithms](/notes-blog/palgo)
 
 # Old mods
 
@@ -20,3 +21,6 @@ usemathjax: true
 - [Computer Networks](/notes-blog/network)
 - [3D Modelling](/notes-blog/3d)
 - [Operating Systems](/notes-blog/os)
+- [Sounds Patterns in Language](/notes-blog/speech)
+- [Parallel Computing](/notes-blog/parallel)
+- [Algorithms Analysis](/notes-blog/algo2)

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Consistency
-permalink: /palgo/ch3
+permalink: /pcp/ch3
 ---
 
 # Consistency
@@ -25,7 +25,7 @@ Formalism
 we are more comofrtable with sequential execution, SINGLE PROCESS
 
 inv(e) res(e)
-
+parallel-conc-algo
 history: sequences of inv/res ordered by wall clock time. this ensures TOTAL ORDER
 
 **Sequential** history $H$:

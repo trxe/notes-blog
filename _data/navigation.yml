@@ -1,18 +1,14 @@
 - name: Home
   link: /notes-blog/
-- name: Graphics Rendering
-  link: /notes-blog/render
-- name: Computer Networks
-  link: /notes-blog/network
-- name: 3D Modelling
-  link: /notes-blog/3d
-- name: Operating Systems
-  link: /notes-blog/os
-- name: Algorithms II
-  link: /notes-blog/algo2
+- name: Parallel Algos
+  link: /notes-blog/palgo
+- name: Parallel Prog
+  link: /notes-blog/pcp
+- name: LOL
+  link: /notes-blog/lol
+- name: SOS
+  link: /notes-blog/sos
 - name: Computer Graphics
   link: /notes-blog/cg
-- name: Sound Patterns
-  link: /notes-blog/speech
-- name: Parallel Computing
-  link: /notes-blog/parallel
+- name: Graphics Rendering
+  link: /notes-blog/render

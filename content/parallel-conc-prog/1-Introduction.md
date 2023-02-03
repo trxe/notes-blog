@@ -1,7 +1,7 @@
 ---
 layout: default
 usemathjax: true
-permalink: /palgo/ch1
+permalink: /pcp/ch1
 ---
 
 # Introduction

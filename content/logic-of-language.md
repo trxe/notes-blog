@@ -70,7 +70,11 @@ We can understand such expressions of arbitrary complexity because interpretatio
 | chinese characters    | -          | +                  | +         |
 | bird song             | +          | -                  | +         |
 | art                   | +          | -                  | +         |
-| emoji                 | -          | -                  | +         |
+| emoji                 | -          | -                  | -          |
+
+- Emoji not really arbitrary.
+- Chinese characters not flexible enough to be generative.
+- 
 
 *Question 2*:
 
@@ -145,6 +149,7 @@ This gives rise to **morphological structure trees**:
 1. dis-obey
 2. happ-ily
 3. logic-ally
+   1. WRONG: logic-al-ly
 4. em-power-ment
 5. pre-mature
 6. mis-understand-ing
@@ -261,3 +266,145 @@ c) ![No trap states](/notes-blog/assets/img/lol/ps3-1c.png)
 b) Add $teh$ link from $A$ to $B$. For all other states, add a $teh$ link to $F$.
 
 c) the diagram above allows for "kopi $\{o,c\}$ kosong peng".
+
+always do the simplest diagram to generate.
+
+# Lecture 4: Context Free Grammars
+
+Rules $S$ can **rewrite** a grammatical string. These are **rewrite rules**
+
+e.g. Let $S$ be a **variable** for any grammaticl string in $L_{a^n b^n}$. 
+In this language, we have the rule:
+
+$$
+S \rightarrow a S b
+$$
+
+We also need at least one pattern that can be $S$ to start generating all the possible strings.
+
+$$
+S \rightarrow \Lambda
+$$
+
+## Dyck language
+
+1. $S \rightarrow \Lambda$
+2. $S \rightarrow ( S )$
+3. $S \rightarrow S S $
+
+## CFG
+
+- non-terminal symbols $S$
+- terminal symbols (lexicon)
+- rewrite rules (phrase-structure rules)
+- NT symbols $\mapsto$ seq of T or NT symbols
+
+
+## Derivation, parses, trees
+
+- string input
+- back into grammatical units
+- TREES
+
+in a tree:
+1. $S$ is root
+2. each edge create using rewrite rule
+3. non-terminal symbols have daughters created by rewrite rules
+4. terminal symbols no children
+5. string is sequence of terminal nodes
+
+## Structural ambiguity
+
+$$
+0 \times 1 + 1 = ?
+$$
+
+same string can have diff parsed structures
+
+## Weakly equivalent grammars
+
+If 2 grammars can create exact same lexicon but have diff parse trees/derivations, 
+they are called **weakly equivalent** grammars.
+
+Which then should we go with when describing grammar?
+
+1. how naturally can the grammars be extended to cover other phenomena?
+   1. How many rules are being added?
+
+## Constituency tests
+
+1. Conjunction test "A and B"
+2. Replacement test "Can B be replaced by a pronoun?" (he/his/she/her/it, one, and other complementizers e.g. there, that)
+3. Ellipsis test "Can B be left out i.e. $A - B$"
+4. Dislocation test? Yodaspeak "$B, A - B$"
+
+an acceptable adjustment to make during constituency tests: "unpacking" verbs.
+
+e.g. crossed $\rightarrow$ did cross (which has auxiliary verb "did")
+
+### Ambiguity and constituency
+
+## Click studies
+
+Merrill Garrett
+- record several sentence with identical phrases
+- click sounds on the same word on every one of such phrases
+  - where did you hear the click?
+  - surprisingly, many variations between different sentences though the phrases are identical.
+
+Evidence that
+1. humans tend to displace clicks onto major constituent boundaries
+2. position of clicks on such boundaries are guessed more accurately
+3. than the cliks interrupting constituent phrases.
+
+### Problem Set 4
+
+1. CFG for $L_{kopi}$.
+
+- S -> kopi
+- S -> kopi X
+- X -> MILK
+- X -> MILK VER
+- MILK -> o
+- MILK -> c
+- VER -> peng
+- VER -> kosong
+
+2. Constituency tests
+
+"You should *buy some ETFs* before you retire."
+
+- You should buy some ETFs and read some books before you retire (ok)
+- You should (*[Pronoun/Complementizer]) before you retire (NOPE) 
+- You should before you retire (ok) 
+- Buy some ETFs, you should before you retire
+
+"I baked this cake *for Grace*"
+- I baked this cake for Grace and for John
+- I baked this cake there 
+- I baked this cake 
+- For Grace, I baked this cake 
+
+"I’m excited *for Myunghye* to come to Singapore."
+- I’m excited for Myunghye and for John to come to Singapore
+- I'm excited then to come to Singapore
+- I'm excited to come to Singapore (??)
+- For Myunghye, I'm excited to come to Singapore  (??)
+
+3. Korean example
+
+- X -> S P
+- S -> "Chelsu ga"
+- P -> "uletta"
+- P -> "gu sagwa lul boatta"
+- P -> "Sunhee lul jonkyunghanda"
+- P -> "gu gemun gae lul joahanda"
+
+IGNORE THE BELOW
+- P -> O Vtrans
+- P -> Vintrans
+- O -> "Sunhee lul"
+- O -> "gu sagwa lul"
+- O -> "gu gemun gae lul"
+
+##
