@@ -20,27 +20,81 @@ until 2011, C++ don't have MT support
 - C++98
 - Application frameworks wrap underlying platform specific API
 
-C++11:
-- thread aware mem model
+**C++11**:
+- **thread aware memory model** with well-defined specification
 - stuff it can do:
   - managing threads
   - shared data
   - synchronizing between threads
   - low-level atomic ops
 - conurrency to improve application performance
-  - atomic ops library (closest to the hardware)
-  - low abstraction penalty when using wrapper classes for the low-level facilities
+  - **low level facilities**
+    - atomic ops library (closest to the hardware)
+  - **low abstraction penalty** when using wrapper classes for the low-level facilities
+    - as fast as possible on the hardware even when abstracted
 
-## Thread mgmt
+## Thread mgmt with `std::thread`
+
+```cpp
+// Functional object callable type
+class CallableHello {
+  public:
+  void operator()() const {
+    cout << "callable hey\n";
+  }
+}
+
+// function ptr
+void hello() { cout << "hey\n"; }
+
+int main() {
+  std::thread t1(hello);
+  CallableHello ch;
+  std::thread t2(ch);
+  t1.join(); t2.join();
+}
+```
 
 1. `main()`
 2. `std::thread t(funcptr)`, `t.join()` to join
    - Using a function object (make Callable by overriding `()` operator)
-3. Wait: Always make sure even when early end parent thread, the child threads are always joined
-4. Detach: Child thread may discard variables in the main thread if it ends their lifetime before the thread ends.
+
+### Confusing C++ stuff and initialization
+
+```cpp
+// function decl of return type thread
+std::thread t1(CallableHello()); // FUNCTION DECLARATION
+std::thread t2{CallableHello()}; // THREAD INITIALIZATION
+std::thread t3((CallableHello())); // THREAD INITIALIZATION
+std::thread t4([]{ cout << "ok\n"; }); // THREAD INITIALIZATION
+std::thread t4_alt([](){ cout << "ok\n"; }); // THREAD INITIALIZATION
+
+int main() {
+  t2.join(); // OK!
+  t3.join(); // OK!
+  t4.join(); // OK!
+  // t1.join(); // CANNOT RUN!
+}
+```
 
 use `std::ref` as a reference instead of `&`
 open a curly bracket, close a curly bracket: that's a scope in between the brackets.
+
+### Wait/Detach
+
+1. Wait: 
+   1. `join()` exactly once
+   2. `joinable()` to check if thread is done
+   3. `try { ... } catch(...) { t.join(); throw; } t.join()` make sure error thread joined!
+   4. Always make sure even when early end parent thread, the child threads are always joined
+2. Detach: 
+   1. Lets a child thread run independently of parent thread's execution
+   2. **WARNING** Child thread may discard variables from parent thread when ending before parent thread done (RAII)
+   3. `joinable()` is false after calling detach.
+
+Wait
+
+Detach
 
 ## RAII: Resource Acquisition is Initialization
 

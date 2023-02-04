@@ -7,12 +7,14 @@ permalink: /pcp/ch3
 
 # Synchronized program behaviour
 
-- Mem ops
-- Sequentially consistent interleaved exeution
-  - Performance of code decrease
+- Memory ops are executed in apparently **sequentially consistent** *interleaved* way
 - Write ops have to be
-  - Atomic
+  - Apparently atomic
   - Globally visible to all processors
+
+**Atomicity**: Operation guaranteed to execute **without visible intermediate** state.
+
+SC is very inefficient to guarantee. As such **operation reordering**  will most likely happen.
 
 ## Operation reordering
 
