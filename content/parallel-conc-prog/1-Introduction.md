@@ -89,10 +89,7 @@ Waiting program is holding onto a resource that is required for the current prog
 
 ## Types of Parallelism
 
-Task vs Data parallelism:
-
-**Task parallellism**:
-
+Task vs Data parallelism
 
 ## Executing a concurrent program
 
