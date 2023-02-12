@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Consistency
-permalink: /pcp/ch3
+permalink: /palgo/ch3
 ---
 
 # Consistency

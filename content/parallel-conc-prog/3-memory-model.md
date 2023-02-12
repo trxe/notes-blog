@@ -5,6 +5,10 @@ title: Atomics and Memory Model in C++
 permalink: /pcp/ch3
 ---
 
+# Memory model and atomics
+
+[Memory model and atomics in C++](/notes-blog/pcp/ch3-1)
+
 # Synchronized program behaviour
 
 - Memory ops are executed in apparently **sequentially consistent** *interleaved* way
@@ -28,8 +32,8 @@ SC is very inefficient to guarantee. As such **operation reordering**  will most
 
 C++ compiler can perform **any changes** so long as these are obeyed:
 
-- Data written to files is exactly as if the program was executed as written
-- Prompting text sent to device must be shown before wait forinput
+- Data written to files is exactly **as if** the program was executed as written
+- Prompting text sent to device must be shown before wait for input
 
 But program with **undefined behaviour** is free from the as-if rule.
 
@@ -46,7 +50,7 @@ Essential to make all MT facilities work.
 
 Each var = 1 obj.
 Obj occupy **at least 1** memory location
-Fundemantl types: exactly 1 memory location, whatever their size, even if they are part of an array.
+Fundemantal types: exactly 1 memory location, whatever their size, even if they are part of an array.
 Adjacent bit field $\in$ same memory location
 
 ### Concurrency
@@ -91,60 +95,7 @@ Non-atomic operations may be seen as **partially complete**.
 
 - low-level synchronization
 - reduce to 1-2 CPU insn
-- `is_lock_free`
-
-## SC `memory_order_seq_cst`
-
-If the target architecture is a weakly ordered machine, SC incurs penalty as
-extra insns have to beinserted.
-
-## Relaxed Ordering
-
-Load: give a value (load): she will give
-
-# Tutorial 
-
-Operational model (program behaviour) vs axiomatic model (expected behaviour) which needs the proofs.
-
-- Most of the time you don't do concurrency
-- But you need to handle concurrency with libraries.
-  - Stateless machine, abstracting away concurrency.
-- Otherwise if you really need the performance, first **primitives** (locks, semaphores, fences, barriers)
-- ...
-- Exhausted everything? Fine use atomics.
-
-## The fundamental question of concurrency (Lamport)
-
-Exists on every level
-
-When high level ops depend on low level ops, we assume that low-level systems are atomic
-
-BUT THEY AREN'T! Turtles all the way down...
-
-To reason correct performance, we do need atomic ops. Abstract away all the non-atomicity.
-
-Atomic handling starts to unravel these promises/abstractions.
-
-C++ abstracts over
-
-- Compiler optimizations
-- CPU memory management, op reordering, dirty bits (write back memory)
-
-1. Don't remove read writes? `std::atomic` (or `volatile`)
-2. No reordering allowed? `std::memory_order_seq_cst`
-3. Anyone who sees X should see my past work `std::memory_order_acq_rel`
-4. Donjust care about sharing X, but not my past work `std::memory_order_relaxed`
-5. I want threads to agree on the same order `seq_cst`. Specific single total order requires SC.
-6. Increment counter? `relaxed` don't care about
-7. Read/update X, then update Y in that order and mustbe visible to all other `acq_rel`
-
-- Without atomic, var cache can be unrefreshed.
-- The entire test may even be optimized out if the variable is determined to never change.
-
-SC guarantees that there is a fixed total ordering of all operations across all variables that all the threads see.
-
-Acquire Release not longer guarantees this total ordering across different vars seen by each thread may be different.
-
-Create cycles to check if something is impossible.
-
-Relaxed: Operations are not reordered by the compiler, but the processor relaxes constraints on that level.
+- `is_lock_free`: if all ops of a given type done directly with atomic ops
+  - **Often lock-free programming is slower than using `std::mutex`**
+- `std::atomic` only provides overloads for atomic operations
+  - `++x` $\neq$ `x+=1` $\neq$ `x = x + 1` when `x` is atomic.
