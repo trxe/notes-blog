@@ -106,6 +106,8 @@ and a thread B does an atomic load tagged `memory_order_acquire`
 
 **all ops** before the thread A's atomic store op become  visible to thread B.
 
+This includes **non-atomic** operations!!
+
 # Tutorial 
 
 Operational model (program behaviour) vs axiomatic model (expected behaviour) which needs the proofs.
