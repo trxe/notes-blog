@@ -48,6 +48,8 @@ What does $a \rightarrow b$ mean (event $a$ happens-before event $b$):
     - there exists a send event $s$ s.t. $a < s$
     - and a receive event $r$ for that msg s.t. $r < b$
 
+If two events $a, b$ happen in isolated processes  such that $a \nrightarrow b$ and $b \nrightarrow a$, then $a$ *concurrent-with** $b$.
+
 ## Logical clock
 
 Event s happens-before event t $\Rightarrow$ Event s's logical clock value $<$ event t's logical clock value.
@@ -56,7 +58,8 @@ $$s \rightarrow t \Rightarrow C(s) < C(t)$$
 
 Example implementation:
 - $C_{i}(0) = 1$
-- $C_{i}(m) = \max(C_{i}(m-1), V) + 1$
+- Local computation/send: $C_{i}(m) = C_{i}(m-1) + 1$
+- Receive: $C_{i}(m) = \max(C_{i}(m-1), V) + 1$
   - This algorithm can vary: +5 instead of +1, +Rng instead of +1, or $C_{i}(m-1) + V$.
 
 **Proof** that the above ensures $s \rightarrow t \Rightarrow C(s) < C(t)$:
@@ -73,3 +76,34 @@ Guarantee should hold in **both directions** instead
 
 $$s \rightarrow t \Leftrightarrow C(s) < C(t)$$
 
+- Suppose we have $n$ processes.
+- Each process $i$ has a local vector $C = \{c_1, c_2, \dots, c_n\}$
+- Note that $C(s) < C(t)$ is a **partial order**: 
+  - only valid if all values of $C(s)$ are less than all corresponding values of $C(t)$
+
+Example implementation:
+- $C_{i}(0) = \{\dots, c_i = 1, \dots\}$
+- Local computation/send: $C_{i}(m) = C_{i}(m-1) + \{\dots, c_i = 1, \dots\}$
+- Receive: $C_{i}(m) = \max(C_{i}(m-1), V) + \{\dots, c_i = 1, \dots\}$
+
+**Proof**: 
+
+1. Forward direction (trivial, follow logical clock example)
+2. Reverse direction $C(s) < C(t) \Rightarrow s \rightarrow t$  
+   1. If $s,t$ are on same process, trivial by definition.
+   2. If $s,t$ not on the same process, then $\forall$ process $i$ we have $C(s)[i] \leq C(t)[i]$ and for some process $j$, $C(s)[j] < C(t)[j]$.
+
+Know about the other processes.
+
+## Matrix clock
+
+- Suppose we have $n$ processes.
+- Each process $i$ has a local **matrix** $M = \left[\begin{matrix}C_1 \\ C_2 \\ \vdots \\ C_n\end{matrix}\right]$ where each $C_i$ is process $i$'s **principle vector**
+- Note that $C(s) < C(t)$ is a **partial order**: 
+  - only valid if all values of $C(s)$ are less than all corresponding values of $C(t)$
+
+Know about what the other processes know about the other processes.
+
+$n$-dimensional clock: (Knowing about what the other processes)$^{n-1}$ know about the other processes.
+
+$\infty$-dimensional clock: Common knowledge.
