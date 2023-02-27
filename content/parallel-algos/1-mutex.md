@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Mutual Exclusion Problem
+usemathjax: true
 permalink: /palgo/ch1
 ---
 

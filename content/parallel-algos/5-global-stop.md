@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Global Snapshot
+usemathjax: true
 permalink: /palgo/ch5
 ---
 

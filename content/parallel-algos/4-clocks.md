@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Clocks
+usemathjax: true
 permalink: /palgo/ch4
 ---
 

@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Consistency
+usemathjax: true
 permalink: /palgo/ch3
 ---
 

@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Synchronization Primitives
+usemathjax: true
 permalink: /palgo/ch2
 ---
 
