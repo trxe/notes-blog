@@ -48,52 +48,18 @@ A form of **conditional synchronization**: thread waits for a certain condition 
 - `notify`/`signal`
 
 Two queues are present, the **wait** queue and the **monitor** queue.
+
+- **Wait** queue: processes waiting for **re-entry** into the monitor. 
+- **Monitor** queue: processes waiting for **first entrance** into the monitor
+
 1. `wait` puts process onto **wait** queue and process exits monitor.
 2. `notify` removes some process from **wait** queue and puts onto the **monitor** queue
+3. `notifyAll` unblocks all processes on the wait queue.
 
 ## Problem set
 
 1. Starvation Free Readers-Writers with Monitors
 
-```java
-class ReaderWriter {
-    int numReader;
-    int numWriter;
-    bool writerWaiting;
-
-    void writeFile() {
-        synchronized (object) {
-            while (numReader > 0 || numWriter > 0) {
-                writerWaiting = true;
-                object.Wait();
-            }
-            numWriter = 1;
-        }
-        // Write
-        synchronized (object) {
-            numWriter = 0;
-            writerWaiting = false;
-            object.notifyAll();
-        }
-    }
-
-    void readFile() {
-        synchronized (object) {
-            while (numWriter > 0 || writerWaiting) {
-                // Since while loop true while writerWaiting, 
-                // even when woken by finishing readers, it will continue to wait till
-                // writers are done waiting.
-                object.wait();
-            }
-            numReader++;
-        }
-        synchronized (object) {
-            numReader--;
-            object.notify(); // notifies any readers/writers waiting./
-        }
-    }
-}
-```
 
 2. Sleeping Barber
 
