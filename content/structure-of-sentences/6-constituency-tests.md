@@ -40,6 +40,8 @@ between the displaced phrase and the empty position associated with it.
 
 ### Replacement by pronoun
 
+If string of words can substitute with pronoun, it forms a constituent.
+
 ### Sentence fragment tests
 
 - What did Kim write?
@@ -70,6 +72,10 @@ cleft construction: $X V Y [PP] \rightarrow It was Y that X V [PP]$
 ## Do-so test
 
 A VP can be replaced by a "do/did so".
+
+## Coordination test
+
+Only constituents of the **same category** can be coordinated $X \rightarrow X \text{CONJ} X$.
 
 # RS within a tree
 
