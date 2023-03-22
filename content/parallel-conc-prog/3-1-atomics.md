@@ -99,7 +99,23 @@ Between atomic **load** and **store** operations,
 
 ![Inter-thread happens-before](/notes-blog/assets/img/pcp/interthread-happens-before.png)
 
-### Acquire release ordering
+# Memory Orderings
+
+## Sequential orddering
+
+- ALL Threads must see the same order of operations
+- No reordering
+- Every store synchronizes-with every load
+
+Non-SC orderings only agree on the **modification order** of each object
+but not the global order.
+
+## Relaxed ordering
+
+- Within the same thread, SC is obeyed (object order and process order maintained)
+- Across different threads, no such guarantees.
+
+## Acquire release ordering
 
 If a thread A does an atomic store tagged `memory_order_release`
 and a thread B does an atomic load tagged `memory_order_acquire`

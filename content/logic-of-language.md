@@ -502,3 +502,226 @@ c) Hypothesis 3. Reflexive pronouns must refer to an NP in the enclosing clause 
 
 2. Ditransitive verbs
 
+# Lecture 6 [Week 8]: Quantification
+
+- Different **relationships** between **sets**
+- Quantification determiners in natural language all **conservative**
+
+## Syllogism
+
+Pattern of reasoning from **premises** to **conclusion**.
+
+Replacing the non-logical parts: Reasoning still holds (valid).
+
+**Validity of syllogisms** depend on the meaning of the sentences' 
+logical parts (quantification determiners).
+
+Example of quantification determiner: *some*, *all*, *few*, etc.
+
+## Set theory
+
+Venn diagrams / Eulerian Circles: Originated from Euler. 
+
+- Every A is B
+- No A is B
+- Some A is B
+- Some A is not B
+
+Set notation
+
+> Cardinality: size of a set
+
+## Quantificational Determiners
+
+Describe relations between sets.
+
+1. every(A)(B) iff $A \subseteq B$  are the truth conditions for "Every A is B".
+2. a/some(A)(B) iff $A \cap B \neq \null$  are the truth conditions for "Some A is B".
+
+Take a quantificational determiner $Q$
+
+## Downward entailment
+
+- Sentence S refers to set X
+- Let S' be S replaced with X' st $X' \subset X$.
+- If S' still true for ANY CHOICE OF X' then S' is downward entailing.
+
+## Conservative
+
+For any sets $A, B$, $Q(A)(B) \Leftrightarrow Q(A)(A \cap B)$.
+
+e.g. *every*. "Every dog swims" $\Leftrightarrow$ "Every dog swims and is a dog".
+
+# Lecture 7 [Week 9]: Negative Polarity Items
+
+NPI example:
+
+1. * Edwin has talked to **any** of the students
+2. Edwin *hasn't* talked to **any** of the students
+
+**any**: The NPI
+
+*hasn't*: The **licensor** of the NPI. 
+To license the use of a token is to make the token in that context valid.
+
+> Negative polarity dependency is ... associated with ...:
+>  - determiners (any)
+>  - sentence adverbs (yet/ever)
+>  - verb phrases (lift a finger)
+>  - intransitive verbs (budge)
+>  - transitive verbs (faze)
+>  - modals (need/dare)
+>  - particles (either)
+
+Positive polarity item (PPI) example:
+
+1. Edwin has talked to **one** of the students
+2. Edwin hasn't talked to **one** of the students
+   1. = There is a student Edwin didn't talk to
+   2. $\neq$ Its false that Edwin talked to a student
+
+### What are NPI licensors?
+
+Hyp 1: Negations and negative quantifiers.
+
+Examples:
+1. * John agreed to eat **any** of the bagels.
+   1. ACTUALLY isn't this fine??
+2. John didn't agree to eat **any** of the bagels
+3. John refused to eat **any** of the bagels
+
+problems: 
+1. negation can be symmetric. semantic decomposition of "refused" and "didn't agree" is arbitrary
+2. no negation needed!
+   1. Everyone who **ever** ate bagels loved them.
+   1. If you **ever** eat bagels you will love them.
+
+Hyp 2: Downward entailing environments.
+
+1. * Sara read any article.
+   1. Sara read one article $\Leftarrow$ Sara read $N$ articles (upward entailing)
+   1. Sara read one article $\nRightarrow$ Sara read $N$ articles (not downward entailing)
+2. I don't think Sara read any article
+   1. IDT Sara read one article $\nLeftarrow$ IDT Sara read $N$ articles (not upward entailing)
+   1. I don't think Sara read one article $\Rightarrow$ IDT Sara read $N$ articles (downward entailing)
+
+Examples of DE environments:
+1. Negated environments
+   1. Must demonstrate!
+   2. Negation is a common licensor as it **flips entailment relations**
+2. If clause of conditionals: If $X \Rightarrow$ If $X'$ where $X' \subseteq X$
+3. First argument $A$ of `every`
+
+Consider each environment $A, B$ of $Q(A)(B)$ separately to see if it fulfils DE.
+
+## Proof that A of `every`$(A)(B)$ is DE
+
+Let $A'$ be any proper subset of A.
+
+By definition of `every`$(A)(B)$, $A \subseteq B$.
+
+Since $A' \subset A \subseteq B$, we get $A' \subseteq B \Rightarrow$ `every`$(A)(B)$ due to iff.
+
+## Strong NPIs
+
+Downward entailment insufficient, negation is required too.
+
+e.g. "in weeks"
+
+1. * John saw Mary in weeks.
+1. John didn't see Mary in weeks.
+1. * If John does see Mary in weeks, then he will be mad.
+   1. DE on If's A.
+1. * Less than 4 ppl have seen me in weeks.
+   1. DE on count
+1. * Everyone here has seen me in weeks.
+   1. DE on every's A. 
+
+## Conclusion
+
+NPI are licensed by downward entailment
+
+# Lecture 8 [Week 10]: Quantification and Triviality
+
+## Exceptives
+
+The primary function of exceptive **removes certain individual from set A** in the relationship $R(A)(B)$
+
+- e.g. Every student **but** John came to the party $\Rightarrow \{S \backslash John \} \subseteq P, John \notin P$
+- e.g. No student **but** John came to the party $\Rightarrow \{S \backslash John \} \cap P = \emptyset, John \in P$
+
+### Truth conditions of exceptives
+
+Hence the truth conds of $Q$[$A$ except/but $x$]$B$ is
+
+1. $Q(A \backslash x)(B)$ is true
+2. $Q(A)(B)$ is false
+
+Note that because of these strict truth conds many quantifiers cannot take exceptives.  e.g. 
+
+- *Some student **but** John came.
+- *One student **but** John came.
+- *At least 2 students **but** John came.
+
+These are all determiners but bc they don't follow the truth conditions of exceptives.
+
+Note that they are **all upward entailing**, which will lead to a **contradicition**. because $A \backslash x \subseteq A$
+
+## Grammaticality of trivialities
+
+But not all contradictions are ungrammatical.
+
+1. Contradiciton: cannot be true in any world
+2. Tautology: true in all possible worlds
+3. Contingency: a sentence is true in some worlds but not others
+
+Contradictions and Tautologies are both **Trivialities**, e.g. "war is war", "A is either true or not true". But these are not ungrammatical.
+
+### L-triviality
+
+**A sentence $S$ is *L-trivial* iff $S$ is a triviality under all content word substitutions.**
+
+Logical triviality: triviality of the statement itself. L-triviality is stricter than triviality and must assume each part of the statement is different variable.
+
+> It is sunny or not sunny $\Rightarrow$ It is $P$ or it is not $Q$ (not a logical contradiction)
+
+As opposed to:
+
+> Some student but John came $\Rightarrow$ Some $A$ except $x$ is $B$ (contradiction 
+> as $A \backslash \{x\} \cap B \neq \emptyset$ is true but $A \cap B \neq \emptyset$ is **also true**,
+> which is said to be false by the exceptive **but**!)
+
+### Gajewski's conjecture
+
+**L-trivial sentences are ungrammatical.**
+
+By virtue of its **logical words**, if a sentence cannot communicate any contingencies it is ungrammatical.
+
+## There-constructions
+
+(note: this "there" is not the place-preposition referring to a location, it implies **existence**)
+
+Existential there-constructions are limited to some quantifiers:
+
+- *There is **every** green rose 
+- *There is **all** green roses
+- *There is **not all** green roses
+
+Truth condition for "There is/are Q A": $Q(A)(D)$ where $D$ is the universe.
+
+e.g. There is **no** green roses $\Rightarrow$ no(green rose)(universe) is true $A \cap D = \emptyset$. This is neither a tautology or a contradiction
+
+e.g. *There is **every** green roses $\Rightarrow$ every(green rose)(universe) is always true as $A \subseteq D$ is a tautology
+
+## Reflexivity
+
+- Reflexive: $Q(A)(A)$ always **true**
+- irreflexive: $Q(A)(A)$ always **false**
+- We can conclude grammatical There-constructions must necessarily be **neither reflexive nor irreflexive**
+
+# Conclusion: Grammaticality
+
+An **ungrammatical sentence**:
+
+1. Cannot be constructed with the grammar (e.g. CFG)
+2. Has no chance of contributing to communication

@@ -69,6 +69,13 @@ Data race:
 2. Ordered Atomics
 3. Transactional Memory
 
+#### CPP Objects
+
+- Every var is an object
+- Every object occupies at least one memory location
+  - Fundamental types take up **exactly one** memory location
+  - **Adj bit fields** are part of the same memory location
+
 #### Modification Order
 
 Sequence of all writes to an object from all threads in the program.

@@ -106,14 +106,12 @@ How to account for the sentence structure.
 
 ### Conjunction
 
-X phrase conjunction: $XP \rightarrow XP conj XP$
-X conjunction: $X \rightarrow X conj X$
+X phrase conjunction: $XP \rightarrow XP \text{ CONJ } XP$
+X conjunction: $X \rightarrow X \text{ CONJ } X$
 
 ## Principle of Modification
 
 If a phrase YP **modifies** a head (X), then phrase YP **must be a sister of X**.
-
-> Only sisters can modify each other
 
 ## Tree drawing/Parsing
 

@@ -75,7 +75,9 @@ A VP can be replaced by a "do/did so".
 
 ## Coordination test
 
-Only constituents of the **same category** can be coordinated $X \rightarrow X \text{CONJ} X$.
+Only constituents of the **same category** can be coordinated.
+
+$$X \rightarrow X \text{CONJ} X$$
 
 # RS within a tree
 
