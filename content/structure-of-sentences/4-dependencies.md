@@ -132,6 +132,6 @@ o nominative/accusative/dative etc.
 
 **zero-marking** languages e.g. Chinese.
 1. Neutral marking
-2. Languuages with no to little morphology
-3. e.g. CHinese, Vietnamese
+2. Languages with no to little morphology
+3. e.g. Chinese, Vietnamese
    1. Pronouns always same form

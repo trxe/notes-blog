@@ -38,19 +38,54 @@ how to indiciate relatiosnhip between the NPs and the verb predicate
    1. e.g. Kambera: free pronouns dont exist, markers are only used for emphasis or disambiguation
    
 
-## Phrasal order within the clause
+## Constituent order within the clause
 
-There are $3! = 6$ orderings of $\{V, S, O\}$ and they all exist inworld languages
+There are $3! = 6$ orderings of $\{V, S, O\}$ and they all exist in world languages
 
-Basic constituent order: one default ordering of constituents
+### Basic vs Marked Constituent orders
 
-Alternative consitiuents orders can exist (**marked constituent orders**)
+- BASIC:
+  - May have multiple of them
+    - Different order for the same clausal tyeps
+- MARKED:
+  - Special orderings used to highlight a particular constituent
+  - e.g. Different order for root clause and subordinate clauses.
+- FREE: No ordering, rely on case marking and/or to show grammatical relations
+  - Free Constituent order
+  - Free Word order: constituents themselves can be broken up
 
-In some languages, 
+## Case/Agreement Systems
 
-- two orders may be unmarked/equally neutral
-- with free constituent order, 
-  - some can have a basic CO (e.g. Polish/Russian: SVO)
-  - some don't (Mohawk)
-- diff order in embedded clause from matrix clause
-  - e.g. German/Dutch. SVO in matrix clause but  SOV in embedded clauses
+### Argument types
+
+- S [Sole]: Subject of intransitive verbal pred
+- A [Agent]: Subject of transitive verbal pred
+- P [Patient]: Object of transitiveee verb pred
+
+### Alignments
+
+- S+A [Nominative] / P [Accusative]
+- S+P [Absolutive] / A [Ergative]
+- Tripartite
+- Note that A+P/S will never occur as A+P always co-occurs, rendering marking useless as it fails to differentiate.
+
+**Morphological alignments**: the alignments are demonstrated by morphological changes to the roots
+
+**Syntatic alignments**: the alignments are demonstrated by application of syntactic phenomena (**e.g. unexpressed arg**) to the arguments
+
+### Systems
+
+Case system: Markings on the **arguments** pattern according to S+A/P or S+P/A
+
+Agreement system: Markings on the **predicate** pattern according to S+A/P or S+P/A
+
+### Splits
+
+**Split case** system: case is marked according to one alignment in some environments and another in others.
+
+**Split intransitive** system: 
+- patterning of **intransitives** is decided by the level of volition
+  - High volition (where S behaves semantically like an Agent): "drink", "swim", "sat" adopts S+A/P = $S_A$.
+  - Low volition (where S behaves semantically like an Patient): "blushed", "fell", "died" adopts S+P/A = $S_P$.
+
+**Split morphological** system: Ergative case sys + Accusative agreement sys (None of the inverse found)

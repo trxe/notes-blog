@@ -725,3 +725,6 @@ An **ungrammatical sentence**:
 
 1. Cannot be constructed with the grammar (e.g. CFG)
 2. Has no chance of contributing to communication
+
+# Lecture 9 [Week 11]: Implicature
+

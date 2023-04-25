@@ -49,10 +49,10 @@ Caveat:
 
 $$
 \begin{eqnarray*}
-NP $\rightarrow$ (D) N'\\
-N' $\rightarrow$ (AdjP) N'\\
-N' $\rightarrow$ N' (PP)\\
-N' $\rightarrow$ N (PP)\\
+NP $\rightarrow$ (D)\ N'\\
+N' $\rightarrow$ (AdjP)\ N'\\
+N' $\rightarrow$ N'\ (PP)\\
+N' $\rightarrow$ N\ (PP)\\
 \end{eqnarray*}
 $$
 
@@ -63,22 +63,22 @@ Do-so-replacement: Replace an V'-node with *do so*/*do so too*.
 $$
 \begin{eqnarray*}
 VP $\rightarrow$ V'\\
-V' $\rightarrow$ V' (PP)\\
-V' $\rightarrow$ V' (AdjP)\\
-V' $\rightarrow$ V (NP)\\
+V' $\rightarrow$ V'\ (PP)\\
+V' $\rightarrow$ V'\ (AdjP)\\
+V' $\rightarrow$ V\ (NP)\\
 \end{eqnarray*}
 $$
 
 ### AdjP
 
-Do-so-replacement: Replace an V'-node with *do so*/*do so too*.
+Is/Was-so-replacement: Replace an Adj'-node with *is so*/*was so too*.
 
 $$
 \begin{eqnarray*}
-VP $\rightarrow$ V'\\
-V' $\rightarrow$ V' (PP)\\
-V' $\rightarrow$ V' (AdjP)\\
-V' $\rightarrow$ V (NP)\\
+AdjP $\rightarrow$ Adj'\\
+Adj' $\rightarrow$ (AdvP)\ Adj'\\
+Adj' $\rightarrow$ Adj'\ (PP)\\
+Adj' $\rightarrow$ Adj\ (NP)\\
 \end{eqnarray*}
 $$
 
@@ -110,3 +110,10 @@ Hence you can only have 1 complement as you can only have one X head in a XP.
 **Maximal Projection**: The topmost projection in a phrase (XP).
 
 **Intermediate Projection**: Any projection that is neither the head nor the phrase (i.e., all the X' levels)
+
+## Principle of Modification
+
+If a YP modifies some head X, then YP must be either a sister of
+
+1. X
+2. An (upwards) projection of X (X', XP)

@@ -20,6 +20,22 @@ What about TP and CP? The heads are optional in the original rules.
 
 > **Invisible heads**: make $(T)$ obligatory but can be empty
 
+Original rules:
+
 1. $TP \rightarrow \{NP/CP\} \ (T) \ VP$
 1. $CP \rightarrow (C) \ TP$
    1. This means that **every $TP$ goes up to a $CP$** even if it is the matrix clause.
+
+$$
+\begin{eqnarray*}
+TP $\rightarrow$ NP\ T'\\
+T' $\rightarrow$ T\ VP\\
+\end{eqnarray*}
+$$
+
+$$
+\begin{eqnarray*}
+TP $\rightarrow$ NP\ T'\\
+T' $\rightarrow$ T\ VP\\
+\end{eqnarray*}
+$$
