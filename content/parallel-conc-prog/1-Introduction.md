@@ -121,6 +121,15 @@ Waiting program is holding onto a resource that is required for the current prog
   - $P_1$ waiting for $P_2$, $P_k$ waiting for $P_{k+1}$ and 
   - $P_n$ waiting for $P_1$.
 
+### Livelock
+
+Similar to a deadlock, except 
+- instead of "hold and wait", the processes release and unblock
+- change to another state where the 3 other conditions are met again
+  - At the **same time**
+- This is avoided by only **one process taking action**
+  - With no interleaving allowed!
+
 ### Starvation
 
 A process is prevented from making progress due to 

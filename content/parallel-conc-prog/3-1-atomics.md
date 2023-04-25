@@ -7,6 +7,11 @@ permalink: /pcp/ch3-1
 
 # Memory Model at language level with atomics
 
+Since 2011, by default C++ guarantees SC-DRF (**default** sequential consistency
+for data-race free programs).
+
+However you can use atomics to 
+
 ```cpp
 std::atomic<bool> x, y;
 // ... in one thread
@@ -30,7 +35,7 @@ enum std::memory_order {
 }
 ```
 
-## Example memory ordering
+## Memory ordering
 
 - sequenced-before (sb)
 - synchronizes-with (sw)
@@ -40,6 +45,31 @@ enum std::memory_order {
 Useful tool to generate memory order graph: [http://svr-pes20-cppmem.cl.cam.ac.uk/cppmem/]
 
 ![Example Memory Order](/notes-blog/assets/img/pcp/example-memory-order.png)
+
+### Sequenced before
+
+(Program order) If eval A is sequenced before B, then `resp(A) < inv(B)`.
+
+### Synchronizes-with relationship
+
+Between atomic **load** and **store** operations,
+
+- Atomic write `W` tagged with either SC or Acq-Rel or Rel
+- Atomic read `R` tagged with either SC or Acq-Rel or Acq
+- `R` reads value stored by
+  - write `W`
+  - an atomic write **after** `W` (i.e. W can be the original value)
+    - You can have a synchronizes-with with the original value and the atomic load.
+  - RMW `rmw` where `rmw`'s read detects value stored by  `W`
+
+## Inter-thread happens-before
+
+1. A synchronizes-with B (object link)
+2. A sync-with X, X seq-before B
+3. A seq-before X, X inter-thread happens-before B
+4. A inter-thread happens-before X, X inter-thread happens-before B
+
+![Inter-thread happens-before](/notes-blog/assets/img/pcp/interthread-happens-before.png)
 
 ## Sequential Consistency `memory_order_seq_cst`
 
@@ -69,35 +99,6 @@ side effect A of Scalar M (write) is **visible** wrt value computation of B on M
   - In process sequenced-before
   - Or interthread happens-before
 - No other side effect X to M s.t. A happens before X and X happens before B (cyclic)
-
-## Memory order building blocks
-
-### Sequenced before
-
-If eval A is sequenced before B,
-
-then eval A **will be complete** before eval B **begins**.
-
-### Synchronizes-with relationship
-
-Between atomic **load** and **store** operations,
-
-- Atomic write `W` tagged with either SC or Acq-Rel or Rel
-- Atomic read `R` tagged with either SC or Acq-Rel or Acq
-- `R` reads value stored by
-  - write `W`
-  - an atomic write **after** `W` (i.e. W can be the original value)
-    - You can have a synchronizes-with with the original value and the atomic load.
-  - RMW `rmw` where `rmw`'s read detects value stored by  `W`
-
-## Inter-thread happens-before
-
-1. A synchronizes-with B (object link)
-2. A sync-with X, X seq-before B
-3. A seq-before X, X inter-thread happens-before B
-4. A inter-thread happens-before X, X inter-thread happens-before B
-
-![Inter-thread happens-before](/notes-blog/assets/img/pcp/interthread-happens-before.png)
 
 # Memory Orderings
 
