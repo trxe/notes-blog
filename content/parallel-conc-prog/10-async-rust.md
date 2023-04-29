@@ -1,3 +1,9 @@
+---
+layout: default
+usemathjax: true
+title: Asynchronous Rust
+permalink: /pcp/ch10
+---
 
 Threads have a lot of overhead.
 
