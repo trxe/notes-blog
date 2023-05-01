@@ -49,10 +49,10 @@ Caveat:
 
 $$
 \begin{eqnarray*}
-NP $\rightarrow$ (D)\ N'\\
-N' $\rightarrow$ (AdjP)\ N'\\
-N' $\rightarrow$ N'\ (PP)\\
-N' $\rightarrow$ N\ (PP)\\
+NP \rightarrow (D)\ N'\\
+N' \rightarrow (AdjP)\ N'\\
+N' \rightarrow N'\ (PP)\\
+N' \rightarrow N\ (PP)\\
 \end{eqnarray*}
 $$
 
@@ -62,10 +62,10 @@ Do-so-replacement: Replace an V'-node with *do so*/*do so too*.
 
 $$
 \begin{eqnarray*}
-VP $\rightarrow$ V'\\
-V' $\rightarrow$ V'\ (PP)\\
-V' $\rightarrow$ V'\ (AdjP)\\
-V' $\rightarrow$ V\ (NP)\\
+VP \rightarrow V'\\
+V' \rightarrow V'\ (PP)\\
+V' \rightarrow V'\ (AdjP)\\
+V' \rightarrow V\ (NP)\\
 \end{eqnarray*}
 $$
 
@@ -75,10 +75,10 @@ Is/Was-so-replacement: Replace an Adj'-node with *is so*/*was so too*.
 
 $$
 \begin{eqnarray*}
-AdjP $\rightarrow$ Adj'\\
-Adj' $\rightarrow$ (AdvP)\ Adj'\\
-Adj' $\rightarrow$ Adj'\ (PP)\\
-Adj' $\rightarrow$ Adj\ (NP)\\
+AdjP \rightarrow Adj'\\
+Adj' \rightarrow (AdvP)\ Adj'\\
+Adj' \rightarrow Adj'\ (PP)\\
+Adj' \rightarrow Adj\ (NP)\\
 \end{eqnarray*}
 $$
 
