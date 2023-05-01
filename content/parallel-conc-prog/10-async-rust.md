@@ -5,19 +5,40 @@ title: Asynchronous Rust
 permalink: /pcp/ch10
 ---
 
-Threads have a lot of overhead.
+# Non-blocking I/O: Another zero-cost abstraction
 
-- thread give up the rest of the CPU time slice when blocked!
-- Memory overhead
-  - each thread has its own stack space
-- lightweight threads require a runtime
+On blocking I/O: What is the cost of blocking?
 
-non-blocking I/O
+1. Context switch: when a method with a **system call** blocks, the entire process halts
+   1. Storing regs
+   2. Switch stack space
+   3. Clear cache
+2. Memory overhead
+   1. growing stack space (because each thread has a minimum stack size)
+   2. 5000 threads = 5000 stack segments = 40GB at 8MB/stack!
 
-- `epoll` gets a list of file descriptors ready for I/O
-  - event loop
-  - upon client request, `epoll` returns the list of fds
-  - client can `read()` from each
+Instead of full threads, we could use lightweight threads that can be swapped out for each other.
+However  they need a runtime.
+
+How to 
+
+## Case study: Reading from a stream
+
+```rust
+
+fn main() {
+  let listener = TcpListener::bind("127.0.0.1::25565").unwrap();
+  for stream_res in listener.incoming() {
+    let mut stream = stream_res.unwrap();
+    thread::spawn(move || {
+      let mut str = String::new();
+      stream.read_to_string(&mut str).unwrap(); // WHEN THE read() SYSTEM CALL BLOCKS, THE ENTIRE THING BLOCKS
+    });
+  }
+}
+```
+
+Resolution with `epoll`: a linux kernel mechanism 
 
 ## Futures
 

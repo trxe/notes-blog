@@ -10,6 +10,9 @@ geometry:
 - bottom=2cm
 ---
 
+* Table of Contents
+{:toc}
+
 # Lecture 1: What is Language
 
 - cultural artifact

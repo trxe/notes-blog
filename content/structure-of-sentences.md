@@ -12,3 +12,8 @@ permalink: /sos
 1. [Heads and dependents](/notes-blog/sos/ch4)
 1. [Constituency](/notes-blog/sos/ch5)
 1. [Constituency Tests](/notes-blog/sos/ch6)
+1. [X-bar theory](/notes-blog/sos/ch8)
+1. [X-bar theory pt 2](/notes-blog/sos/ch9)
+1. [Relationships in the clause](/notes-blog/sos/ch10)
+1. [Processes changing grammar relations](/notes-blog/sos/ch11)
+1. [Filler gap dependencies](/notes-blog/sos/ch13)
