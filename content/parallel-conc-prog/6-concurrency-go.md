@@ -29,6 +29,10 @@ C++ paradigm:
 
 ## Concurrent design
 
+### Pros and cons of message passing
+
+
+
 ### Data parallelism
 
 Design && Limiting factor
@@ -58,8 +62,13 @@ $$
 S_p(n) = \frac{T_\text{best seq}(n)}{T_p(n)}
 $$
 
+## Amdahl's law
+
+> Speedup of parallel execution is limited by the fraction of
+> the algorithm that cannot be parallelized ($f$).
+
 Amdahl's law: speed up limited by the sequential fraction $f$ 
-(time of program that **must** execute sequentially.
+(time of program that **must** execute sequentially).
 
 ## Communicating Sequential Processes (Which are actually **Functions**)
 
@@ -194,4 +203,3 @@ select {
    3. `close` is sync-before a `rcv` returning zero-value
    4. `rcv` on unbuffered channel is sync-before send on that channel
    5. `k`th rcv on buffered channel C of size $C$ is sync-before `k+C`th send
-3. 

@@ -10,6 +10,24 @@ permalink: /pcp/ch4
 1. Unwanted blocking [Deadlock, Livelock, I/O]
 2. Race conditions
 
+## How to debug
+
+1. Run the smallest amount of code that triggers problem
+2. Eliminate the concurrency to check for non-concurrency issues
+3. Run on multicore vs single core.
+
+## How to test 
+
+1. Test on multiple different threads with multiple different states
+2. Check if there are compiler/architecture specific behaviours
+3. Stress test with many threads running
+
+## Special implementation of synchronization primitives
+
+- Mark shared data
+  - To Check if operations on shared data are done with mutex locked
+- Record lock sequence
+
 # Memory Debugging tools
 
 Memory tools keep track of the state of the memory.

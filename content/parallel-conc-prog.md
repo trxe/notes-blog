@@ -16,3 +16,4 @@ permalink: /pcp
 8. [Classical problems](/notes-blog/pcp/ch8)
 9. [Safety in Rust](/notes-blog/pcp/ch9)
 10. [Asynchronous Rust](/notes-blog/pcp/ch10)
+10. [Misc](/notes-blog/pcp/misc)
