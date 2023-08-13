@@ -9,13 +9,14 @@ usemathjax: true
 
 # Current mods
 
+- [Syntax](/notes-blog/syntax)
+
+# Old mods
+
 - [Logic of Language](/notes-blog/lol)
 - [Structure of Sentences and Meanings](/notes-blog/sos)
 - [Parallel and Concurrenct Programming](/notes-blog/pcp)
 - [Parallel and Distributed Algorithms](/notes-blog/palgo)
-
-# Old mods
-
 - [Computer Graphics](/notes-blog/cg)
 - [Graphics Rendering](/notes-blog/render)
 - [Computer Networks](/notes-blog/network)
