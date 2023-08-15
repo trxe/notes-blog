@@ -11,7 +11,24 @@ language is vital to how abstract notions are conceived and expressed.
 
 The dominant model of syntax is **Generative Grammar** (by Chomsky et al.). There are 2 approaches:
 -  Principles and Parameters
+   -  Principles constitute language universals
+   -  Parameters constitute language variation
+      -  Subconsciously set parameters  by listening to the language
+      -  We have not come up with many examples of params.
 -  Minimalism (more recent)
+
+Language cannot exist independently of the human mind.
+Syntax is the study of our capacity of building/decoding phrases/sentences.
+
+## An example
+
+- Who did Sally take the largest photo of?
+  - Ben
+  - #Sally took the largest photo of Ben
+  - These two statements are NOT EQUIVALENT!!!
+
+The fragment answer is valid, but the full answer is semantically not equivalent!!
+This is a quirk of English-speaking human brains.
 
 ## Generative Grammar
 
@@ -26,6 +43,9 @@ The method of studying syntax involves 3 steps in the cycle:
 
 Hypotheses are **proposed rules**, which hold until *proven otherwise* by data.
 Hence hypotheses must be **falsifiable**.
+
+No one hypothesis can predict correctness/wrongness of **every sentence** 
+i.e. there are no universal hypotheses.
 
 Whether rules actually exist or not is an ontological question; for our purposes
 it suffices to say that rules merely form a model of our psychology of language.
@@ -59,6 +79,12 @@ It allows us to perform the **grammaticality judgement task** based on our **int
 > Q: Can intuition be considered scientific data? 
 > - It is a real psychological effect
 > - It is replicable under test conditions
+> - It is also known as **native speaker judgement**
+
+## Types of ill-formedness
+
+- **Syntatic** ill-formedness: Form itself unacceptable
+- **Semantic** ill-formedness: Form is ok, but not with the intended meaning!
 
 ## Competence vs Performance
 
@@ -75,6 +101,10 @@ It allows us to perform the **grammaticality judgement task** based on our **int
 
 **Performance**: The actual kinds of language being produced.
 
+Psycholinguistics is about the real-time processing of sentences, studies performance.
+
+Syntax studies the forms of language itself, studies correctness.
+
 # Where do rules come from
 
 ## Learning vs Acquisition
@@ -87,6 +117,8 @@ Classes in formal grammar of a foreign language fail abysmally to train people
 but immersion in an environment allows for the subconscious to acquire.
 
 **Innate**: Chomsky claims that many facts about Language itself is **instinctual** or innate.
+
+i.e. you are born with some capacity to learn language.
 
 - Universal Grammar (UG)
 - Innateness "proof":
@@ -101,6 +133,15 @@ but immersion in an environment allows for the subconscious to acquire.
   - This is **the logical argument of Language Acquisition**
   - The underdetermination of data
 
+Grammar universal examples:
+1. Distribution of word orders not equal;
+2. Every language has subjects and predicates.
+3. No language has "good; better; goodest":
+   1. AAA: tall; taller; tallest
+   2. ABB: good; better; best
+   3. ABC: bonus; melior; optimus
+   4. *ABA ???
+
 ## Explaining language variation
 
 Grammars of languages differ because of innate **parameters** that select between variants.
@@ -108,9 +149,9 @@ Grammars of languages differ because of innate **parameters** that select betwee
 example: Word order (V-S-O and variants)
 
 **Adequacy** levels:
-- Observationally adequate: data in corpus accounted for and nothing more
-- Descriptively adequate: accounts for real world data and native speaker judgements
-- Explanatorily adequate: accounts also how children can acquire this language
+- **Observationally** adequate: accounts for corpora
+- **Descriptively** adequate: accounts for corpora and native speaker judgements
+- **Explanatorily** adequate: accounts for corpora, native speaker judgements and how children acquire language
 
 # Parts of Speech
 
@@ -134,14 +175,49 @@ The POS (part of speech) of a word is *determined by its place in the sentence a
 
 ## Distributional criteria
 
+1. (The/A) (teacher/prof) (teaches/helps) that class
+
+Hyp 1: Grammar treats words from the same POS similarly.
+
 Morphological distribution:
-- **derivational** morphemes: affixes making words of other words often resulting in a *different POS*
+- **derivational** morphemes: affixes making words of other words often resulting in a *different POS*.
   - -tion
   - -al
   - -ally
   - -ed
 - **inflectional** morphemes: they only attach to certain categories
   - -est has to attach to an adjective already, and doesn't change it to another POS
-    - big; biggest; love; *lovest;
+    - big; biggest; 
+    - love; *lovest;
+  
+How robust are these POS correlated with open/closedness?
 
 ## Subcategories
+
+1. (The/A) (teacher/prof) (teaches/helps) that class
+2. The teacher *shouts that class.
+
+Hyp 1: Grammar treats words from the same POS similarly.
+
+Hyp 2: Grammar treats words **within the same subcategory** from the same POS similarly.
+
+Nouns:
+- $\pm$PLURAL
+  - book/books: $\pm$morphoPL
+  - glasses: +morphoPL, -semanticPL
+  - committee: -morphoPL, +semanticPL
+- $\pm$COUNT
+  - much/many
+  - correlation with morphoPL
+- $\pm$PRONOUN; $\pm$ANAPHOR
+  - [+PRONOUN, -ANAPHOR]
+  - [+PRONOUN, +ANAPHOR]
+  - [-PRONOUN, -ANAPHOR]
+  - ???? [-PRONOUN, +ANAPHOR]
+
+Verbs:
+- TRANSITIVITY
+  - Number of required arguments
+  - Ambiguity? "She helps me"; "Helps me";
+    - Type of required arguments
+    - "Helps me": Hidden subject? --> Imperatives have an implicit/understood subject "YOU"

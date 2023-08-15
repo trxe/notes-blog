@@ -1,14 +1,18 @@
 - name: Home
   link: /notes-blog/
-- name: Parallel Algos
+- name: Parallel Algo.
   link: /notes-blog/palgo
-- name: Parallel Prog
+- name: Parallel Prog.
   link: /notes-blog/pcp
+- name: Perf. Analysis
+  link: /notes-blog/pa
 - name: Syntax
   link: /notes-blog/syntax
 - name: SOS
   link: /notes-blog/sos
+- name: Phil. of Lang.
+  link: /notes-blog/pa
 - name: Computer Graphics
   link: /notes-blog/cg
-- name: Graphics Rendering
+- name: Rendering
   link: /notes-blog/render
