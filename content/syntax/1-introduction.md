@@ -1,6 +1,7 @@
 ---
 layout: default
 usemathjax: true
+title: Introduction to Syntax
 permalink: /syntax/ch1
 ---
 

@@ -1,6 +1,7 @@
 ---
 layout: default
 usemathjax: true
+title: Introduction
 permalink: /philang/ch1
 ---
 
