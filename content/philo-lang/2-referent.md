@@ -1,7 +1,7 @@
 ---
 layout: default
 usemathjax: true
-title: Sense and reference
+title: Frege; Sense and reference
 permalink: /philang/ch2
 ---
 
@@ -20,13 +20,10 @@ Naive semantics is a primitive **model of language**.
 
 Naive theory:
 
-- **Singular term**: 'Mars' is a name of Mars.
-  - Stands for
-  - Selects
-  - Denotes
+- **Singular term**: the denotation of the referent
   - Refers to Mars the **referent**
   - The **meaning** of a singular term is its **referent**.
-- **Predicate**: e.g. 'is happy', 'walks funnily"...
+- **Predicate**: the conveyed state of the referent e.g. 'is happy', 'walks funnily"...
   - $\alpha$ is red
   - $\beta$ orbits the sun
   - ^ The above procedure is predicate extraction
@@ -135,11 +132,37 @@ Arose because of 2 main problems with naive:
    1. "The Loch Ness Monster lives in a lake".
    2. According to the naive theory we cannot have such a proposition because this state of affairs does not exist!
 
+### (Naive) Referential theory of meaning
+
+proper names/indefinite terms refer to a certain entity
+
+hence they mean this certain entity or referent
+
+predicates refer to their extensions (the set of all things satisfying their property)
+
+*Cognitive value* problem: 
+- if propX always coexists with propY, then X==Y
+- if nameX refers to the same nameY, then nameX means the same thing as nameY
+
+#### Proof/Argument validity
+
+$a=a$ vs $a=b$.
+
+1. $a=a$ holds a priori. [you know this is true without exp.]
+   1. By definition
+   2. Let A be the stmt "Superman == Superman"
+2. For $a=b$ to hold, you need to know background knowledge (exp. required), holds a posteriori.
+   1. These are **extensions of our knowledge**.
+   2. Let B be the stmt "Superman == Clark Kent"
+3. By the referential theory of meaning, and the principle of compositionality and the principle of substitutability, A means the same thing as B.
+4. Hence B should not introduce more info than A does!!
+
 ## Sense and reference
 
 Sense:
 1. A Mode of presentation of the referent
 2. A rule for determining a referent
+3. The cognitive significance
 
 Co-referential singular terms: terms with different senses but refer to the same referent.
 
@@ -186,3 +209,14 @@ Compositionality of sense: Proposition or Thought = sum(senses of parts)
 
 **Extensional** language:
 Language where principle of substitutability holds all the time.
+
+## Propositional attitudes
+
+The truth value of a matrix clause does not depend on the truth-value/referent of a subordinate clause.
+
+1. Lois Lane believes Superman is Superman.
+2. Lois Lane believes Clark Kent is Superman.
+
+I can also believe 2 different things without those things being identical.
+
+1. can be true without 2. being true. However the subclauses have the same truth value in both.

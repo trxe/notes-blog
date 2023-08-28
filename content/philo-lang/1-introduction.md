@@ -5,84 +5,86 @@ title: Introduction
 permalink: /philang/ch1
 ---
 
-1. language and experience
-- how can different people talk about different experiences and mean the same thing?
-- can our language limit the experience of our world?
-2. how much can natural language express formal language concepts
-3. language and being: mapping of forms to concepts
+# Introduction to Philosophy of Language
 
-why is lang weird
-- we always use words
-- we **refer** to something by any kind of script "representation"
-  - how can the reference refer to its referent?????
-  - shared hallucination same picture in people's heads
-    - Locke
-  - **causal** theory of reference: 
-    - i learnd what dog means from 
-    - turns out it is REALLY HARD TO MAKE THIS WORK
-    - "Is it cake" Netflix show
-      - a fake handbag can cause ppl to say it is a handbag still!
-  - innateness:
-    - it seems like across languages there are things that are always being referenced
-      - not just visible things
-      - but also abstract things like quantification
-      - and comparison
-      - colors
-      - though the mapping is arbitrary it almost always exists
-  - different qn of **conventionality**:
-    - why this word sound liek what it does
+**Motivations**: why is language able to
 
-HOW ARE HUMANS CAPABLE OF MAKING LANGUAGES TO REFER TO THINGSINT EH FIRSTPLACE???
+1. express thought?
+2. represent the world?
+3. clarify ideas?
 
-UNDERSTANDING
-somehow in your brain you have the capacity to decode a long and novel sentence.
+And why are we able to "know" things, or perform acts of reason?
 
-- feature of languages
-  - finite -> infinte via the combinations of rules
+### Use mention distinction
 
-pragmatics: how words are used
+1. Taylor Swift is a singer-songwriter.
+2. 'Taylor Swift' is a name.
 
-- **use-mention distinction**
-- "Taylor swift" vs Taylor swift
-  - Taylor swift is a singer
-  - "Taylor swift" is a name in English
-  - Russell is famous for fucking this up
-- pointer vs *pointer
-    - use vs mention
-- **Type token distinction**
-  - "dog dog" <-- how many words are there here?
-  - type: ans 1
-  - tokens: ans 2 (instances/concrete impl)
-- **Referential theory of names**
-  - what is "Bob Dylan" referring to?
-  - the word "Robert Zimmerman" refers to the exact same thing.
-  - Bob Dylan is a famous musician. = Robert Zimmerman is a famous musician.
-  - But most people believe the former and not the latter, though they are supposed to mean the same thing.
-  - But if they mean the same thing, they how can somebody believe in one but not the other?
-  - Frege will deny the referential theory of names
+In 1., 'Taylor Swift' is **used**, and Taylor Swift is mentioned.
 
+In 2., 'Taylor Swift' is **mentioned**.
 
-how philosophers think about how sentences are constructed
+(Names/Signs are used, its references are mentioned.)
 
-## Philosophical terms (syntactic categories)
+### Type token distinction
 
-1. SINGULAR TERM
-   - semantic function of refer to ONE PARTICULAR THING in the world
-   - e.g. names, definite descriptions (the tallest man in the world)
-2. PREDICATE
-   - semantic function of combining with a SINGULAR TERM 
-   - to convey some PROPERTY or action of the singular term
-   - e.g. verb phrase
-3. RELATIONS
-   - e.g. x loves y
-4. QUANTIFIER EXPR
-   - Range of content of things
-   - "Every", "Two", "Some"
+1. Your dog bit my dog.
 
+There are 2 tokens of the type 'dog' in this sentence.
 
-(semi-)arbitrary mapping of signs to referent
-- construct
-- shared hallu
-- intention and captured meaning
+### Propositions
 
-Focus of the first few weeks: Meanings of names
+Many sentences include **indexicals** (here, now, this, that (demonstratives)) that
+owe its meaning to the context about which the statement was uttered.
+
+$$
+\text{Sentence} + \text{Context} \longrightarrow \text{Proposition}
+$$
+
+**Abstractness of propositions**: based on the assumption that human minds each have a **unique subjective** understanding of reality
+
+- John believes that snow is white
+- Mary believes that snow is white
+- Do John and Mary believe that snow is white?
+  - Yes: The proposition that "snow is white" is abstract and thus can be shared
+
+### Compositionality
+
+The meaning of a sentence is determined by
+1. The meaning of the words comprising it
+2. The semantic value of the grammatical structure of the sentence.
+
+## Glossary
+
+**Theoretical Linguistics**: Syntax + Semantics + Pragmatics
+
+**Syntax**:
+- Study of relationships between signs
+- Well-formedness of sign combinations
+
+**Semantics**:
+- Study of relationships between meanings of signs
+- System of rules for modelling **truth-conditions** for sentences
+
+**Pragmatics**:
+- Study of effects of meanings of signs
+- Communication, psychological effects, social implications etc.
+
+**Speech-act**: A single utterance meant to be interpreted as a complete sentence.
+
+**Truth-condition**: Set of circumstances required for a proposition to hold true.
+
+**Cognitiive meaning**: The factual objective meaning conveyed by a sentence.
+
+**Expressive meaning**: The subjective attitudes conveyed by a sentence.
+
+**Propositional attitudes**: The mental attitude of a person towards a certain proposition type.
+
+**Meaning**: The meaning of a sentence is the proposition that it expresses
+
+**Propositions**:
+- the contents/meanings of sents
+- objects of propositional attitudes
+- carry true/false values.
+
+**Analytic Truth**: Truth that can be derived based on the composition of the meanings of the components of a statement alone without checking with the real world.

@@ -10,6 +10,8 @@ usemathjax: true
 # Current mods
 
 - [Syntax](/notes-blog/syntax)
+- [Performance Analysis](/notes-blog/pa)
+- [Philosophy of Language](/notes-blog/philang)
 
 # Old mods
 
