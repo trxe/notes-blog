@@ -100,6 +100,9 @@ Tests are such instances (where word groups can be swapped out for substitutes).
 
 - Replacement
   - Replace with pro-form
+  - Always have the context sentence still!
+    - The dog *licked the* icecream.
+    - NOT: The cat  *licked the* ice-cream and dog *did so* ice-cream too.
 - Sentence fragment (Q&A)
   - Question and ans with sentence fragment.
 - Movement
@@ -108,6 +111,9 @@ Tests are such instances (where word groups can be swapped out for substitutes).
   - Passivization: "X Y Z" $\Rightarrow$ "X was Y by Z"
 - Ellipsis:
   - Elide (remove) a string
+  - Always have the context sentence still!
+    - The dog *licked the* icecream.
+    - NOT: The cat  *licked the* ice-cream and dog *(gap)* ice-cream.
 - Coordination: $X \rightarrow X \ Conj \ X$
   - warning: often doesn't work
 
