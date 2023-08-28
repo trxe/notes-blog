@@ -2,7 +2,7 @@
 layout: default
 usemathjax: true
 title: Russell; On Denoting
-permalink: /philang/ch2
+permalink: /philang/ch3
 ---
 
 # Russellian Semantics
