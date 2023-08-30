@@ -13,4 +13,5 @@ permalink: /philang
 # other stuff
 
 [Argument writing (recap)](/notes-blog/philang/arg)
+
 [Scribbling from lesson 1](/notes-blog/philang/scribbling)

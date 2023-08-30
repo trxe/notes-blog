@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Introduction to Performance Analysis
+title: Capacity Planning
 permalink: /pa/ch2
 ---
 
@@ -50,15 +50,15 @@ Time scales
 
 No clear methodology until recently!
 
-1. Tools (OS specific application tools)
+1. **Tools** (OS specific application tools)
    1. List avail. perf tools
    2. For tool T, list useful metrics
    3. For metric M, list ways of interpretation
-2. USE (Utilization - Saturation - Errors)
+2. **USE** (Utilization - Saturation - Errors)
    1.  Resources: CPU/RAM/NIC/STORAGE/ACCELERATORS
    2.  Some rscs cannot be fully monitored?
    3.  Machine health
-3. RED (Request rate - Errors - Duration)
+3. **RED** (Request rate - Errors - Duration)
    1. Usu. cloud services/microservice. Check per svc.
    2. User health
 4. Workload characterzation
@@ -69,7 +69,7 @@ No clear methodology until recently!
       1. IOPS/Throughput/Direction (R/W).
       2. Include the variance when possible/appropriate
    5. **How** load changing over time
-5. Monitoring
+5. **Monitoring**
    1. perfstats over time.
    2. For capacity planing/quantifying growth/peak usage
    3. Time series: Historic values (time-based patterns)

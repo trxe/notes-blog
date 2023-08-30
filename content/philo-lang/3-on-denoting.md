@@ -45,7 +45,7 @@ The logical form of "The F is G" $\neq$ the linguistic form of "The F is G".
 
 Contextual definition: aka definite description
 
-Expicit definition: Substitutable component of a given symbol with another of the same category (synonymous NP)
+Explicit definition: Substitutable component of a given symbol with another of the same category (synonymous NP)
 
 Logically proper name: If 'a' is a logically proper name (a standalone symbol), then 'Fa' is meaningless if it lacks a referent.
 
