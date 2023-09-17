@@ -123,7 +123,6 @@ What about identity statements ("A is B")?
 - No across languages (try w. others)
 - No within English?
   - While he$_i$ was overseas, Zheng$_i$ fell down.
-  - 
 
 # X-bar Theory
 
@@ -177,6 +176,25 @@ How to determine complements (data required):
    1. One way to test: can we insert in another one of the YPs?
    2. the _book_ of poems
    3. vs *the [book of fiction] of poems
+
+### Distinguishing specifiers, complements and adjuncts
+
+- Only one specifier, must be on the outermost level
+- Complement can only appear next to the head
+- You can only conjoin a complement with complement, adjunct with adjunct, but not complement with adjunct
+- One-replacement will not work on N (*the one of X)
+- Do-so replacement will not work on V (*W ate a bagel and X do so a banana)
+
+### X-bar usage: Justifying word order variations
+
+$$
+$$
+
+#### Problems:
+
+1. How to generate VSO?  S will be intervening the VP containing V and O.
+2. In some sentences there can be several word orders for different XP types.
+   1. German: $T' \rightarrow T \ VP; \ V' \rightarrow NP \ V$.
   
 ### Housekeeping
 

@@ -131,15 +131,35 @@ Note that 1 queue = 1 queuing network.
 
 ## Fundamental Rules for Queues
 
-1. $\lambda < m\mu$ to be stable
-2. $n = n_q + n_s$
-3. $E[n] = \lambda E[r]$: Little's Law
-4. $r = w + s$
+1. STABLE: $\lambda < m\mu$
+2. JOB COUNT: $n = n_q + n_s$
+3. Little's Law: $E[n] = \lambda E[r]$
+4. TIME: $r = w + s$
   
-## Little's Law
+### Little's Law
 
 $$
-E[n] = \lambda E[r]
+\begin{eqnarray*}
+\lambda &= \text{mean arrival time} \\
+E[n] &= \lambda E[r] \\
+E[n_q] &= \lambda E[w] \\
+E[n_s] &= \lambda E[s]
+\end{eqnarray*}
 $$
 
-Mean jobs = mean arrival rate * mean service time.
+Mean jobs = mean arrival rate * mean **response** time.
+
+### Utilization
+
+$$
+\begin{aligned}
+\rho &= \lamdba E[s]\\
+ &= \lambda / \mu \\
+ &= E[n_s] < m \quad \text{(# jobs being serviced at any point always less than # servers)}
+\end{aligned}
+$$
+
+Utilization ($0 \leq \rho \leq 1$) is mean arrival rate * mean **service** time 
+i.e. mean number of jobs in service at any point
+
+$P_0 = \text{probability of servers being idle} = 1 - \rho = 1 - \lambda E[s]$
